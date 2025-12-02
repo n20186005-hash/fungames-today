@@ -63,19 +63,30 @@
         <div class="ad-banner">Advertising Space (Bottom Banner)</div>
     </div>
 
-    <script>
+<script>
         // 获取 URL 里的参数
         const params = new URLSearchParams(window.location.search);
         const url = params.get('url');
         const title = params.get('title');
+        const desc = params.get('desc'); // 获取描述
 
-        // 填入内容
+        // 1. 填入游戏链接
         if (url) {
             document.getElementById('game-iframe').src = url;
         }
+
+        // 2. 填入标题和网页Title
         if (title) {
             document.getElementById('game-title').innerText = title;
             document.title = title + " - Play on FunGames";
+        }
+
+        // 3. 填入动态描述 (关键修改)
+        if (desc) {
+            document.getElementById('game-desc').innerText = desc;
+        } else {
+            // 如果没有描述，就显示默认的一句话，防止空白
+            document.getElementById('game-desc').innerText = "Play " + (title || "this game") + " online for free on FunGames.today! No download required.";
         }
     </script>
 </body>
