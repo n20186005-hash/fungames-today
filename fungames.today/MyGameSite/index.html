@@ -385,14 +385,16 @@
                     const container = document.getElementById('dynamic-game-list');
                     const section = document.getElementById('new-updates-section');
                     
-                    // 显示新游戏板块
                     section.style.display = 'block';
 
-                    // 循环生成游戏卡片
                     games.forEach(game => {
-                        // 使用模板字符串生成HTML
+                        // --- 核心修改在这里 ---
+                        // 我们把链接改成 play.html，并把游戏真实地址作为参数传过去
+                        // encodeURIComponent 是为了防止网址里的符号出错
+                        const playLink = `play.html?url=${encodeURIComponent(game.url)}&title=${encodeURIComponent(game.title)}`;
+                        
                         const gameCard = `
-                            <a href="${game.url}" target="_blank" class="game-card">
+                            <a href="${playLink}" class="game-card">
                                 <span class="new-badge">NEW</span>
                                 <img src="${game.thumbnail || game.thumb}" class="game-thumb" alt="${game.title}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
                                 <div class="game-info">
@@ -617,3 +619,4 @@
 
 </body>
 </html>
+
