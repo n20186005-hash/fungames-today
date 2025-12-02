@@ -1,0 +1,36 @@
+name: Daily Update
+
+on:
+  schedule:
+    # 每天北京时间早上 8 点运行 (UTC时间 0点)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 允许手动点击运行
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 给机器人写入权限
+    
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install libraries
+        run: pip install requests
+
+      - name: Run update script
+        run: python update_content.py
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'UpdateBot'
+          git config --global user.email 'bot@fungames.today'
+          git add .
+          # 如果有新内容就提交，没有就不动
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update content" && git push)
