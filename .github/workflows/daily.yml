@@ -32,7 +32,7 @@ jobs:
           git config --global user.name 'UpdateBot'
           git config --global user.email 'bot@fungames.today'
           # --- 修复冲突的关键指令 ---
-          git pull --rebase
+          git pull origin main --rebase
           # ------------------------
           git add .
           # 如果有新内容就提交
