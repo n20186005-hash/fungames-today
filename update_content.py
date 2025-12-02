@@ -5,7 +5,7 @@ import os
 
 # --- 配置部分 ---
 GAME_FEED_URL = "https://gamemonetize.com/rss.php?format=json"
-# 注意：根据你的截图，你的文件夹名现在是 "MyGameSite"，所以我改成了这个
+# 你的网站文件所在的文件夹 (根据你之前的截图，应该是 MyGameSite)
 BASE_DIR = "fungames.today/MyGameSite"
 
 # --- 核心功能 ---
@@ -15,15 +15,16 @@ def update_games():
     # 1. 确保目录存在
     data_dir = os.path.join(BASE_DIR, 'data')
     if not os.path.exists(data_dir):
+        print(f"正在创建文件夹: {data_dir}")
         os.makedirs(data_dir)
 
-    # 2. 准备伪装头部 (User-Agent) 防止被拦截
+    # 2. 【关键】伪装成浏览器，防止被拦截
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     }
 
     try:
-        # 发送请求
+        # 发送带有伪装的请求
         response = requests.get(GAME_FEED_URL, headers=headers, timeout=15)
         
         # 3. 检查是否成功
@@ -39,7 +40,7 @@ def update_games():
             print(f"✅ 成功！已保存 {len(new_games)} 个游戏到 {file_path}")
             return len(new_games)
         else:
-            print(f"❌ 下载失败，状态码: {response.status_code}")
+            print(f"❌ 下载失败，对方拒绝了连接，状态码: {response.status_code}")
             return 0
             
     except Exception as e:
