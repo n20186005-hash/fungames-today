@@ -10,7 +10,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # 必须有写入权限
+      contents: write
     
     steps:
       - name: Check out code
@@ -27,13 +27,26 @@ jobs:
       - name: Run update script
         run: python update_content.py
 
-      - name: Commit and push if changed
+      - name: Commit and push
         run: |
           git config --global user.name 'UpdateBot'
           git config --global user.email 'bot@fungames.today'
-          # --- 修复冲突的关键指令 ---
-          git pull origin main --rebase
-          # ------------------------
+          
+          # 1. 先把新生成的文件“拿好” (添加到暂存区)
           git add .
-          # 如果有新内容就提交
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update content" && git push)
+          
+          # 2. 检查有没有变化
+          # 如果没有新内容(diff为0)，就不做任何事
+          if git diff --staged --quiet; then
+            echo "✅ 没有新内容需要更新"
+          else
+            # 3. 如果有新内容，先“存档”(Commit)
+            git commit -m "Auto-update content"
+            
+            # 4. 存档干净了，再去拉取云端最新代码 (避免冲突)
+            git pull --rebase
+            
+            # 5. 最后推送到云端
+            git push
+            echo "✅ 更新并推送成功！"
+          fi
