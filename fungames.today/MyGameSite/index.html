@@ -388,9 +388,9 @@
                     section.style.display = 'block';
 
                     games.forEach(game => {
-                        // --- 修改了这里：增加了 &desc=... 把描述传过去 ---
-                        // 我们使用 encodeURIComponent 来处理文字，防止特殊符号导致网址出错
-                        const playLink = `play.html?url=${encodeURIComponent(game.url)}&title=${encodeURIComponent(game.title)}&desc=${encodeURIComponent(game.description)}`;
+                        // --- 修改重点：增加了 &id=${game.id} ---
+                        // 这样 play.html 才知道去向 GameMonetize 请求哪个视频
+                        const playLink = `play.html?url=${encodeURIComponent(game.url)}&title=${encodeURIComponent(game.title)}&desc=${encodeURIComponent(game.description)}&id=${game.id}`;
                         
                         const gameCard = `
                             <a href="${playLink}" class="game-card">
@@ -618,5 +618,6 @@
 
 </body>
 </html>
+
 
 
