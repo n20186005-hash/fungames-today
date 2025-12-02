@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brawl: Apple Snatch - Play Online</title>
+    <style>
+        /* ====================
+           1. Global & Sidebar Styles
+           ==================== */
+        :root { 
+            --bg-color: #121212; 
+            --sidebar-bg: #1e1e1e; 
+            --text-color: #dfe6e9; 
+            --text-muted: #b2bec3; 
+            --accent-color: #4ade80; /* Apple Green */
+            --accent-secondary: #ef4444; /* Apple Red */
+            --card-bg: #2d3436; 
+        }
+        
+        body { margin: 0; padding: 0; font-family: 'Nunito', 'Segoe UI', 'Roboto', sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 240px; background-color: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100%; left: 0; top: 0; overflow-y: auto; z-index: 1000; box-shadow: 2px 0 10px rgba(0,0,0,0.5); border-right: 1px solid #333; }
+        .logo { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 30px; text-decoration: none; display: block; letter-spacing: 1px; }
+        .logo span { color: var(--accent-color); }
+        .logo span.red { color: var(--accent-secondary); }
+        
+        .menu-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #333; }
+        .menu-group:last-child { border-bottom: none; }
+        .menu-title { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; font-weight: bold; }
+        .menu-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); text-decoration: none; padding: 10px 12px; margin-bottom: 5px; border-radius: 8px; transition: 0.2s; font-weight: 600; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(74, 222, 128, 0.1); color: var(--accent-color); }
+        .menu-item.active { border-left: 3px solid var(--accent-color); }
+        .lang-select { margin-top: auto; padding: 10px; background: #000; color: white; border: 1px solid #333; border-radius: 4px; width: 100%; cursor: pointer; font-family: inherit; }
+
+        /* ====================
+           2. Game Page Styles
+           ==================== */
+        .main-content { margin-left: 240px; padding: 30px; width: 100%; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
+        
+        /* Game Container */
+        .game-wrapper {
+            width: 100%;
+            max-width: 960px; /* Matched to game resolution */
+            background: #000;
+            border: 1px solid #333;
+            box-shadow: 0 0 50px rgba(74, 222, 128, 0.15);
+            margin-bottom: 20px;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        /* Aspect ratio container for responsive iframe */
+        .aspect-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        }
+        iframe { 
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            width: 100%; height: 100%; 
+            border: none; display: block; 
+        }
+
+        /* Toolbar */
+        .game-toolbar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #1e1e1e; padding: 10px 20px; border-top: 1px solid #333;
+        }
+        .btn-fullscreen {
+            background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color); padding: 6px 16px; cursor: pointer; transition: 0.2s; font-family: inherit; font-weight: bold; text-transform: uppercase; border-radius: 20px; font-size: 12px;
+        }
+        .btn-fullscreen:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 15px var(--accent-color); }
+
+        /* Layout Grid */
+        .info-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px; 
+            gap: 30px;
+            width: 100%;
+            max-width: 1080px;
+        }
+        
+        .game-details { background: var(--card-bg); padding: 30px; border: 1px solid #333; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .ad-sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .ad-box { background: #000; border: 1px dashed #333; color: #444; display: flex; align-items: center; justify-content: center; font-size: 14px; border-radius: 4px; }
+        .ad-300x250 { width: 300px; height: 250px; }
+        .ad-300x600 { width: 300px; height: 600px; }
+
+        /* Typography & Elements */
+        h1 { margin-top: 0; color: #fff; text-transform: uppercase; letter-spacing: 1px; font-size: 28px; }
+        h1 span { color: var(--accent-secondary); }
+        
+        /* Section Headers */
+        h3 { color: #fff; border-left: 4px solid var(--accent-color); padding-left: 12px; margin-top: 35px; margin-bottom: 15px; text-transform: uppercase; font-size: 18px; letter-spacing: 0.5px; }
+        h4 { color: var(--accent-secondary); margin-bottom: 10px; margin-top: 20px; font-size: 16px; border-bottom: 1px solid #444; padding-bottom: 5px; display: inline-block; }
+        
+        p, li { line-height: 1.7; color: #ccc; font-size: 15px; margin-bottom: 15px; }
+        strong { color: #fff; }
+        
+        /* Feature Lists */
+        .feature-list { list-style: none; padding: 0; }
+        .feature-list li { margin-bottom: 8px; padding-left: 20px; position: relative; }
+        .feature-list li::before { content: '🍎'; position: absolute; left: 0; top: 0; font-size: 12px; }
+
+        /* FAQ Style */
+        .faq-item { margin-bottom: 15px; }
+        .faq-q { font-weight: bold; color: #fff; margin-bottom: 5px; display: block; }
+        .faq-a { color: #ccc; font-size: 14px; padding-left: 10px; border-left: 2px solid #555; }
+
+        /* Controls Table */
+        .control-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; color: #ccc; }
+        .control-table th { text-align: left; border-bottom: 2px solid #444; padding: 8px; color: var(--accent-color); background: rgba(0,0,0,0.2); }
+        .control-table td { border-bottom: 1px solid #333; padding: 10px 8px; }
+        .control-table tr:hover { background: rgba(255,255,255,0.05); }
+
+        /* Developer Tag */
+        .dev-tag { font-size: 12px; color: #888; margin-top: -15px; margin-bottom: 20px; display: block; font-style: italic; }
+
+        /* ====================
+           3. Interaction Section
+           ==================== */
+        .interaction-section {
+            background: var(--card-bg);
+            padding: 25px;
+            border: 1px solid #333;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        .rating-area { border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .stars { font-size: 28px; cursor: pointer; color: #333; }
+        .stars span { transition: color 0.2s; }
+        .stars span:hover, .stars span.active { color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.3); }
+        /* Partial star look hack for default */
+        .stars span.partial { color: #f1c40f; opacity: 0.5; } 
+        
+        .comment-form textarea {
+            width: 100%; background: #1e1e1e; border: 1px solid #333; color: #fff; padding: 15px; resize: vertical; min-height: 80px; font-family: inherit; box-sizing: border-box; border-radius: 4px;
+        }
+        .comment-form textarea:focus { outline: none; border-color: var(--accent-color); }
+        .btn-submit {
+            background-color: var(--accent-color); color: #000; border: none; padding: 10px 25px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; text-transform: uppercase; font-family: inherit; border-radius: 4px;
+        }
+        .btn-submit:hover { background-color: #2ecc71; box-shadow: 0 0 15px var(--accent-color); }
+        
+        .comment-list { margin-top: 30px; max-height: 800px; overflow-y: auto; padding-right: 10px; }
+        .comment-list::-webkit-scrollbar { width: 6px; }
+        .comment-list::-webkit-scrollbar-track { background: #111; }
+        .comment-list::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+        
+        .comment-item { border-bottom: 1px solid #333; padding: 15px 0; display: flex; gap: 15px; }
+        .avatar { width: 40px; height: 40px; background: #1e1e1e; border: 1px solid #444; display: flex; align-items: center; justify-content: center; font-size: 20px; min-width: 40px; border-radius: 50%; }
+        .comment-content h4 { margin: 0 0 5px 0; color: #eee; font-size: 14px; font-weight: bold; }
+        .comment-content p { margin: 0; color: #999; font-size: 14px; }
+        .comment-date { font-size: 12px; color: #555; margin-left: 10px; font-weight: normal; }
+        .tag-feature { font-size: 10px; background: #222; padding: 2px 6px; border-radius: 4px; margin-left: 8px; color: var(--accent-color); border: 1px solid rgba(74, 222, 128, 0.3); }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 15px; }
+            .info-layout { grid-template-columns: 1fr; }
+            .ad-sidebar { align-items: center; }
+            .aspect-container { padding-top: 75%; /* Taller on mobile if needed */ }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="/" class="logo">Brawl:<span class="red">Apple</span><span>Snatch</span></a>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_explore">Explore</div>
+            <a href="/" class="menu-item active" data-i18n="nav_home">🏠 Home</a>
+            <a href="#" class="menu-item" data-i18n="nav_new">🆕 New Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_hot">🔥 Hot Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_recent">🕹️ Recent</a>
+            <a href="#" class="menu-item" data-i18n="nav_rec">👍 Recommended</a>
+        </div>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_about">About</div>
+            <a href="#" class="menu-item" data-i18n="link_news">📰 News</a>
+            <a href="#" class="menu-item" data-i18n="link_privacy">🔒 Privacy</a>
+            <a href="#" class="menu-item" data-i18n="link_terms">📜 Terms</a>
+            <a href="#" class="menu-item" data-i18n="link_contact">📩 Contact</a>
+        </div>
+        <div style="margin-top: auto;">
+            <div class="menu-title" data-i18n="label_lang">Language</div>
+            <select class="lang-select" id="langSelector" onchange="switchLanguage(this.value)">
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 简体中文</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="game-wrapper">
+            <div class="aspect-container">
+                <iframe src="game.html" id="gameFrame" allowfullscreen></iframe>
+            </div>
+            <div class="game-toolbar">
+                <span style="color: #666; font-size: 12px; letter-spacing: 1px;">PIXEL BRAWL | v1.0 | HTML5</span>
+                <button class="btn-fullscreen" onclick="toggleFullScreen()" data-i18n="btn_fullscreen">⛶ Fullscreen</button>
+            </div>
+        </div>
+
+        <div class="info-layout">
+            
+            <div class="left-column">
+                
+                <div class="game-details">
+                    <h1 data-i18n="game_title">Brawl: Apple Snatch</h1>
+                    <span class="dev-tag" data-i18n="dev_label">Developer: Independent Game Developer</span>
+                    
+                    <div class="lang-text en active">
+                        <h3>Description</h3>
+                        <p><strong>Brawl: Apple Snatch</strong> is a fast-paced, retro-pixel style casual competitive game. In this colorful world, your goal is simple: eat more apples than your opponent! The game tests not only your reaction speed but also your strategic use of terrain and body size mechanics to knock your opponents flying.</p>
+                        <p>Whether you're challenging the high-IQ computer AI solo or battling it out with a friend on the same screen, this is a party game guaranteed to bring sweaty palms and endless laughter.</p><p style="margin-top: 15px;">
+    Curious about the depth of this game? 
+    <a href="../articles/brawl-apple.html" style="color: var(--accent-color); font-weight: bold; text-decoration: underline;">
+        Read our Full Review & Strategy Guide ➜
+    </a>
+</p>
+
+                        <h3>How to Play?</h3>
+                        <ol>
+                            <li><strong>Select Mode:</strong> Choose Single Player (vs AI) or Two Players (Local Co-op).</li>
+                            <li><strong>Snatch Apples:</strong> Delicious red apples fall from the sky. Eating them increases your score and makes your character <strong>BIGGER</strong>!</li>
+                            <li><strong>Avoid Poison:</strong> Watch out for purple poison apples! Eating one deducts score, makes you <strong>smaller</strong>, and leaves you vulnerable.</li>
+                            <li><strong>Attack & Push:</strong> Use your size advantage to ram or attack opponents, stunning them or knocking them off the map for a huge advantage.</li>
+                            <li><strong>Win:</strong> The player with the highest score when the timer ends wins!</li>
+                        </ol>
+
+                        <h3>Online Control Guide</h3>
+                        <p>Designed for instant fun, here is how you control your brawler:</p>
+
+                        <h4>Desktop (Keyboard)</h4>
+                        <table class="control-table">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Player 1 (Blue)</th>
+                                    <th>Player 2 (Red)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Move Left</strong></td>
+                                    <td>A</td>
+                                    <td>Left Arrow (←)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Move Right</strong></td>
+                                    <td>D</td>
+                                    <td>Right Arrow (→)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Jump (Double Jump)</strong></td>
+                                    <td>W (or Space)</td>
+                                    <td>Up Arrow (↑)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Attack / Ram</strong></td>
+                                    <td>S</td>
+                                    <td>Down Arrow (↓)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>General</strong></td>
+                                    <td colspan="2">P: Pause Game</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Mobile (Touch)</h4>
+                        <p><strong>Left Side:</strong> Virtual D-Pad for movement.<br>
+                        <strong>Right Side:</strong> Large buttons for "Jump" and "Attack".<br>
+                        <em>Supports multi-touch for smooth combo actions.</em></p>
+
+                        <h3>Gameplay Mechanics</h3>
+                        <p>The core lies in "Scramble" and "Survival". It's not just a collection game; you must watch your opponent. By continuously eating red apples, your character's size increases significantly, giving you stronger pushing power to knock smaller opponents off cliffs. However, being big also means you are an easier target for poison apples and attacks.</p>
+
+                        <h3>Key Features</h3>
+                        <ul class="feature-list">
+                            <li><strong>Size Changing Mechanism:</strong> Eat more to get heavier and stronger; get poisoned to become light and easily knocked away.</li>
+                            <li><strong>Dynamic Maps:</strong> From the Classic Pyramid to Dangerous Floating Islands and the Walled Arena.</li>
+                            <li><strong>Physical Comedy:</strong> Watching an opponent fly off-screen from a punch or fall into the abyss due to greed is always hilarious.</li>
+                            <li><strong>Local Multiplayer:</strong> One device, two friends, infinite fun. No internet needed for PvP.</li>
+                        </ul>
+
+                        <h3>Compatibility</h3>
+                        <p><strong>No download required.</strong> Works perfectly on:</p>
+                        <ul>
+                            <li><strong>PC / Mac:</strong> Best experience for 2-player local battles.</li>
+                            <li><strong>Mobile / Tablet:</strong> Optimized touch controls for on-the-go play.</li>
+                        </ul>
+
+                        <h3>FAQ</h3>
+                        <div class="faq-item">
+                            <span class="faq-q">Q: Is this game free?</span>
+                            <span class="faq-a">A: Yes, completely free with no in-app purchases.</span>
+                        </div>
+                        <div class="faq-item">
+                            <span class="faq-q">Q: Can I play online with distant friends?</span>
+                            <span class="faq-a">A: Currently, it focuses on local shared-screen multiplayer, perfect for parties.</span>
+                        </div>
+                    </div>
+
+                    <div class="lang-text zh" style="display:none;">
+                        <h3>游戏描述</h3>
+                        <p><strong>《好友大乱斗：吃苹果》</strong>是一款快节奏、复古像素风格的休闲竞技游戏。在这个色彩斑斓的世界里，您的目标非常简单：比对手吃掉更多的苹果！游戏不仅考验您的反应速度，还需要您灵活运用策略，利用地形和体型优势将对手撞飞。</p>
+                        <p>无论是独自挑战高智商的电脑对手，还是与好友同屏一较高下，这都是一款让您手心出汗、爆笑不断的派对游戏。</p><p style="margin-top: 15px;">
+    想要精通这款游戏？
+    <a href="../articles/brawl-apple.html" style="color: var(--accent-color); font-weight: bold; text-decoration: underline;">
+        阅读我们的完整深度测评与攻略 ➜
+    </a>
+</p>
+
+                        <h3>如何玩？</h3>
+                        <ol>
+                            <li><strong>选择模式</strong>：您可以选择单人挑战（对抗 AI 电脑）或双人对战（本地同屏）。</li>
+                            <li><strong>抢夺苹果</strong>：红色的美味苹果从天而降，吃到它们可以增加分数并让您的角色<strong>变大</strong>！</li>
+                            <li><strong>躲避毒药</strong>：千万小心紫色的毒苹果！吃到它不仅会扣分，还会让您的角色<strong>变小</strong>并变得脆弱。</li>
+                            <li><strong>互相攻击</strong>：利用体型优势撞击或攻击对手，让他们眩晕或掉出地图，从而获得巨大优势。</li>
+                            <li><strong>赢得胜利</strong>：在倒计时结束前，分数最高的玩家获胜！</li>
+                        </ol>
+
+                        <h3>在线操控指南</h3>
+                        <p>游戏设计了简单直观的操作方式，让您能立刻上手：</p>
+
+                        <h4>电脑端 (键盘操作)</h4>
+                        <table class="control-table">
+                            <thead>
+                                <tr>
+                                    <th>动作</th>
+                                    <th>玩家 1 (蓝队)</th>
+                                    <th>玩家 2 (红队)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>向左移动</strong></td>
+                                    <td>A 键</td>
+                                    <td>左箭头 (←)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>向右移动</strong></td>
+                                    <td>D 键</td>
+                                    <td>右箭头 (→)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>跳跃 (二段跳)</strong></td>
+                                    <td>W 键 (或空格)</td>
+                                    <td>上箭头 (↑)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>攻击 / 冲撞</strong></td>
+                                    <td>S 键</td>
+                                    <td>下箭头 (↓)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>通用功能</strong></td>
+                                    <td colspan="2">P 键: 暂停游戏</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>移动端 (手机/平板)</h4>
+                        <p><strong>屏幕左侧</strong>：虚拟方向键控制左右移动。<br>
+                        <strong>屏幕右侧</strong>：设有大号的“跳跃”和“攻击”按钮。<br>
+                        <em>完美支持多点触控，操作丝滑流畅。</em></p>
+
+                        <h3>玩法核心</h3>
+                        <p>游戏的核心在于“争夺”与“生存”。不仅仅是简单的收集游戏，您必须时刻关注对手的位置。通过连续吃掉红苹果，您的角色体型会显著增大，此时您的推挤力量也会变强，可以轻松将瘦小的对手撞下悬崖。但要小心，体型变大也意味着更容易触碰到毒苹果或遭受攻击。</p>
+
+                        <h3>主要特点</h3>
+                        <ul class="feature-list">
+                            <li><strong>体型变化机制</strong>：这不仅仅是视觉效果！吃得越多，您就越重、越强壮；中毒越多，您就越轻、越容易被击飞。</li>
+                            <li><strong>动态地图</strong>：从经典的平地金字塔，到危险的浮空岛，再到封闭的角斗场，每一关都需要不同的策略。</li>
+                            <li><strong>物理碰撞乐趣</strong>：看着对手被您一记重拳打飞出屏幕，或者因为太贪吃而掉进深渊，总是充满了滑稽的乐趣。</li>
+                            <li><strong>本地双人对战</strong>：一台设备，两个朋友，无限欢乐。无需联网寻找对手，快乐就在身边。</li>
+                        </ul>
+
+                        <h3>适配性</h3>
+                        <p><strong>全平台完美兼容，无需下载：</strong></p>
+                        <ul>
+                            <li><strong>电脑 (PC/Mac)</strong>：在大屏幕上体验最佳的双人对战乐趣。</li>
+                            <li><strong>手机/平板</strong>：随时随地通过触屏控制享受游戏。</li>
+                        </ul>
+
+                        <h3>常见问题解答</h3>
+                        <div class="faq-item">
+                            <span class="faq-q">Q: 游戏是免费的吗？</span>
+                            <span class="faq-a">A: 是的，完全免费，没有任何内购项目。</span>
+                        </div>
+                        <div class="faq-item">
+                            <span class="faq-q">Q: 可以联机和远处的朋友玩吗？</span>
+                            <span class="faq-a">A: 目前专注于本地同屏对战，非常适合聚会或朋友在同一台电脑/平板上玩耍。</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="interaction-section">
+                    <h3 style="margin-top:0;" data-i18n="label_rate">Rate this game</h3>
+                    <div class="rating-area">
+                        <div class="stars" id="gameStars">
+                            <span data-value="1">★</span>
+                            <span data-value="2">★</span>
+                            <span data-value="3">★</span>
+                            <span data-value="4">★</span>
+                            <span data-value="5">★</span>
+                        </div>
+                        <span id="gameRatingText" style="color: var(--accent-secondary); font-size: 14px; font-weight:bold;">3.5 / 5.0 (Global Rating)</span>
+                    </div>
+
+                    <h3 data-i18n="label_comment">Comments</h3>
+                    <div class="comment-form">
+                        <textarea id="commentInput" placeholder="Join the discussion..."></textarea>
+                        <button class="btn-submit" onclick="submitComment()" data-i18n="btn_submit">Post Comment</button>
+                    </div>
+
+                    <div class="comment-list" id="commentList">
+                        
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#ef4444">🍎</div>
+                            <div class="comment-content">
+                                <h4>RetroGamer88 <span class="tag-feature">Mechanics</span> <span class="comment-date">5 mins ago</span></h4>
+                                <p>The size mechanic is genius! Getting huge and just bullying the other player off the ledge is so satisfying. But hitting one poison apple ruins everything 😂.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#4ade80">🎮</div>
+                            <div class="comment-content">
+                                <h4>摸鱼达人 <span class="tag-feature">双人对战</span> <span class="comment-date">12 mins ago</span></h4>
+                                <p>和同事午休的时候玩疯了！强烈推荐双人模式。比起其他io游戏，这个能两个人用一台电脑玩真的很方便。把同事撞下去的感觉太爽了哈哈哈。</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#f1c40f">⚔️</div>
+                            <div class="comment-content">
+                                <h4>Carlos_ES <span class="tag-feature">Física</span> <span class="comment-date">30 mins ago</span></h4>
+                                <p>¡Muy divertido! Me recuerda a Smash Bros pero en pixel art. La física de los empujones es muy buena. Cuidado con las manzanas moradas.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#3498db">🗾</div>
+                            <div class="comment-content">
+                                <h4>Yuki_San <span class="comment-date">45 mins ago</span></h4>
+                                <p>友達と一緒に遊ぶのに最高です。キャラクターが大きくなるのが面白い！操作も簡単で、すぐに楽しめます。</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#9b59b6">👾</div>
+                            <div class="comment-content">
+                                <h4>PixelFanatic <span class="tag-feature">Art Style</span> <span class="comment-date">1 hour ago</span></h4>
+                                <p>Different from other browser games because it's not laggy. The controls are tight. I wish there was an online mode, but the AI is actually surprisingly smart in Level 3.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#e67e22">🤔</div>
+                            <div class="comment-content">
+                                <h4>StrategyMaster <span class="tag-feature">Tip</span> <span class="comment-date">2 hours ago</span></h4>
+                                <p>Pro tip: Don't just chase apples. Wait for the opponent to jump for one, then use 'S' to ram them while they are in the air. Easy points.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#e74c3c">🔥</div>
+                            <div class="comment-content">
+                                <h4>小霸王其乐无穷 <span class="comment-date">3 hours ago</span></h4>
+                                <p>这游戏的打击感居然还不错？尤其是变大之后撞人的那个音效，听着很解压。希望作者能多出几个地图，比如冰面或者传送门之类的。</p>
+                            </div>
+                        </div>
+
+                         <div class="comment-item">
+                            <div class="avatar" style="color:#1abc9c">🇷🇺</div>
+                            <div class="comment-content">
+                                <h4>BorisTheBlade <span class="comment-date">4 hours ago</span></h4>
+                                <p>Отличная игра для двоих на одной клавиатуре! Очень весело толкаться.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#f39c12">📱</div>
+                            <div class="comment-content">
+                                <h4>MobileUser_99 <span class="tag-feature">Controls</span> <span class="comment-date">5 hours ago</span></h4>
+                                <p>Surprisingly playable on iPad. The touch buttons are big enough. Good job on the responsive design.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#34495e">⚖️</div>
+                            <div class="comment-content">
+                                <h4>Critic101 <span class="comment-date">6 hours ago</span></h4>
+                                <p>I rated it 3.5 initially, but after playing Level 2 with the floating islands, I bumped it up. It's simple but addictive. Why play complex MMOs when you can just eat apples?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#d35400">🐍</div>
+                            <div class="comment-content">
+                                <h4>OldSchoolSnake <span class="comment-date">8 hours ago</span></h4>
+                                <p>Much better than the standard Snake games. The physics add a layer of chaos that is missing in most browser games.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ad-sidebar">
+                <div class="ad-box ad-300x250">ADVERTISEMENT (300x250)</div>
+                <div class="ad-box ad-300x600">ADVERTISEMENT (300x600)</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ========================
+        // Game Portal Logic
+        // ========================
+
+        // 1. Fullscreen Toggle
+        function toggleFullScreen() {
+            var iframe = document.getElementById("gameFrame");
+            if (iframe.requestFullscreen) iframe.requestFullscreen();
+            else if (iframe.mozRequestFullScreen) iframe.mozRequestFullScreen();
+            else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+            else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+        }
+
+        // 2. Rating Logic
+        const stars = document.querySelectorAll('#gameStars span');
+        const ratingText = document.getElementById('gameRatingText');
+        let hasRated = false;
+
+        // Init: Default Rating 3.5 (Show 3 stars + text saying 3.5)
+        function initRating() {
+            if(!hasRated) {
+                stars.forEach((s, index) => {
+                    // Activate first 3 stars
+                    if (s.dataset.value <= 3) s.classList.add('active');
+                    else s.classList.remove('active');
+                });
+                // Note: We can't easily half-fill a text character star without complex CSS/SVG,
+                // so we light up 3 and rely on the text "3.5" to convey the rating until user clicks.
+            }
+        }
+        initRating();
+        
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function() { 
+                if(!hasRated) highlightStars(this.dataset.value); 
+            });
+            star.addEventListener('mouseout', function() { 
+                if(!hasRated) initRating(); // Return to default 3.5 view
+            });
+            star.addEventListener('click', function() {
+                const val = this.dataset.value;
+                hasRated = true;
+                highlightStars(val);
+                stars.forEach(s => s.style.pointerEvents = 'none'); // Lock
+                
+                const lang = localStorage.getItem('preferred_lang') || 'en';
+                const thanks = translations[lang]['msg_thanks'] || "Thanks for rating!";
+                ratingText.innerText = `You rated: ${val}/5`;
+                ratingText.style.color = "#4ade80"; // Turn green on success
+            });
+        });
+
+        function highlightStars(value) {
+            stars.forEach(s => {
+                if (s.dataset.value <= value) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        }
+
+        // 3. Comment Logic
+        function submitComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            const list = document.getElementById('commentList');
+            const lang = localStorage.getItem('preferred_lang') || 'en';
+            
+            if (text === "") {
+                alert(lang === 'zh' ? "输入无效！" : "Input Invalid!");
+                return;
+            }
+
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <div class="avatar" style="border-color:#4ade80; color:#4ade80">👤</div>
+                <div class="comment-content">
+                    <h4>You <span class="comment-date">Just now</span></h4>
+                    <p>${text}</p>
+                </div>
+            `;
+            list.prepend(newComment);
+            input.value = "";
+        }
+
+        // 4. Translations
+        const translations = {
+            en: {
+                group_explore: "Explore", nav_home: "🏠 Home", nav_new: "🆕 New", nav_hot: "🔥 Hot", nav_recent: "🕹️ Recent", nav_rec: "👍 Recommended", group_about: "About", link_news: "📰 News", link_privacy: "🔒 Privacy", link_terms: "📜 Terms", link_contact: "📩 Contact", label_lang: "Language", 
+                btn_fullscreen: "⛶ Fullscreen",
+                game_title: "Brawl: Apple Snatch",
+                dev_label: "Developer: Independent Game Developer",
+                label_rate: "Rate this game",
+                label_comment: "Comments",
+                btn_submit: "Post Comment",
+                msg_thanks: "Thanks for rating!"
+            },
+            zh: {
+                group_explore: "探索", nav_home: "🏠 主页", nav_new: "🆕 新品", nav_hot: "🔥 热门", nav_recent: "🕹️ 最近", nav_rec: "👍 推荐", group_about: "关于", link_news: "📰 资讯", link_privacy: "🔒 隐私", link_terms: "📜 条款", link_contact: "📩 联系", label_lang: "语言 / Language", 
+                btn_fullscreen: "⛶ 全屏模式",
+                game_title: "好友大乱斗：吃苹果",
+                dev_label: "开发者：独立游戏开发者",
+                label_rate: "游戏评分",
+                label_comment: "玩家评论",
+                btn_submit: "发表评论",
+                msg_thanks: "感谢评分！"
+            }
+        };
+
+        function switchLanguage(lang) {
+            localStorage.setItem('preferred_lang', lang);
+            
+            // Text replacement for data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const dict = translations[lang] || translations['en'];
+                if (dict[key]) el.innerText = dict[key];
+            });
+
+            // Block replacement (Description/Controls)
+            document.querySelectorAll('.lang-text').forEach(el => el.style.display = 'none');
+            const targets = document.querySelectorAll(`.lang-text.${lang}`);
+            if(targets.length > 0) targets.forEach(el => el.style.display = 'block');
+            else document.querySelectorAll(`.lang-text.en`).forEach(el => el.style.display = 'block');
+
+            document.getElementById('langSelector').value = lang;
+            
+            // Input placeholder
+            const commentInput = document.getElementById('commentInput');
+            if(lang === 'zh') commentInput.placeholder = "参与讨论...";
+            else commentInput.placeholder = "Join the discussion...";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferred_lang') || 'en';
+            switchLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

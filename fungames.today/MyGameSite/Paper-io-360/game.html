@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Paper.io 360 - Deluxe</title>
+    <style>
+        :root {
+            --font-main: 'Nunito', 'Segoe UI', sans-serif;
+            --color-bg: #121212;
+            --color-panel: rgba(45, 52, 54, 0.95);
+            --text-color: #dfe6e9;
+            --shadow: 0 4px 6px rgba(0,0,0,0.3);
+            --accent-color: #00cec9;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: var(--color-bg);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        canvas { display: block; }
+
+        /* UI Overlay */
+        #ui-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            pointer-events: auto;
+        }
+
+        .progress-container {
+            width: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 24px;
+            position: relative;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00b894, #00cec9);
+            width: 0%;
+            transition: width 0.3s;
+            box-shadow: 0 0 10px #00cec9;
+        }
+        .progress-text {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .leaderboard {
+            background: transparent;
+            width: 180px;
+        }
+        .lb-item {
+            background: var(--color-panel);
+            color: #dfe6e9;
+            margin-bottom: 6px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: var(--shadow);
+            animation: slideIn 0.3s ease-out;
+            border-left: 5px solid transparent;
+        }
+        @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Bottom Bar */
+        .bottom-bar {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            pointer-events: none;
+        }
+
+        #minimap-container {
+            width: 120px;
+            height: 120px;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 20px;
+            margin-right: 20px;
+        }
+        #minimap { width: 100%; height: 100%; display: block; }
+
+        .controls-area {
+            pointer-events: auto;
+            display: flex;
+            gap: 10px;
+        }
+        .circle-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #2d3436;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 0 #1e272e;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s;
+        }
+        .circle-btn:active { transform: translateY(4px); box-shadow: none; }
+
+        /* Modal / Menu */
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            pointer-events: auto;
+        }
+        .modal-box {
+            background: #2d3436;
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            width: 90%;
+            max-width: 360px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        h1.game-title {
+            margin: 0 0 20px;
+            font-size: 42px;
+            background: linear-gradient(45deg, #00cec9, #6c5ce7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-shadow: 0 0 20px rgba(108, 92, 231, 0.5);
+        }
+        
+        input.name-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #636e72;
+            border-radius: 12px;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 15px;
+            outline: none;
+            box-sizing: border-box;
+            transition: border 0.3s;
+            background: #1e272e;
+            color: white;
+        }
+        input.name-input:focus { border-color: #00cec9; }
+
+        .big-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3436;
+            background: linear-gradient(to bottom, #00b894, #00a884);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 184, 148, 0.4);
+            transition: all 0.1s;
+            margin-bottom: 10px;
+        }
+        .big-btn:active { transform: translateY(6px); box-shadow: none; }
+        .big-btn.secondary {
+            background: linear-gradient(to bottom, #74b9ff, #0984e3);
+            box-shadow: 0 0 15px rgba(9, 132, 227, 0.4);
+        }
+        .big-btn.lang-btn {
+            background: transparent;
+            border: 2px solid #636e72;
+            color: #b2bec3;
+            padding: 10px;
+            font-size: 14px;
+            box-shadow: none;
+            margin-top: 10px;
+            width: auto;
+            display: inline-block;
+            min-width: 100px;
+        }
+        .big-btn.lang-btn:hover { border-color: white; color: white; }
+
+        .mode-select {
+            display: flex;
+            background: #1e272e;
+            border-radius: 30px;
+            padding: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #636e72;
+        }
+        .mode-opt {
+            flex: 1;
+            padding: 8px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            color: #b2bec3;
+            transition: 0.3s;
+        }
+        .mode-opt.active {
+            background: #dfe6e9;
+            color: #2d3436;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .hidden { display: none !important; }
+
+        #joystick-area {
+            position: absolute; bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            display: none; pointer-events: auto;
+        }
+        #joystick-stick {
+            position: absolute; top: 50%; left: 50%;
+            width: 50px; height: 50px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+            pointer-events: none;
+        }
+        @media (hover: none) and (pointer: coarse) {
+            #joystick-area { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="gameCanvas"></canvas>
+
+<div id="ui-layer">
+    <div class="top-bar">
+        <div class="progress-container">
+            <div class="progress-fill" id="progress-bar"></div>
+            <div class="progress-text"><span id="score-val">0.00</span>%</div>
+        </div>
+        <div class="leaderboard" id="leaderboard"></div>
+    </div>
+
+    <div class="bottom-bar">
+        <div class="controls-area">
+            <button class="circle-btn" id="btn-pause">⏸</button>
+            <button class="circle-btn" id="btn-sound">🔊</button>
+        </div>
+        <div id="minimap-container">
+            <canvas id="minimap"></canvas>
+        </div>
+    </div>
+
+    <div id="joystick-area"><div id="joystick-stick"></div></div>
+</div>
+
+<!-- Menus -->
+<div id="menu-start" class="modal-overlay">
+    <div class="modal-box">
+        <h1 class="game-title">PAPER.IO</h1>
+        <input type="text" class="name-input" id="input-name" placeholder="Enter Name" maxlength="10">
+        
+        <div class="mode-select" id="mode-selector">
+            <div class="mode-opt active" onclick="setMode('CLASSIC')" data-t="mode_classic">Classic</div>
+            <div class="mode-opt" onclick="setMode('IMMORTAL')" data-t="mode_immortal">Immortal</div>
+        </div>
+
+        <button class="big-btn" id="btn-play" data-t="btn_play">PLAY NOW</button>
+        <button class="big-btn secondary hidden" id="btn-resume-save" data-t="btn_continue">CONTINUE</button>
+        
+        <!-- Language Switcher -->
+        <div>
+            <button class="big-btn lang-btn" id="btn-lang" onclick="toggleLanguage()">English</button>
+        </div>
+    </div>
+</div>
+
+<div id="menu-gameover" class="modal-overlay hidden">
+    <div class="modal-box">
+        <h1 class="game-title" style="font-size:32px; color:#ff7675;" data-t="title_gameover">GAME OVER</h1>
+        <p style="color:#b2bec3; font-size:18px; margin-bottom:20px;">
+            <span data-t="score_prefix">You conquered</span> 
+            <span id="final-score" style="font-weight:bold; color:white;">0%</span> 
+            <span data-t="score_suffix">of the map.</span>
+        </p>
+        <button class="big-btn" id="btn-restart" data-t="btn_restart">TRY AGAIN</button>
+        <button class="big-btn secondary" id="btn-home" data-t="btn_home">HOME</button>
+    </div>
+</div>
+
+<script>
+// --- 多语言配置 ---
+const LANG = {
+    'EN': {
+        mode_classic: "Classic",
+        mode_immortal: "Immortal",
+        btn_play: "PLAY NOW",
+        btn_continue: "CONTINUE",
+        title_gameover: "GAME OVER",
+        score_prefix: "You conquered",
+        score_suffix: "of the map.",
+        btn_restart: "TRY AGAIN",
+        btn_home: "HOME",
+        placeholder_name: "Enter Name"
+    },
+    'CN': {
+        mode_classic: "普通模式",
+        mode_immortal: "无敌模式",
+        btn_play: "开始游戏",
+        btn_continue: "继续游戏",
+        title_gameover: "游戏结束",
+        score_prefix: "你占领了",
+        score_suffix: "的地图",
+        btn_restart: "再玩一次",
+        btn_home: "主菜单",
+        placeholder_name: "输入昵称"
+    }
+};
+let currentLang = 'CN'; // 默认中文
+
+// --- 随机名称库 ---
+const BOT_NAMES = [
+    "Viper", "Shadow", "Ghost", "Titan", "Ranger", "Pixel", "Glitch", "Echo",
+    "Neon", "Cyber", "Ninja", "Storm", "Blaze", "Frost", "Spark", "Venom",
+    "Ace", "Rex", "Wolf", "Hawk", "Eagle", "Falcon", "Raven", "Onyx",
+    "Ruby", "Jade", "Luna", "Nova", "Star", "Comet", "Orbit", "Matrix",
+    "System", "Error", "404", "Alpha", "Omega", "Zeta", "Delta", "Prime",
+    "Hunter", "Slayer", "King", "Queen", "Joker", "Ace", "Flash", "Sonic"
+];
+
+function getUniqueBotNames(count) {
+    // 随机打乱名称数组
+    let shuffled = [...BOT_NAMES].sort(() => 0.5 - Math.random());
+    // 取前 count 个
+    return shuffled.slice(0, count);
+}
+
+function toggleLanguage() {
+    currentLang = currentLang === 'CN' ? 'EN' : 'CN';
+    updateLanguage();
+}
+
+function updateLanguage() {
+    const t = LANG[currentLang];
+    document.querySelectorAll('[data-t]').forEach(el => {
+        el.innerText = t[el.getAttribute('data-t')];
+    });
+    document.getElementById('input-name').placeholder = t.placeholder_name;
+    document.getElementById('btn-lang').innerText = currentLang === 'CN' ? '中文' : 'English';
+}
+
+// --- 游戏配置 ---
+const CONF = {
+    MapSize: 100,
+    TileSize: 20,
+    Speed: 3.5,
+    TurnSpeed: 0.15,
+    BotCount: 7,
+    Colors: [
+        { hex: '#2d3436', darker: '#636e72' }, // 0
+        { hex: '#00cec9', darker: '#00b894', name: 'Player' }, // 1
+        { hex: '#0984e3', darker: '#74b9ff', name: 'Blue' },
+        { hex: '#e84393', darker: '#fd79a8', name: 'Pink' },
+        { hex: '#fdcb6e', darker: '#ffeaa7', name: 'Yellow' },
+        { hex: '#6c5ce7', darker: '#a29bfe', name: 'Purple' },
+        { hex: '#e17055', darker: '#fab1a0', name: 'Orange' },
+        { hex: '#ff7675', darker: '#d63031', name: 'Red' },
+        { hex: '#55efc4', darker: '#00b894', name: 'Mint' }
+    ]
+};
+
+// --- 全局变量 ---
+let canvas, ctx, offCanvas, offCtx, miniCanvas, miniCtx;
+let grid = new Uint8Array(CONF.MapSize * CONF.MapSize);
+let players = [];
+let camera = { x: 0, y: 0 };
+let gameMode = 'CLASSIC';
+let state = 'MENU';
+let animationId, lastTime = 0, globalTime = 0;
+let inputAngle = null;
+let isMouseDown = false;
+let mousePos = { x: 0, y: 0 };
+
+// --- 音效系统 (优化版) ---
+const AudioSys = {
+    ctx: null,
+    muted: false,
+    init: function() { 
+        if(!this.ctx) this.ctx = new (window.AudioContext||window.webkitAudioContext)(); 
+    },
+    play: function(type) {
+        if(this.muted || !this.ctx) return;
+        if(this.ctx.state === 'suspended') this.ctx.resume();
+        
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        
+        // 柔和音色配置
+        if(type === 'capture') {
+            // 清脆的提示音 (Sine)
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(500, t);
+            osc.frequency.exponentialRampToValueAtTime(1000, t + 0.1);
+            gain.gain.setValueAtTime(0.1, t);
+            gain.gain.linearRampToValueAtTime(0, t + 0.3); // 缓慢消失
+            osc.start(); osc.stop(t + 0.3);
+            
+        } else if(type === 'kill') {
+            // 击杀音效 (Triangle, 较柔和但有力度)
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(300, t);
+            osc.frequency.linearRampToValueAtTime(50, t + 0.2);
+            gain.gain.setValueAtTime(0.15, t);
+            gain.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+            osc.start(); osc.stop(t + 0.2);
+            
+        } else if(type === 'die') {
+            // 死亡音效 (低频 Sine, 不刺耳)
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(150, t);
+            osc.frequency.exponentialRampToValueAtTime(40, t + 0.5);
+            gain.gain.setValueAtTime(0.2, t);
+            gain.gain.linearRampToValueAtTime(0, t + 0.5);
+            osc.start(); osc.stop(t + 0.5);
+        }
+    }
+};
+
+window.onload = () => {
+    canvas = document.getElementById('gameCanvas');
+    ctx = canvas.getContext('2d', { alpha: false });
+    miniCanvas = document.getElementById('minimap');
+    miniCtx = miniCanvas.getContext('2d');
+    
+    offCanvas = document.createElement('canvas');
+    offCanvas.width = CONF.MapSize * CONF.TileSize;
+    offCanvas.height = CONF.MapSize * CONF.TileSize;
+    offCtx = offCanvas.getContext('2d');
+
+    resize();
+    window.addEventListener('resize', resize);
+    bindInputs();
+    
+    if(localStorage.getItem('pio_save')) document.getElementById('btn-resume-save').classList.remove('hidden');
+    drawFullMapToOffscreen();
+    updateLanguage();
+
+    // Buttons
+    document.getElementById('btn-play').onclick = () => startGame(false);
+    document.getElementById('btn-resume-save').onclick = () => startGame(true);
+    document.getElementById('btn-restart').onclick = () => startGame(false);
+    document.getElementById('btn-home').onclick = goHome;
+    document.getElementById('btn-pause').onclick = togglePause;
+    document.getElementById('btn-sound').onclick = function() {
+        AudioSys.muted = !AudioSys.muted;
+        this.innerText = AudioSys.muted ? '🔇' : '🔊';
+    };
+};
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    miniCanvas.width = miniCanvas.offsetWidth;
+    miniCanvas.height = miniCanvas.offsetHeight;
+}
+
+function setMode(m) {
+    gameMode = m;
+    document.querySelectorAll('.mode-opt').forEach(el => el.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+// --- Player Logic ---
+class Player {
+    constructor(id, isBot, name) {
+        this.id = id;
+        this.isBot = isBot;
+        this.name = name || `Bot ${id}`;
+        this.color = CONF.Colors[id % CONF.Colors.length];
+        this.alive = true;
+        this.invulnerableTime = 0; 
+        this.respawn();
+    }
+
+    respawn() {
+        let safe = false, attempts = 0, px, py;
+        while(!safe && attempts < 100) {
+            attempts++;
+            px = Math.random() * (CONF.MapSize * CONF.TileSize);
+            py = Math.random() * (CONF.MapSize * CONF.TileSize);
+            px = Math.max(200, Math.min(px, CONF.MapSize * CONF.TileSize - 200));
+            py = Math.max(200, Math.min(py, CONF.MapSize * CONF.TileSize - 200));
+            
+            safe = true;
+            let gx = Math.floor(px / CONF.TileSize);
+            let gy = Math.floor(py / CONF.TileSize);
+            
+            // 确保出生点及周围是中立区域
+            for(let i=-2; i<=2; i++) {
+                for(let j=-2; j<=2; j++) {
+                    if(getGrid(gx+i, gy+j) !== 0) { safe = false; break; }
+                }
+                if(!safe) break;
+            }
+            if(!safe) continue;
+
+            for(let other of players) {
+                if(other === this || !other.alive) continue;
+                if(Math.hypot(px - other.x, py - other.y) < 300) { safe = false; break; }
+                for(let t of other.trail) {
+                    if(Math.hypot(px - t.x, py - t.y) < 100) { safe = false; break; }
+                }
+                if(!safe) break;
+            }
+        }
+        
+        this.x = px; this.y = py;
+        this.angle = Math.random() * Math.PI * 2;
+        this.trail = []; 
+        this.invulnerableTime = globalTime + 3000;
+        
+        let gx = Math.floor(this.x / CONF.TileSize);
+        let gy = Math.floor(this.y / CONF.TileSize);
+        for(let i=-1; i<=1; i++) {
+            for(let j=-1; j<=1; j++) setGrid(gx+i, gy+j, this.id);
+        }
+        updateOffscreenMap(); 
+    }
+
+    update() {
+        if(!this.alive) return;
+        if(this.isBot) this.botAI();
+        else if(inputAngle !== null) {
+            let diff = inputAngle - this.angle;
+            while(diff < -Math.PI) diff += Math.PI*2;
+            while(diff > Math.PI) diff -= Math.PI*2;
+            this.angle += diff * CONF.TurnSpeed;
+        }
+
+        let nextX = this.x + Math.cos(this.angle) * CONF.Speed;
+        let nextY = this.y + Math.sin(this.angle) * CONF.Speed;
+
+        let maxPos = CONF.MapSize * CONF.TileSize;
+        if(nextX < 0 || nextX > maxPos || nextY < 0 || nextY > maxPos) {
+            // 撞墙处理
+            if(gameMode === 'IMMORTAL' && !this.isBot) {
+                this.angle += Math.PI; return;
+            } else {
+                this.die(); return;
+            }
+        }
+
+        let gx = Math.floor(nextX / CONF.TileSize);
+        let gy = Math.floor(nextY / CONF.TileSize);
+        let currentOwner = getGrid(gx, gy);
+
+        if(currentOwner === this.id) {
+            if(this.trail.length > 0) this.capture();
+        } else {
+            let last = this.trail[this.trail.length-1];
+            if(!last || Math.hypot(nextX-last.x, nextY-last.y) > 5) {
+                this.trail.push({x: nextX, y: nextY});
+            }
+        }
+
+        this.checkCollisions(nextX, nextY);
+        this.x = nextX; this.y = nextY;
+    }
+
+    checkCollisions(nx, ny) {
+        if(globalTime < this.invulnerableTime) return;
+
+        for(let p of players) {
+            if(!p.alive || p.trail.length === 0) continue;
+
+            // 核心修改：普通模式下，自己撞自己的轨迹不死亡
+            if (p === this) continue;
+
+            // 检查撞击他人轨迹
+            for(let i=0; i < p.trail.length - 1; i++) { 
+                let t = p.trail[i];
+                if(Math.hypot(nx - t.x, ny - t.y) < CONF.TileSize / 2) {
+                    if(globalTime < p.invulnerableTime) continue;
+                    // 撞到别人轨迹 -> 别人死
+                    if (gameMode === 'IMMORTAL' && !p.isBot) {
+                        p.trail = []; 
+                    } else {
+                        p.die();
+                        AudioSys.play('kill');
+                    }
+                    return;
+                }
+            }
+        }
+        
+        // 头部碰撞 (Head to Head)
+        for(let p of players) {
+            if(p === this || !p.alive || globalTime < p.invulnerableTime) continue;
+            if(Math.hypot(nx - p.x, ny - p.y) < CONF.TileSize) {
+                this.die();
+                p.die();
+            }
+        }
+    }
+
+    capture() {
+        let mask = new Uint8Array(CONF.MapSize * CONF.MapSize);
+        for(let i=0; i<grid.length; i++) if(grid[i] === this.id) mask[i] = 1;
+
+        this.trail.push({x: this.x, y: this.y}); 
+        for(let i=0; i<this.trail.length-1; i++) {
+            let p1 = this.trail[i], p2 = this.trail[i+1];
+            let steps = Math.ceil(Math.hypot(p2.x-p1.x, p2.y-p1.y) / (CONF.TileSize/2));
+            for(let s=0; s<=steps; s++) {
+                let tx = p1.x + (p2.x-p1.x) * (s/steps);
+                let ty = p1.y + (p2.y-p1.y) * (s/steps);
+                let tgx = Math.floor(tx / CONF.TileSize);
+                let tgy = Math.floor(ty / CONF.TileSize);
+                if(tgx>=0 && tgx<CONF.MapSize && tgy>=0 && tgy<CONF.MapSize) mask[tgy*CONF.MapSize+tgx] = 2; 
+            }
+        }
+
+        let stack = [], pushIfValid = (x, y) => {
+            if(x>=0 && x<CONF.MapSize && y>=0 && y<CONF.MapSize) {
+                let idx = y*CONF.MapSize+x;
+                if(mask[idx] === 0) { mask[idx] = 3; stack.push(idx); }
+            }
+        };
+
+        // Flood fill from borders
+        for(let x=0; x<CONF.MapSize; x++) { pushIfValid(x, 0); pushIfValid(x, CONF.MapSize-1); }
+        for(let y=0; y<CONF.MapSize; y++) { pushIfValid(0, y); pushIfValid(CONF.MapSize-1, y); }
+
+        while(stack.length > 0) {
+            let idx = stack.pop();
+            let cx = idx % CONF.MapSize, cy = Math.floor(idx / CONF.MapSize);
+            pushIfValid(cx+1, cy); pushIfValid(cx-1, cy);
+            pushIfValid(cx, cy+1); pushIfValid(cx, cy-1);
+        }
+
+        let count = 0;
+        for(let i=0; i<mask.length; i++) {
+            if(mask[i] !== 3) {
+                if(grid[i] !== this.id) count++;
+                grid[i] = this.id;
+            }
+        }
+
+        this.trail = [];
+        updateOffscreenMap(); 
+        if(count > 0) AudioSys.play('capture');
+    }
+
+    die() {
+        if(globalTime < this.invulnerableTime) return; 
+
+        this.alive = false;
+        AudioSys.play('die');
+        
+        for(let i=0; i<grid.length; i++) if(grid[i] === this.id) grid[i] = 0;
+        updateOffscreenMap();
+
+        if(this.id === 1) {
+            setTimeout(() => {
+                state = 'GAMEOVER';
+                document.getElementById('menu-gameover').classList.remove('hidden');
+                let score = document.getElementById('score-val').innerText + "%";
+                document.getElementById('final-score').innerText = score;
+            }, 1000);
+        } else {
+            setTimeout(() => {
+                let p = players.find(x => x.id === this.id);
+                if(p) { p.alive = true; p.respawn(); }
+            }, 2000);
+        }
+    }
+
+    botAI() {
+        if(Math.random() < 0.05) this.angle += (Math.random() - 0.5);
+        
+        let lx = this.x + Math.cos(this.angle) * 50;
+        let ly = this.y + Math.sin(this.angle) * 50;
+        let max = CONF.MapSize*CONF.TileSize;
+        if(lx < 0 || lx > max || ly < 0 || ly > max) this.angle += Math.PI * 0.5;
+        
+        // 简单倾向：如果轨迹太长，尝试掉头回家 (在撞自己不死的前提下，Bot也可以乱走，但为了生存率还是保持一点逻辑)
+        if(this.trail.length > 20 && Math.random() < 0.05) this.angle += Math.PI * 0.8;
+    }
+}
+
+// --- Map & Render ---
+function setGrid(x, y, id) { if(x>=0 && x<CONF.MapSize && y>=0 && y<CONF.MapSize) grid[y*CONF.MapSize+x] = id; }
+function getGrid(x, y) { return (x>=0 && x<CONF.MapSize && y>=0 && y<CONF.MapSize) ? grid[y*CONF.MapSize+x] : 0; }
+
+function drawFullMapToOffscreen() {
+    offCtx.fillStyle = '#121212';
+    offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
+
+    offCtx.strokeStyle = 'rgba(255,255,255,0.03)';
+    offCtx.lineWidth = 1;
+    offCtx.beginPath();
+    for(let i=0; i<=CONF.MapSize; i++) {
+        offCtx.moveTo(i*CONF.TileSize, 0); offCtx.lineTo(i*CONF.TileSize, offCanvas.height);
+        offCtx.moveTo(0, i*CONF.TileSize); offCtx.lineTo(offCanvas.width, i*CONF.TileSize);
+    }
+    offCtx.stroke();
+
+    for(let y=0; y<CONF.MapSize; y++) {
+        for(let x=0; x<CONF.MapSize; x++) {
+            let id = grid[y*CONF.MapSize+x];
+            let c = CONF.Colors[id % CONF.Colors.length];
+            offCtx.fillStyle = c.hex;
+            offCtx.fillRect(x*CONF.TileSize, y*CONF.TileSize, CONF.TileSize, CONF.TileSize);
+            if(id !== 0) {
+                offCtx.fillStyle = 'rgba(0,0,0,0.1)';
+                if((x+y)%2 === 0) offCtx.fillRect(x*CONF.TileSize + 4, y*CONF.TileSize + 8, CONF.TileSize - 8, 4);
+            }
+        }
+    }
+}
+function updateOffscreenMap() { drawFullMapToOffscreen(); }
+
+function render() {
+    if(!players[0]) return;
+    let p = players[0];
+    let tx = p.x - canvas.width / 2, ty = p.y - canvas.height / 2;
+    camera.x += (tx - camera.x) * 0.1;
+    camera.y += (ty - camera.y) * 0.1;
+
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.save();
+    ctx.translate(-camera.x, -camera.y);
+
+    ctx.shadowColor = "rgba(0,0,0,0.5)"; ctx.shadowBlur = 30;
+    ctx.drawImage(offCanvas, 0, 0);
+    ctx.shadowBlur = 0;
+
+    players.forEach(pl => {
+        if(pl.alive && pl.trail.length > 0) {
+            ctx.shadowColor = pl.color.darker; ctx.shadowBlur = 15;
+            ctx.beginPath();
+            ctx.moveTo(pl.trail[0].x, pl.trail[0].y);
+            for(let i=1; i<pl.trail.length; i++) ctx.lineTo(pl.trail[i].x, pl.trail[i].y);
+            ctx.lineTo(pl.x, pl.y);
+            ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+            ctx.lineWidth = CONF.TileSize;
+            ctx.strokeStyle = pl.color.darker; ctx.stroke();
+            ctx.lineWidth = CONF.TileSize * 0.4;
+            ctx.strokeStyle = "rgba(255,255,255,0.3)"; ctx.stroke();
+            ctx.shadowBlur = 0;
+        }
+    });
+
+    players.forEach(pl => {
+        if(!pl.alive) return;
+        if(globalTime < pl.invulnerableTime && Math.floor(globalTime / 100) % 2 === 0) ctx.globalAlpha = 0.5;
+        
+        ctx.save();
+        ctx.translate(pl.x, pl.y);
+        ctx.rotate(pl.angle);
+        
+        let size = CONF.TileSize * 1.3;
+        ctx.fillStyle = pl.color.hex;
+        ctx.shadowColor = pl.color.hex; ctx.shadowBlur = 20;
+        ctx.beginPath(); ctx.roundRect(-size/2, -size/2, size, size, 6); ctx.fill(); ctx.shadowBlur = 0;
+        
+        ctx.fillStyle = "white";
+        ctx.beginPath(); ctx.arc(size/4, -size/4, size/5, 0, Math.PI*2); ctx.arc(size/4, size/4, size/5, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = "black";
+        ctx.beginPath(); ctx.arc(size/4 + 2, -size/4, size/10, 0, Math.PI*2); ctx.arc(size/4 + 2, size/4, size/10, 0, Math.PI*2); ctx.fill();
+
+        ctx.rotate(-pl.angle);
+        ctx.fillStyle = "white"; ctx.font = "bold 12px Arial"; ctx.textAlign = "center";
+        ctx.shadowColor = "black"; ctx.shadowBlur = 4;
+        ctx.fillText(pl.name, 0, -size); ctx.shadowBlur = 0;
+        ctx.restore();
+        ctx.globalAlpha = 1.0;
+    });
+    ctx.restore();
+    updateUI();
+}
+
+function updateUI() {
+    let total = CONF.MapSize * CONF.MapSize, myCount = 0;
+    for(let i=0; i<grid.length; i++) if(grid[i]===1) myCount++;
+    let percent = (myCount / total * 100).toFixed(2);
+    document.getElementById('score-val').innerText = percent;
+    document.getElementById('progress-bar').style.width = percent + '%';
+
+    if(animationId % 30 === 0) {
+        let scores = {};
+        for(let i=0; i<grid.length; i++) if(grid[i]!==0) scores[grid[i]] = (scores[grid[i]]||0) + 1;
+        let list = players.filter(p => p.alive).map(p => ({
+            name: p.name, score: ((scores[p.id]||0)/total*100).toFixed(1), color: p.color.hex, id: p.id
+        })).sort((a,b) => b.score - a.score).slice(0, 5);
+        let html = '';
+        list.forEach(item => html += `<div class="lb-item" style="border-left-color:${item.color}"><span>${item.name}</span><span>${item.score}%</span></div>`);
+        document.getElementById('leaderboard').innerHTML = html;
+    }
+
+    if(animationId % 5 === 0) {
+        miniCtx.fillStyle = '#2d3436'; miniCtx.fillRect(0,0,miniCanvas.width,miniCanvas.height);
+        miniCtx.drawImage(offCanvas, 0, 0, miniCanvas.width, miniCanvas.height);
+        players.forEach(p => {
+            if(p.alive) {
+                let mx = (p.x / (CONF.MapSize*CONF.TileSize)) * miniCanvas.width;
+                let my = (p.y / (CONF.MapSize*CONF.TileSize)) * miniCanvas.height;
+                miniCtx.fillStyle = p.id === 1 ? 'white' : p.color.hex;
+                miniCtx.beginPath(); miniCtx.arc(mx, my, p.id===1?4:2, 0, Math.PI*2); miniCtx.fill();
+                if(p.id===1) { miniCtx.strokeStyle = '#00cec9'; miniCtx.lineWidth = 2; miniCtx.stroke(); }
+            }
+        });
+    }
+}
+
+function loop(time) {
+    if(state !== 'PLAYING') return;
+    lastTime = time; globalTime = time;
+    players.forEach(p => p.update());
+    render();
+    if(Math.floor(time/1000) % 5 === 0) saveGame();
+    animationId = requestAnimationFrame(loop);
+}
+
+function startGame(load) {
+    AudioSys.init();
+    let name = document.getElementById('input-name').value || "Player";
+    if(load && localStorage.getItem('pio_save')) loadGame();
+    else {
+        grid.fill(0); players = [];
+        players.push(new Player(1, false, name));
+        
+        // 获取唯一的随机名字
+        let botNames = getUniqueBotNames(CONF.BotCount);
+        
+        for(let i=0; i<CONF.BotCount; i++) {
+            // 使用分配好的名字
+            players.push(new Player(i+2, true, botNames[i]));
+        }
+        updateOffscreenMap();
+    }
+    state = 'PLAYING';
+    document.getElementById('menu-start').classList.add('hidden');
+    document.getElementById('menu-gameover').classList.add('hidden');
+    lastTime = performance.now(); loop(lastTime);
+}
+function goHome() {
+    state = 'MENU';
+    document.getElementById('menu-start').classList.remove('hidden');
+    document.getElementById('menu-gameover').classList.add('hidden');
+    cancelAnimationFrame(animationId);
+}
+function togglePause() {
+    if(state === 'PLAYING') { state = 'PAUSED'; document.getElementById('btn-pause').innerText = '▶'; }
+    else if(state === 'PAUSED') { state = 'PLAYING'; document.getElementById('btn-pause').innerText = '⏸'; lastTime = performance.now(); loop(lastTime); }
+}
+function bindInputs() {
+    document.addEventListener('mousemove', e => {
+        if(state !== 'PLAYING') return;
+        mousePos.x = e.clientX; mousePos.y = e.clientY;
+        if(!isMouseDown) updateAngleToMouse();
+    });
+    const joyArea = document.getElementById('joystick-area');
+    const joyStick = document.getElementById('joystick-stick');
+    let jBaseX, jBaseY;
+    joyArea.addEventListener('touchstart', e => { e.preventDefault(); let t = e.touches[0], r = joyArea.getBoundingClientRect(); jBaseX = r.left+r.width/2; jBaseY = r.top+r.height/2; updateJoystick(t.clientX, t.clientY); }, {passive: false});
+    joyArea.addEventListener('touchmove', e => { e.preventDefault(); let t = e.touches[0]; updateJoystick(t.clientX, t.clientY); }, {passive: false});
+    joyArea.addEventListener('touchend', () => joyStick.style.transform = `translate(-50%, -50%)`);
+    function updateJoystick(tx, ty) {
+        let dx = tx - jBaseX, dy = ty - jBaseY, angle = Math.atan2(dy, dx), dist = Math.min(Math.hypot(dx, dy), 50);
+        joyStick.style.transform = `translate(calc(-50% + ${Math.cos(angle)*dist}px), calc(-50% + ${Math.sin(angle)*dist}px))`;
+        inputAngle = angle;
+    }
+}
+function updateAngleToMouse() {
+    if(!players[0]) return;
+    inputAngle = Math.atan2(mousePos.y - canvas.height/2, mousePos.x - canvas.width/2);
+}
+function saveGame() { if(state === 'PLAYING') try { localStorage.setItem('pio_save', 'EXIST'); } catch(e){} }
+function loadGame() {
+    grid.fill(0); players = [];
+    players.push(new Player(1, false, "Player"));
+    
+    // 即使是重新加载逻辑，也生成新名字 (因为这里是简化版的loadGame，实则是restart)
+    let botNames = getUniqueBotNames(CONF.BotCount);
+    
+    for(let i=0; i<CONF.BotCount; i++) {
+        players.push(new Player(i+2, true, botNames[i]));
+    }
+    updateOffscreenMap();
+}
+</script>
+</body>
+</html>

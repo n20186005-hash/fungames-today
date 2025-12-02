@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10x10 Puzzle Art - Fun Games Today</title>
+    <style>
+        /* ====================
+           1. 全局与侧边栏样式
+           ==================== */
+        :root { --bg-color: #0f172a; --sidebar-bg: #1e293b; --text-color: #f1f5f9; --text-muted: #94a3b8; --accent-color: #22d3ee; --card-bg: #1e293b; }
+        body { margin: 0; padding: 0; font-family: 'Nunito', 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; }
+        
+        /* 侧边栏 */
+        .sidebar { width: 240px; background-color: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100%; left: 0; top: 0; overflow-y: auto; z-index: 1000; box-shadow: 2px 0 10px rgba(0,0,0,0.3); border-right: 1px solid #334155; }
+        .logo { font-size: 22px; font-weight: 900; color: var(--accent-color); margin-bottom: 30px; text-decoration: none; display: block; letter-spacing: 1px; }
+        .menu-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #334155; }
+        .menu-group:last-child { border-bottom: none; }
+        .menu-title { font-size: 12px; color: #64748b; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; font-weight: 700; }
+        .menu-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); text-decoration: none; padding: 10px 12px; margin-bottom: 5px; border-radius: 8px; transition: 0.2s; font-weight: 600; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(34, 211, 238, 0.1); color: var(--accent-color); }
+        .lang-select { margin-top: auto; padding: 10px; background: #0f172a; color: white; border: 1px solid #334155; border-radius: 8px; width: 100%; cursor: pointer; font-size: 14px; }
+
+        /* ====================
+           2. 游戏页专用样式
+           ==================== */
+        .main-content { margin-left: 240px; padding: 30px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        
+        /* 游戏容器 */
+        .game-wrapper {
+            width: 100%;
+            max-width: 500px; /* 这里的宽度适配了原游戏的手机风格 */
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            position: relative;
+            border: 4px solid #334155;
+        }
+        iframe { width: 100%; height: 800px; border: none; display: block; } /* 增加高度以适应竖屏游戏 */
+
+        /* 工具栏 */
+        .game-toolbar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #1e293b; padding: 12px 20px; border-top: 1px solid #334155;
+        }
+        .btn-fullscreen {
+            background: transparent; border: 1px solid #475569; color: var(--text-muted); padding: 6px 16px; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 13px; font-weight: 700;
+        }
+        .btn-fullscreen:hover { background: var(--accent-color); border-color: var(--accent-color); color: #0f172a; }
+
+        /* 布局网格 */
+        .info-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px; 
+            gap: 30px;
+            width: 100%;
+            max-width: 960px;
+        }
+        
+        .game-details { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid #334155; }
+        .ad-sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .ad-box { background: #0f172a; border: 2px dashed #334155; color: #475569; display: flex; align-items: center; justify-content: center; font-size: 14px; border-radius: 12px; }
+        .ad-300x250 { width: 300px; height: 250px; }
+        .ad-300x600 { width: 300px; height: 600px; }
+
+        h1 { margin-top: 0; color: var(--accent-color); font-weight: 900; letter-spacing: -0.5px; }
+        h3 { color: #f8fafc; border-left: 4px solid var(--accent-color); padding-left: 12px; margin-top: 30px; font-weight: 800; }
+        p, li { line-height: 1.7; color: var(--text-muted); font-size: 15px; margin-bottom: 10px; }
+        ul { padding-left: 20px; }
+
+        /* ====================
+           3. 互动模块样式
+           ==================== */
+        .interaction-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 20px;
+            border: 1px solid #334155;
+        }
+        .rating-area { border-bottom: 1px solid #334155; padding-bottom: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .stars { font-size: 28px; cursor: pointer; color: #475569; }
+        .stars span { transition: color 0.2s; }
+        .stars span:hover, .stars span.active { color: #fbbf24; }
+        
+        .comment-form textarea {
+            width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 15px; border-radius: 10px; resize: vertical; min-height: 80px; font-family: inherit; box-sizing: border-box;
+        }
+        .comment-form textarea:focus { outline: 2px solid var(--accent-color); border-color: transparent; }
+        .btn-submit {
+            background-color: var(--accent-color); color: #0f172a; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 800; cursor: pointer; margin-top: 10px; transition: 0.2s;
+        }
+        .btn-submit:hover { background-color: #fff; }
+        
+        .comment-list { margin-top: 30px; }
+        .comment-item { border-bottom: 1px solid #334155; padding: 20px 0; display: flex; gap: 15px; }
+        .avatar { width: 42px; height: 42px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; min-width: 42px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .comment-content h4 { margin: 0 0 5px 0; color: #f1f5f9; font-size: 15px; font-weight: 700; }
+        .comment-content p { margin: 0; color: #94a3b8; font-size: 14px; }
+        .comment-date { font-size: 12px; color: #64748b; margin-left: 10px; font-weight: 400; }
+
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 15px; }
+            .info-layout { grid-template-columns: 1fr; }
+            .ad-sidebar { align-items: center; }
+            iframe { height: 600px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="/" class="logo">🧩 10x10 Puzzle</a>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_explore">Explore</div>
+            <a href="/" class="menu-item" data-i18n="nav_home">🏠 Home</a>
+            <a href="#" class="menu-item" data-i18n="nav_new">🆕 New Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_hot">🔥 Hot Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_recent">🕹️ Recently Played</a>
+            <a href="#" class="menu-item" data-i18n="nav_rec">👍 Recommended</a>
+        </div>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_about">About</div>
+            <a href="../news.html" class="menu-item" data-i18n="link_news">📰 Game News</a>
+            <a href="../privacy.html" class="menu-item" data-i18n="link_privacy">🔒 Privacy Policy</a>
+            <a href="../cookies.html" class="menu-item" data-i18n="link_cookies">🍪 Cookie Policy</a>
+            <a href="../terms.html" class="menu-item" data-i18n="link_terms">📜 Terms of Use</a>
+            <a href="../contact.html" class="menu-item" data-i18n="link_contact">📩 Contact Us</a>
+        </div>
+        <div style="margin-top: auto;">
+            <div class="menu-title" data-i18n="label_lang">Language</div>
+            <select class="lang-select" id="langSelector" onchange="switchLanguage(this.value)">
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 简体中文</option>
+                <option value="jp">🇯🇵 日本語</option>
+                <option value="kr">🇰🇷 한국어</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="game-wrapper">
+            <iframe src="game.html" id="gameFrame" allowfullscreen></iframe>
+            <div class="game-toolbar">
+                <span style="color: #64748b; font-size: 13px; font-weight: 700;">10x10 Puzzle Art</span>
+                <button class="btn-fullscreen" onclick="toggleFullScreen()" data-i18n="btn_fullscreen">⛶ Fullscreen</button>
+            </div>
+        </div>
+
+        <div class="info-layout">
+            
+            <div class="left-column">
+                
+                <div class="game-details">
+                    <h1 data-i18n="game_title">10x10 Puzzle Art</h1>
+                    
+                    <h3 data-i18n="label_desc">Description</h3>
+                    <p class="lang-text en active">
+                        Welcome to <strong>10x10 Puzzle Art</strong>! This is a minimalist and relaxing puzzle game designed to challenge your spatial reasoning. On a 10x10 board, strategically place blocks to clear lines and chase the highest score!
+                        <br><br>
+                        Features stunning visuals with neon colors and satisfying particle effects when you clear lines.
+                    </p>
+                    <p class="lang-text zh" style="display:none;">
+                        欢迎来到 <strong>10x10 艺术拼图</strong>！这是一款极简主义的放松益智游戏，旨在挑战您的空间推理能力。在10x10的棋盘上，策略性地放置方块以消除行或列，并追逐最高分！
+                        <br><br>
+                        游戏拥有令人惊叹的霓虹视觉效果，以及消除时令人满足的粒子特效。
+                    </p>
+
+                    <h3 data-i18n="label_controls">How to Play</h3>
+                    <ul class="lang-text en active">
+                        <li><strong>Drag & Drop:</strong> Drag blocks from the bottom to the board.</li>
+                        <li><strong>Clear Lines:</strong> Fill a row or column completely to clear blocks and earn points.</li>
+                        <li><strong>Game Over:</strong> Plan wisely! The game ends if there's no space for new blocks.</li>
+                        <li><strong>Combo:</strong> Clear multiple lines at once for bonus points!</li>
+                    </ul>
+                    <ul class="lang-text zh" style="display:none;">
+                        <li><strong>拖放:</strong> 将底部的方块拖到棋盘上。</li>
+                        <li><strong>消除:</strong> 填满整行或整列以消除方块并得分。</li>
+                        <li><strong>游戏结束:</strong> 合理规划！如果没有空间放置新方块，游戏结束。</li>
+                        <li><strong>连击:</strong> 同时消除多行可获得额外奖励分数！</li>
+                    </ul>
+                </div>
+
+                <div class="interaction-section">
+                    <h3 data-i18n="label_rate">Rate this game</h3>
+                    <div class="rating-area">
+                        <div class="stars" id="gameStars">
+                            <span data-value="1">★</span>
+                            <span data-value="2">★</span>
+                            <span data-value="3">★</span>
+                            <span data-value="4">★</span>
+                            <span data-value="5">★</span>
+                        </div>
+                        <span id="gameRatingText" style="color: var(--accent-color); font-size: 14px; font-weight: 700;"></span>
+                    </div>
+
+                    <h3 data-i18n="label_comment">Leave a Comment</h3>
+                    <div class="comment-form">
+                        <textarea id="commentInput" placeholder="Write your feedback here..."></textarea>
+                        <button class="btn-submit" onclick="submitComment()" data-i18n="btn_submit">Post Comment</button>
+                    </div>
+
+                    <div class="comment-list" id="commentList">
+                        
+                        <div class="comment-item">
+                            <div class="avatar">🧩</div>
+                            <div class="comment-content">
+                                <h4>LogicMaster <span class="comment-date">2 hours ago</span></h4>
+                                <p data-i18n="fake_comment_1">So satisfying when multiple lines clear at once!</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">✨</div>
+                            <div class="comment-content">
+                                <h4>NeonFan <span class="comment-date">4 hours ago</span></h4>
+                                <p data-i18n="fake_comment_2">The particle effects are beautiful. Very relaxing.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">🏆</div>
+                            <div class="comment-content">
+                                <h4>HighScoreChaser <span class="comment-date">1 day ago</span></h4>
+                                <p data-i18n="fake_comment_3">Just beat my best score! 5200 points.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">☕</div>
+                            <div class="comment-content">
+                                <h4>ChillGamer <span class="comment-date">1 day ago</span></h4>
+                                <p data-i18n="fake_comment_4">Perfect game to play while listening to podcasts.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">🧠</div>
+                            <div class="comment-content">
+                                <h4>BigBrain <span class="comment-date">2 days ago</span></h4>
+                                <p data-i18n="fake_comment_5">It looks simple but gets really tricky when space runs out.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">🎨</div>
+                            <div class="comment-content">
+                                <h4>Artist101 <span class="comment-date">3 days ago</span></h4>
+                                <p data-i18n="fake_comment_6">Love the color palette, very modern and clean.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">🧱</div>
+                            <div class="comment-content">
+                                <h4>BlockBuilder <span class="comment-date">3 days ago</span></h4>
+                                <p data-i18n="fake_comment_7">Classic 10x10 gameplay but smoother. 5/5.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">📱</div>
+                            <div class="comment-content">
+                                <h4>MobileUser <span class="comment-date">4 days ago</span></h4>
+                                <p data-i18n="fake_comment_8">Works perfectly on my phone. Great for commute.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">😡</div>
+                            <div class="comment-content">
+                                <h4>RageQuit <span class="comment-date">5 days ago</span></h4>
+                                <p data-i18n="fake_comment_9">Ahhh I always mess up the 3x3 blocks! Fun though.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">🌟</div>
+                            <div class="comment-content">
+                                <h4>StarPlayer <span class="comment-date">1 week ago</span></h4>
+                                <p data-i18n="fake_comment_10">Addictive! Can't stop playing.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ad-sidebar">
+                <div class="ad-box ad-300x250">AD SPACE (300x250)</div>
+                <div class="ad-box ad-300x600">AD SPACE (300x600)</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 1. 全屏功能
+        function toggleFullScreen() {
+            var iframe = document.getElementById("gameFrame");
+            if (iframe.requestFullscreen) iframe.requestFullscreen();
+            else if (iframe.mozRequestFullScreen) iframe.mozRequestFullScreen();
+            else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+            else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+        }
+
+        // 2. 评分逻辑
+        const stars = document.querySelectorAll('#gameStars span');
+        const ratingText = document.getElementById('gameRatingText');
+        
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function() { highlightStars(this.dataset.value); });
+            star.addEventListener('mouseout', function() { highlightStars(0); });
+            star.addEventListener('click', function() {
+                const val = this.dataset.value;
+                highlightStars(val);
+                stars.forEach(s => s.style.pointerEvents = 'none'); 
+                
+                const lang = localStorage.getItem('preferred_lang') || 'en';
+                const thanks = translations[lang]['msg_thanks'] || "Thanks for rating!";
+                ratingText.innerText = thanks + " (" + val + "/5)";
+            });
+        });
+
+        function highlightStars(value) {
+            stars.forEach(s => {
+                if (s.dataset.value <= value) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        }
+
+        // 3. 评论逻辑
+        function submitComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            const list = document.getElementById('commentList');
+            const lang = localStorage.getItem('preferred_lang') || 'en';
+            
+            if (text === "") {
+                alert(lang === 'zh' ? "请输入内容！" : "Please write something!");
+                return;
+            }
+
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <div class="avatar">🙂</div>
+                <div class="comment-content">
+                    <h4>You <span class="comment-date">Just now</span></h4>
+                    <p>${text}</p>
+                </div>
+            `;
+            list.prepend(newComment);
+            input.value = "";
+        }
+
+        // 4. 多语言配置 (已更新为 10x10 相关内容)
+        const translations = {
+            en: {
+                group_explore: "Explore", nav_home: "🏠 Home", nav_new: "🆕 New Games", nav_hot: "🔥 Hot Games", nav_recent: "🕹️ Recently Played", nav_rec: "👍 Recommended", group_about: "About", link_news: "📰 News", link_privacy: "🔒 Privacy", link_cookies: "🍪 Cookies", link_terms: "📜 Terms", link_contact: "📩 Contact", label_lang: "Language", 
+                btn_fullscreen: "⛶ Fullscreen",
+                game_title: "10x10 Puzzle Art",
+                label_desc: "Description",
+                label_controls: "How to Play",
+                label_rate: "Rate this game",
+                label_comment: "Leave a Comment",
+                btn_submit: "Post Comment",
+                msg_thanks: "Thanks for rating!",
+                
+                // 10条评论 - 英文 (消除游戏版)
+                fake_comment_1: "So satisfying when multiple lines clear at once!",
+                fake_comment_2: "The particle effects are beautiful. Very relaxing.",
+                fake_comment_3: "Just beat my best score! 5200 points.",
+                fake_comment_4: "Perfect game to play while listening to podcasts.",
+                fake_comment_5: "It looks simple but gets really tricky when space runs out.",
+                fake_comment_6: "Love the color palette, very modern and clean.",
+                fake_comment_7: "Classic 10x10 gameplay but smoother. 5/5.",
+                fake_comment_8: "Works perfectly on my phone. Great for commute.",
+                fake_comment_9: "Ahhh I always mess up the 3x3 blocks! Fun though.",
+                fake_comment_10: "Addictive! Can't stop playing."
+            },
+            zh: {
+                group_explore: "探索", nav_home: "🏠 主页", nav_new: "🆕 新游戏", nav_hot: "🔥 热门游戏", nav_recent: "🕹️ 最近玩过", nav_rec: "👍 推荐游戏", group_about: "关于", link_news: "📰 游戏资讯", link_privacy: "🔒 隐私政策", link_cookies: "🍪 Cookie 政策", link_terms: "📜 使用条款", link_contact: "📩 联系我们", label_lang: "语言 / Language", 
+                btn_fullscreen: "⛶ 全屏模式",
+                game_title: "10x10 艺术拼图",
+                label_desc: "游戏介绍",
+                label_controls: "玩法说明",
+                label_rate: "给游戏打分",
+                label_comment: "发表评论",
+                btn_submit: "提交评论",
+                msg_thanks: "感谢您的评分！",
+
+                // 10条评论 - 中文 (消除游戏版)
+                fake_comment_1: "一次消除多行的时候太解压了！",
+                fake_comment_2: "粒子特效真好看，玩起来很放松。",
+                fake_comment_3: "刚打破了我的最高分！5200分。",
+                fake_comment_4: "边听播客边玩的完美游戏。",
+                fake_comment_5: "看着简单，空间不够的时候真的很烧脑。",
+                fake_comment_6: "喜欢这个配色，非常现代和干净。",
+                fake_comment_7: "经典的10x10玩法，但更流畅。5星好评。",
+                fake_comment_8: "手机上玩很完美，通勤路上必备。",
+                fake_comment_9: "啊啊啊每次都被3x3的方块坑死！不过很好玩。",
+                fake_comment_10: "太上瘾了！根本停不下来。"
+            },
+            jp: { game_title: "10x10 Puzzle Art", label_desc: "説明", label_controls: "遊び方", btn_fullscreen: "⛶ 全画面", label_rate: "評価する", label_comment: "コメントを残す", btn_submit: "送信", msg_thanks: "評価ありがとうございます！" },
+            kr: { game_title: "10x10 퍼즐 아트", label_desc: "설명", label_controls: "게임 방법", btn_fullscreen: "⛶ 전체 화면", label_rate: "게임 평가", label_comment: "댓글 남기기", btn_submit: "게시", msg_thanks: "평가해 주셔서 감사합니다!" }
+        };
+
+        function switchLanguage(lang) {
+            localStorage.setItem('preferred_lang', lang);
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const dict = translations[lang] || translations['en'];
+                if (dict[key]) el.innerText = dict[key];
+            });
+
+            document.querySelectorAll('.lang-text').forEach(el => el.style.display = 'none');
+            const targets = document.querySelectorAll(`.lang-text.${lang}`);
+            if(targets.length > 0) targets.forEach(el => el.style.display = 'block');
+            else document.querySelectorAll(`.lang-text.en`).forEach(el => el.style.display = 'block');
+
+            document.getElementById('langSelector').value = lang;
+            
+            const commentInput = document.getElementById('commentInput');
+            if(lang === 'zh') commentInput.placeholder = "在这里写下你的评论...";
+            else commentInput.placeholder = "Write your feedback here...";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferred_lang') || 'en';
+            switchLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Pulse - Cyberpunk Reflex Challenge</title>
+    <style>
+        /* ====================
+           1. Global & Sidebar Styles
+           ==================== */
+        :root { --bg-color: #050505; --sidebar-bg: #111; --text-color: #ffffff; --text-muted: #aaaaaa; --accent-color: #39ff14; --card-bg: #1a1a1a; }
+        body { margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace, 'Segoe UI'; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 240px; background-color: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100%; left: 0; top: 0; overflow-y: auto; z-index: 1000; box-shadow: 2px 0 10px rgba(0,0,0,0.5); border-right: 1px solid #333; }
+        .logo { font-size: 24px; font-weight: bold; color: var(--accent-color); margin-bottom: 30px; text-decoration: none; display: block; text-shadow: 0 0 10px rgba(57, 255, 20, 0.5); }
+        .menu-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #333; }
+        .menu-group:last-child { border-bottom: none; }
+        .menu-title { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; }
+        .menu-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); text-decoration: none; padding: 10px 12px; margin-bottom: 5px; border-radius: 4px; transition: 0.2s; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(57, 255, 20, 0.1); color: var(--accent-color); border-left: 3px solid var(--accent-color); }
+        .lang-select { margin-top: auto; padding: 10px; background: #000; color: white; border: 1px solid #333; border-radius: 0; width: 100%; cursor: pointer; font-family: inherit; }
+
+        /* ====================
+           2. Game Page Styles
+           ==================== */
+        .main-content { margin-left: 240px; padding: 30px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        
+        /* Game Container */
+        .game-wrapper {
+            width: 100%;
+            max-width: 960px;
+            background: #000;
+            border: 1px solid #333;
+            box-shadow: 0 0 40px rgba(57, 255, 20, 0.1);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        iframe { width: 100%; height: 600px; border: none; display: block; }
+
+        /* Toolbar */
+        .game-toolbar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #111; padding: 10px 20px; border-top: 1px solid #333;
+        }
+        .btn-fullscreen {
+            background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color); padding: 5px 15px; cursor: pointer; transition: 0.2s; font-family: inherit; font-weight: bold; text-transform: uppercase;
+        }
+        .btn-fullscreen:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 15px var(--accent-color); }
+
+        /* Layout Grid */
+        .info-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px; 
+            gap: 30px;
+            width: 100%;
+            max-width: 960px;
+        }
+        
+        .game-details { background: var(--card-bg); padding: 25px; border: 1px solid #333; }
+        .ad-sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .ad-box { background: #000; border: 1px dashed #333; color: #444; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .ad-300x250 { width: 300px; height: 250px; }
+        .ad-300x600 { width: 300px; height: 600px; }
+
+        h1 { margin-top: 0; color: var(--accent-color); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(57,255,20,0.3); }
+        h3 { color: #fff; border-left: 4px solid var(--accent-color); padding-left: 10px; margin-top: 25px; text-transform: uppercase; }
+        p, li { line-height: 1.6; color: #ccc; font-size: 15px; }
+        strong { color: #fff; }
+        .feature-list { list-style: none; padding: 0; }
+        .feature-list li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+        .feature-list li::before { content: '>'; color: var(--accent-color); position: absolute; left: 0; font-weight: bold; }
+
+        /* ====================
+           3. Interaction Section
+           ==================== */
+        .interaction-section {
+            background: var(--card-bg);
+            padding: 25px;
+            border: 1px solid #333;
+            margin-top: 20px;
+        }
+        .rating-area { border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .stars { font-size: 28px; cursor: pointer; color: #444; }
+        .stars span { transition: color 0.2s; }
+        .stars span:hover, .stars span.active { color: var(--accent-color); text-shadow: 0 0 10px var(--accent-color); }
+        
+        .comment-form textarea {
+            width: 100%; background: #000; border: 1px solid #333; color: var(--accent-color); padding: 15px; resize: vertical; min-height: 80px; font-family: inherit; box-sizing: border-box;
+        }
+        .comment-form textarea:focus { outline: none; border-color: var(--accent-color); }
+        .btn-submit {
+            background-color: transparent; color: var(--accent-color); border: 1px solid var(--accent-color); padding: 10px 25px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; text-transform: uppercase; font-family: inherit;
+        }
+        .btn-submit:hover { background-color: var(--accent-color); color: #000; box-shadow: 0 0 15px var(--accent-color); }
+        
+        .comment-list { margin-top: 30px; }
+        .comment-item { border-bottom: 1px solid #333; padding: 15px 0; display: flex; gap: 15px; }
+        .avatar { width: 40px; height: 40px; background: #000; border: 1px solid #333; display: flex; align-items: center; justify-content: center; font-size: 20px; min-width: 40px; color: var(--accent-color); }
+        .comment-content h4 { margin: 0 0 5px 0; color: #fff; font-size: 14px; font-weight: normal; }
+        .comment-content p { margin: 0; color: #888; font-size: 14px; }
+        .comment-date { font-size: 12px; color: #555; margin-left: 10px; }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 15px; }
+            .info-layout { grid-template-columns: 1fr; }
+            .ad-sidebar { align-items: center; }
+            iframe { height: 400px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="/" class="logo">⚡ NeonGames</a>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_explore">Explore</div>
+            <a href="/" class="menu-item active" data-i18n="nav_home">🏠 Home</a>
+            <a href="#" class="menu-item" data-i18n="nav_new">🆕 New Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_hot">🔥 Hot Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_recent">🕹️ Recent</a>
+            <a href="#" class="menu-item" data-i18n="nav_rec">👍 Recommended</a>
+        </div>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_about">About</div>
+            <a href="#" class="menu-item" data-i18n="link_news">📰 News</a>
+            <a href="#" class="menu-item" data-i18n="link_privacy">🔒 Privacy</a>
+            <a href="#" class="menu-item" data-i18n="link_terms">📜 Terms</a>
+            <a href="#" class="menu-item" data-i18n="link_contact">📩 Contact</a>
+        </div>
+        <div style="margin-top: auto;">
+            <div class="menu-title" data-i18n="label_lang">Language</div>
+            <select class="lang-select" id="langSelector" onchange="switchLanguage(this.value)">
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 简体中文</option>
+                <option value="jp">🇯🇵 日本語</option>
+                <option value="kr">🇰🇷 한국어</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="game-wrapper">
+            <iframe src="game.html" id="gameFrame" allowfullscreen></iframe>
+            <div class="game-toolbar">
+                <span style="color: #666; font-size: 12px; letter-spacing: 1px;">NEON PULSE SYSTEM v1.0</span>
+                <button class="btn-fullscreen" onclick="toggleFullScreen()" data-i18n="btn_fullscreen">⛶ Fullscreen</button>
+            </div>
+        </div>
+
+        <div class="info-layout">
+            
+            <div class="left-column">
+                
+                <div class="game-details">
+                    <h1 data-i18n="game_title">Neon Pulse: Cyberpunk Challenge</h1>
+                    <a href="../articles/neon-pulse.html" class="news-link" data-i18n="link_article_title">
+                       Neon Pulse: More Than a Speed Challenge, It’s the "Immortal" Neon Drift
+                </a>
+                    <h3 data-i18n="label_desc">Description</h3>
+                    
+                    <div class="lang-text en active">
+                        <p>Welcome to <strong>Neon Pulse</strong>. This is a futuristic, minimalist action game that perfectly blends retro cyberpunk aesthetics with high-speed reflex challenges. Control a surging beam of light through a dangerous neon maze accompanied by dynamic synth music.</p>
+                        <h4>✨ Key Features</h4>
+                        <ul class="feature-list">
+                            <li><strong>Stunning Visuals:</strong> High-contrast neon color schemes with dynamic light trails and screen shake effects.</li>
+                            <li><strong>Dual Game Modes:</strong> Choose <strong>Classic Mode</strong> for a hardcore challenge or <strong>Zen Mode</strong> for an invincible flow state experience.</li>
+                            <li><strong>Global Leaderboard:</strong> Push your limits to set a new personal best—the system automatically saves your high score.</li>
+                        </ul>
+                    </div>
+
+                    <div class="lang-text zh" style="display:none;">
+                        <p>欢迎来到 <strong>Neon Pulse (霓虹脉冲)</strong>。这是一款极具未来感的极简主义动作游戏，将复古赛博朋克美学与高速反应挑战完美融合。在动感的合成器音乐中，控制光束穿梭于危险的霓虹迷宫。</p>
+                        <h4>✨ 核心特色</h4>
+                        <ul class="feature-list">
+                            <li><strong>极致视觉体验：</strong> 高对比度的霓虹配色，搭配动态光影拖尾和屏幕震动效果。</li>
+                            <li><strong>双重游戏模式：</strong> 选择<strong>经典模式</strong>体验极限挑战，或选择<strong>禅模式</strong>享受不死之身的飞行乐趣。</li>
+                            <li><strong>挑战纪录：</strong> 不断突破自我冲击更高分数，系统会自动记录你的最佳成绩。</li>
+                        </ul>
+                    </div>
+
+                    <h3 data-i18n="label_controls">How to Play</h3>
+                    
+                    <ul class="lang-text en active feature-list">
+                        <li><strong>Simple Input:</strong> Use <strong>Spacebar</strong>, <strong>Mouse Click</strong>, or <strong>Tap Screen</strong>.</li>
+                        <li><strong>Mechanic:</strong> The light beam moves forward automatically. Every tap switches its vertical direction (Zig-Zag).</li>
+                        <li><strong>Objective:</strong> Avoid walls and red obstacles. Collect <strong>Cyan Crystals</strong> for bonus points.</li>
+                    </ul>
+
+                    <ul class="lang-text zh feature-list" style="display:none;">
+                        <li><strong>简单操作：</strong> 使用 <strong>空格键</strong>、<strong>鼠标点击</strong> 或 <strong>触摸屏幕</strong>。</li>
+                        <li><strong>核心机制：</strong> 光束自动向前飞行，每次点击都会改变其垂直飞行方向（Z字形折返）。</li>
+                        <li><strong>游戏目标：</strong> 避开墙壁和红色障碍物。收集 <strong>青色水晶</strong> 获得额外分数。</li>
+                    </ul>
+
+                </div>
+
+                <div class="interaction-section">
+                    <h3 data-i18n="label_rate">Rate this game</h3>
+                    <div class="rating-area">
+                        <div class="stars" id="gameStars">
+                            <span data-value="1">★</span>
+                            <span data-value="2">★</span>
+                            <span data-value="3">★</span>
+                            <span data-value="4">★</span>
+                            <span data-value="5">★</span>
+                        </div>
+                        <span id="gameRatingText" style="color: var(--accent-color); font-size: 14px;"></span>
+                    </div>
+
+                    <h3 data-i18n="label_comment">Leave a Comment</h3>
+                    <div class="comment-form">
+                        <textarea id="commentInput" placeholder="System Ready. Enter feedback..."></textarea>
+                        <button class="btn-submit" onclick="submitComment()" data-i18n="btn_submit">Transmit Data</button>
+                    </div>
+
+                    <div class="comment-list" id="commentList">
+                        
+                        <div class="comment-item">
+                            <div class="avatar">👾</div>
+                            <div class="comment-content">
+                                <h4>RetroGamer99 <span class="comment-date">2 hours ago</span></h4>
+                                <p data-i18n="fake_comment_1">The Synthwave soundtrack is absolute fire! Fits the vibe perfectly.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">⚡</div>
+                            <div class="comment-content">
+                                <h4>SpeedDemon <span class="comment-date">5 hours ago</span></h4>
+                                <p data-i18n="fake_comment_2">Zen mode is so relaxing, just watching the lights flow.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">💀</div>
+                            <div class="comment-content">
+                                <h4>HardcoreFan <span class="comment-date">1 day ago</span></h4>
+                                <p data-i18n="fake_comment_3">Classic mode is BRUTAL. My best score is only 850.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">💎</div>
+                            <div class="comment-content">
+                                <h4>CrystalHunter <span class="comment-date">1 day ago</span></h4>
+                                <p data-i18n="fake_comment_4">Visuals are amazing. It feels like I'm inside the computer.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar">🤖</div>
+                            <div class="comment-content">
+                                <h4>SystemAdmin <span class="comment-date">2 days ago</span></h4>
+                                <p data-i18n="fake_comment_5">Runs super smooth on my phone. Great optimization.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ad-sidebar">
+                <div class="ad-box ad-300x250">CYBER AD (300x250)</div>
+                <div class="ad-box ad-300x600">CYBER AD (300x600)</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ========================
+        // Game Portal Logic
+        // ========================
+
+        // 1. Fullscreen Toggle
+        function toggleFullScreen() {
+            var iframe = document.getElementById("gameFrame");
+            if (iframe.requestFullscreen) iframe.requestFullscreen();
+            else if (iframe.mozRequestFullScreen) iframe.mozRequestFullScreen();
+            else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+            else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+        }
+
+        // 2. Rating Logic
+        const stars = document.querySelectorAll('#gameStars span');
+        const ratingText = document.getElementById('gameRatingText');
+        
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function() { highlightStars(this.dataset.value); });
+            star.addEventListener('mouseout', function() { highlightStars(0); });
+            star.addEventListener('click', function() {
+                const val = this.dataset.value;
+                highlightStars(val);
+                stars.forEach(s => s.style.pointerEvents = 'none'); // Lock
+                
+                const lang = localStorage.getItem('preferred_lang') || 'en';
+                const thanks = translations[lang]['msg_thanks'] || "Data Received.";
+                ratingText.innerText = thanks + " [" + val + "/5]";
+            });
+        });
+
+        function highlightStars(value) {
+            stars.forEach(s => {
+                if (s.dataset.value <= value) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        }
+
+        // 3. Comment Logic
+        function submitComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            const list = document.getElementById('commentList');
+            const lang = localStorage.getItem('preferred_lang') || 'en';
+            
+            if (text === "") {
+                alert(lang === 'zh' ? "输入无效！" : "Input Invalid!");
+                return;
+            }
+
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <div class="avatar">👤</div>
+                <div class="comment-content">
+                    <h4>User_Guest <span class="comment-date">Just now</span></h4>
+                    <p>${text}</p>
+                </div>
+            `;
+            list.prepend(newComment);
+            input.value = "";
+        }
+
+        // 4. Translations
+        const translations = {
+            en: {
+                group_explore: "Explore", nav_home: "🏠 Home", nav_new: "🆕 New", nav_hot: "🔥 Hot", nav_recent: "🕹️ Recent", nav_rec: "👍 Top", group_about: "About", link_news: "📰 News", link_privacy: "🔒 Privacy", link_terms: "📜 Terms", link_contact: "📩 Contact", label_lang: "Language", 
+                btn_fullscreen: "⛶ Fullscreen",
+                game_title: "Neon Pulse: Cyberpunk Challenge",
+                label_desc: "Description",
+                label_controls: "How to Play",
+                label_rate: "Rate this game",
+                label_comment: "Leave a Comment",
+                btn_submit: "Transmit Data",
+                tag_review: "REVIEW",
+                msg_thanks: "Data Received.",
+                link_article_title: "Neon Pulse: More Than a Speed Challenge, It’s the "Immortal" Neon Drift"
+                
+                // Comments - Neon Themed
+                fake_comment_1: "The Synthwave soundtrack is absolute fire! Fits the vibe perfectly.",
+                fake_comment_2: "Zen mode is so relaxing, just watching the lights flow.",
+                fake_comment_3: "Classic mode is BRUTAL. My best score is only 850.",
+                fake_comment_4: "Visuals are amazing. It feels like I'm inside the computer.",
+                fake_comment_5: "Runs super smooth on my phone. Great optimization."
+            },
+            zh: {
+                group_explore: "探索", nav_home: "🏠 主页", nav_new: "🆕 新品", nav_hot: "🔥 热门", nav_recent: "🕹️ 最近", nav_rec: "👍 推荐", group_about: "关于", link_news: "📰 资讯", link_privacy: "🔒 隐私", link_terms: "📜 条款", link_contact: "📩 联系", label_lang: "语言 / Language", 
+                btn_fullscreen: "⛶ 全屏模式",
+                game_title: "霓虹脉冲：赛博朋克挑战",
+                link_article_title: "霓虹脈衝：不僅是速度挑戰，更是「不朽」的霓虹漂移"
+                label_desc: "游戏介绍",
+                label_controls: "操作说明",
+                label_rate: "游戏评分",
+                label_comment: "发表评论",
+                btn_submit: "提交数据",
+                msg_thanks: "数据已接收。",
+                tag_review: "测评",
+
+                // Comments - Chinese
+                fake_comment_1: "合成波的背景音乐太燃了！和游戏氛围完美契合。",
+                fake_comment_2: "禅模式太解压了，看着光影流动很舒服。",
+                fake_comment_3: "经典模式太硬核了，我最高才玩到850分。",
+                fake_comment_4: "视觉效果很棒，感觉像进入了电脑世界一样。",
+                fake_comment_5: "手机上运行很流畅，优化做得不错。"
+            },
+            jp: { game_title: "Neon Pulse: Cyberpunk", tag_review: "評価試験",label_desc: "説明", label_controls: "操作方法", btn_fullscreen: "⛶ 全画面", label_rate: "評価", label_comment: "コメント", btn_submit: "送信", msg_thanks: "受信完了。" },
+            kr: { game_title: "Neon Pulse: Cyberpunk", tag_review: "평가 테스트",label_desc: "설명", label_controls: "조작법", btn_fullscreen: "⛶ 전체 화면", label_rate: "평가", label_comment: "댓글", btn_submit: "전송", msg_thanks: "수신 완료." }
+        };
+
+        function switchLanguage(lang) {
+            localStorage.setItem('preferred_lang', lang);
+            
+            // Text replacement
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const dict = translations[lang] || translations['en'];
+                if (dict[key]) el.innerText = dict[key];
+            });
+
+            // Block replacement (Desc/Controls)
+            document.querySelectorAll('.lang-text').forEach(el => el.style.display = 'none');
+            const targets = document.querySelectorAll(`.lang-text.${lang}`);
+            if(targets.length > 0) targets.forEach(el => el.style.display = 'block');
+            else document.querySelectorAll(`.lang-text.en`).forEach(el => el.style.display = 'block');
+
+            document.getElementById('langSelector').value = lang;
+            
+            // Input placeholder
+            const commentInput = document.getElementById('commentInput');
+            if(lang === 'zh') commentInput.placeholder = "系统就绪。请输入反馈...";
+            else commentInput.placeholder = "System Ready. Enter feedback...";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferred_lang') || 'en';
+            switchLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

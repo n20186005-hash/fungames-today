@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>10x10 Puzzle Art</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+        :root {
+            --bg-color: #0f172a;
+            --board-bg: #334155;
+            --cell-empty: #475569;
+            --highlight: rgba(255, 255, 255, 0.3);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            touch-action: none;
+            overflow: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .game-container {
+            max-width: 500px;
+            margin: 0 auto;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .lang-select-container {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 20;
+        }
+        
+        .lang-select {
+            appearance: none;
+            background-color: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid #475569;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .cell {
+            border-radius: 12%;
+            transition: background-color 0.2s, transform 0.1s;
+            position: relative;
+        }
+
+        .cell.filled {
+            box-shadow: 
+                inset 0 0 0 1px rgba(0,0,0,0.2),
+                0 4px 6px rgba(0,0,0,0.4);
+        }
+
+        .cell.filled::after {
+            content: '';
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            border-radius: 20px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+            pointer-events: none;
+        }
+
+        .cell.highlight {
+            background-color: rgba(255, 255, 255, 0.15) !important;
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.4);
+            transform: scale(0.95);
+        }
+
+        .c-0 { background-color: var(--cell-empty); box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
+        
+        .c-1 { background-color: #22d3ee; }
+        .c-2 { background-color: #f472b6; }
+        .c-3 { background-color: #a3e635; }
+        .c-4 { background-color: #60a5fa; }
+        .c-5 { background-color: #fbbf24; }
+        .c-6 { background-color: #c084fc; }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+            padding: 8px;
+            background-color: var(--board-bg);
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+            aspect-ratio: 1;
+            width: 100%;
+            touch-action: none;
+        }
+
+        .dock-piece {
+            touch-action: none;
+            position: relative;
+            transform-origin: center;
+        }
+
+        .dragging-mirror {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.95;
+            transform-origin: center center;
+            will-change: transform, left, top;
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.5));
+        }
+
+        .dragging-mirror .cell {
+            border-radius: 12%; 
+        }
+        
+        @keyframes pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes vanish {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .anim-pop { animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .anim-vanish { animation: vanish 0.3s forwards; }
+
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            animation: particle-anim 0.8s ease-out forwards;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        @keyframes particle-anim {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        .modal {
+            backdrop-filter: blur(12px);
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        
+        .modal-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .score-float {
+            position: absolute;
+            color: #fbbf24;
+            font-weight: 900;
+            font-size: 2rem;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            z-index: 50;
+            -webkit-text-stroke: 1px rgba(0,0,0,0.1);
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            20% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+            100% { transform: translateY(-60px) scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="text-slate-200">
+
+    <div class="lang-select-container">
+        <select id="lang-selector" class="lang-select">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+        </select>
+    </div>
+
+    <div class="game-container px-4 py-2 relative">
+        <header class="flex justify-between items-end w-full mb-4 mt-8 px-2">
+            <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]" data-i18n="best">Best</span>
+                <div class="text-2xl font-black text-slate-200 leading-none mt-1" id="best-score">0</div>
+            </div>
+            
+            <div class="absolute left-1/2 transform -translate-x-1/2 top-10 flex flex-col items-center opacity-90 pointer-events-none">
+                 <i class="fas fa-layer-group text-3xl text-indigo-400 drop-shadow-lg"></i>
+                 <span class="text-[10px] font-bold text-indigo-300 mt-1 tracking-widest opacity-70">10x10 ART</span>
+            </div>
+
+            <div class="flex flex-col items-end">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]" data-i18n="score">Score</span>
+                <div class="text-4xl font-black text-indigo-400 leading-none mt-1 transition-transform drop-shadow-md" id="score">0</div>
+            </div>
+        </header>
+
+        <div class="flex-grow flex items-center justify-center w-full relative" id="board-container">
+            <div id="board"></div>
+        </div>
+
+        <div class="h-32 w-full flex justify-between items-center px-1 mb-safe mt-2" id="dock">
+        </div>
+    </div>
+
+    <div id="modal-gameover" class="fixed inset-0 z-50 flex items-center justify-center hidden modal opacity-0 transition-opacity duration-300">
+        <div class="bg-slate-800 rounded-3xl p-8 max-w-xs w-full mx-4 text-center transform scale-90 transition-transform duration-300 modal-card" id="modal-content">
+            <div class="w-20 h-20 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                <i class="fas fa-crown text-4xl text-yellow-400"></i>
+            </div>
+            <h2 class="text-2xl font-black text-white mb-2" data-i18n="gameover">No Moves Left!</h2>
+            <p class="text-slate-400 mb-8 text-sm font-bold" data-i18n="tryagain">Don't give up, try again.</p>
+            
+            <div class="bg-slate-900 rounded-2xl p-4 mb-6 border border-slate-700">
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest" data-i18n="finalscore">Score</div>
+                <div class="text-5xl font-black text-white" id="final-score">0</div>
+            </div>
+
+            <button id="btn-restart" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-indigo-900/50 transition-all active:scale-95 flex items-center justify-center gap-2">
+                <i class="fas fa-rotate-right"></i> <span data-i18n="restart">Play Again</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const LANG = {
+            en: { score: "Score", best: "Best", gameover: "No Moves!", tryagain: "No space left on board.", restart: "Play Again", finalscore: "Final Score" },
+            zh: { score: "分数", best: "最高分", gameover: "无法放置", tryagain: "棋盘没有空间了", restart: "再玩一次", finalscore: "最终得分" },
+            ja: { score: "スコア", best: "ベスト", gameover: "ゲームオーバー", tryagain: "置ける場所がありません", restart: "リトライ", finalscore: "スコア" },
+            ko: { score: "점수", best: "최고 기록", gameover: "게임 오버", tryagain: "더 이상 공간이 없습니다", restart: "다시 시작", finalscore: "최종 점수" },
+            es: { score: "Puntaje", best: "Mejor", gameover: "¡Sin movimientos!", tryagain: "No hay espacio.", restart: "Jugar de nuevo", finalscore: "Puntaje Final" },
+            fr: { score: "Score", best: "Meilleur", gameover: "Terminé!", tryagain: "Plus d'espace libre.", restart: "Rejouer", finalscore: "Score Final" },
+            de: { score: "Ergebnis", best: "Bestes", gameover: "Vorbei!", tryagain: "Kein Platz mehr.", restart: "Neustart", finalscore: "Endstand" }
+        };
+
+        const SHAPES = [
+            { m: [[1]], c: 1 },
+            { m: [[1,1]], c: 2 }, { m: [[1],[1]], c: 2 },
+            { m: [[1,1,1]], c: 3 }, { m: [[1],[1],[1]], c: 3 },
+            { m: [[1,1,1,1]], c: 4 }, { m: [[1],[1],[1],[1]], c: 4 },
+            { m: [[1,1,1,1,1]], c: 5 }, { m: [[1],[1],[1],[1],[1]], c: 5 },
+            { m: [[1,1],[1,1]], c: 6 },
+            { m: [[1,1,1],[1,1,1],[1,1,1]], c: 1 },
+            { m: [[1,0],[1,1]], c: 2 }, { m: [[0,1],[1,1]], c: 2 }, { m: [[1,1],[1,0]], c: 2 }, { m: [[1,1],[0,1]], c: 2 },
+            { m: [[1,0,0],[1,0,0],[1,1,1]], c: 3 }, { m: [[0,0,1],[0,0,1],[1,1,1]], c: 3 },
+            { m: [[1,1,1],[1,0,0],[1,0,0]], c: 3 }, { m: [[1,1,1],[0,0,1],[0,0,1]], c: 3 }
+        ];
+
+        class AudioSys {
+            constructor() {
+                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                this.vol = 0.3;
+            }
+            resume() { if(this.ctx.state === 'suspended') this.ctx.resume(); }
+            playTone(freq, type, dur, time=0) {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime + time);
+                gain.gain.setValueAtTime(this.vol, this.ctx.currentTime + time);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + time + dur);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(this.ctx.currentTime + time);
+                osc.stop(this.ctx.currentTime + time + dur);
+            }
+            playDrop() { 
+                this.resume();
+                this.playTone(400, 'sine', 0.1);
+                this.playTone(600, 'sine', 0.1, 0.05);
+            }
+            playClear(count) {
+                this.resume();
+                const base = 400 + (count * 50);
+                this.playTone(base, 'triangle', 0.3);
+                this.playTone(base * 1.5, 'triangle', 0.3, 0.1);
+                this.playTone(base * 2, 'triangle', 0.4, 0.2);
+            }
+            playGameOver() {
+                this.resume();
+                this.playTone(300, 'sawtooth', 0.5);
+                this.playTone(200, 'sawtooth', 0.5, 0.3);
+                this.playTone(150, 'sawtooth', 0.8, 0.6);
+            }
+        }
+
+        class Game {
+            constructor() {
+                this.grid = Array(10).fill().map(() => Array(10).fill(0));
+                this.score = 0;
+                this.best = parseInt(localStorage.getItem('10x10_best') || 0);
+                this.pieces = [null, null, null];
+                this.audio = new AudioSys();
+                this.currentLang = 'en';
+                
+                this.els = {
+                    board: document.getElementById('board'),
+                    dock: document.getElementById('dock'),
+                    score: document.getElementById('score'),
+                    best: document.getElementById('best-score'),
+                    modal: document.getElementById('modal-gameover'),
+                    finalScore: document.getElementById('final-score'),
+                    modalContent: document.getElementById('modal-content'),
+                    btnRestart: document.getElementById('btn-restart'),
+                    langSelect: document.getElementById('lang-selector')
+                };
+
+                this.dragState = { active: false, pieceIdx: -1, el: null, startX: 0, startY: 0, offsetX: 0, offsetY: 0 };
+                
+                this.initLang();
+                this.els.btnRestart.addEventListener('click', () => this.restart());
+                this.els.langSelect.addEventListener('change', (e) => this.setLang(e.target.value));
+
+                this.initBoard();
+                this.updateUI();
+                this.spawnPieces();
+                this.bindEvents();
+            }
+
+            initLang() {
+                const saved = localStorage.getItem('10x10_lang');
+                if (saved && LANG[saved]) {
+                    this.currentLang = saved;
+                } else {
+                    const uLang = navigator.language.split('-')[0];
+                    if (LANG[uLang]) this.currentLang = uLang;
+                    else this.currentLang = 'en';
+                }
+                
+                this.els.langSelect.value = this.currentLang;
+                this.applyLang();
+            }
+
+            setLang(lang) {
+                if (LANG[lang]) {
+                    this.currentLang = lang;
+                    localStorage.setItem('10x10_lang', lang);
+                    this.applyLang();
+                }
+            }
+
+            applyLang() {
+                const texts = LANG[this.currentLang];
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const k = el.getAttribute('data-i18n');
+                    if(texts[k]) el.innerText = texts[k];
+                });
+            }
+
+            initBoard() {
+                this.els.board.innerHTML = '';
+                for(let y=0; y<10; y++) {
+                    for(let x=0; x<10; x++) {
+                        const d = document.createElement('div');
+                        d.className = 'cell c-0';
+                        d.dataset.x = x;
+                        d.dataset.y = y;
+                        this.els.board.appendChild(d);
+                    }
+                }
+            }
+            
+            updateUI() {
+                this.els.score.innerText = this.score;
+                this.els.best.innerText = this.best;
+            }
+
+            spawnPieces() {
+                this.els.dock.innerHTML = '';
+                for(let i=0; i<3; i++) {
+                    const shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+                    this.pieces[i] = shape;
+                    
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'flex items-center justify-center w-1/3 h-full anim-pop';
+                    
+                    const p = this.createPieceDOM(shape, 0.6);
+                    p.dataset.idx = i;
+                    p.classList.add('dock-piece');
+                    
+                    wrapper.appendChild(p);
+                    this.els.dock.appendChild(wrapper);
+                }
+                this.checkGameOver();
+            }
+
+            createPieceDOM(shape, scale=1, isMirror=false) {
+                const rows = shape.m.length;
+                const cols = shape.m[0].length;
+                const d = document.createElement('div');
+                d.style.display = 'grid';
+                d.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+                d.style.gap = '2px';
+                
+                const cellSize = isMirror ? this.getCellSize() : 25; 
+                
+                d.style.width = `${cols * cellSize + (cols-1)*2}px`;
+                d.style.height = `${rows * cellSize + (rows-1)*2}px`;
+
+                shape.m.forEach(row => {
+                    row.forEach(val => {
+                        const c = document.createElement('div');
+                        if (val) {
+                            c.className = `cell c-${shape.c}`;
+                            if(isMirror) c.style.opacity = '0.9';
+                        } else {
+                            c.style.visibility = 'hidden';
+                        }
+                        c.style.width = '100%';
+                        c.style.height = '100%';
+                        d.appendChild(c);
+                    });
+                });
+
+                if(scale !== 1) d.style.transform = `scale(${scale})`;
+                return d;
+            }
+
+            getCellSize() {
+                return (this.els.board.clientWidth - 55) / 10; 
+            }
+
+            bindEvents() {
+                const start = (e) => {
+                    const t = e.target.closest('.dock-piece');
+                    if(!t) return;
+                    e.preventDefault();
+                    
+                    const idx = parseInt(t.dataset.idx);
+                    if(!this.pieces[idx]) return;
+
+                    const touch = e.touches ? e.touches[0] : e;
+                    this.dragState.active = true;
+                    this.dragState.pieceIdx = idx;
+                    
+                    this.dragState.el = this.createPieceDOM(this.pieces[idx], 1, true);
+                    this.dragState.el.classList.add('dragging-mirror');
+                    document.body.appendChild(this.dragState.el);
+                    
+                    t.style.visibility = 'hidden';
+
+                    const rect = this.dragState.el.getBoundingClientRect();
+                    this.dragState.offsetX = rect.width / 2;
+                    this.dragState.offsetY = rect.height * 1.5;
+
+                    move(e);
+                };
+
+                const move = (e) => {
+                    if(!this.dragState.active) return;
+                    e.preventDefault();
+                    
+                    const touch = e.touches ? e.touches[0] : e;
+                    const x = touch.clientX - this.dragState.offsetX;
+                    const y = touch.clientY - this.dragState.offsetY;
+                    
+                    this.dragState.el.style.left = `${x}px`;
+                    this.dragState.el.style.top = `${y}px`;
+
+                    this.checkHover(touch.clientX, touch.clientY);
+                };
+
+                const end = (e) => {
+                    if(!this.dragState.active) return;
+                    
+                    const touch = e.changedTouches ? e.changedTouches[0] : e;
+                    const placed = this.tryPlace(touch.clientX, touch.clientY);
+                    
+                    this.clearHighlight();
+                    this.dragState.el.remove();
+                    
+                    const original = this.els.dock.children[this.dragState.pieceIdx].firstElementChild;
+
+                    if(placed) {
+                        this.pieces[this.dragState.pieceIdx] = null;
+                        original.parentElement.innerHTML = '';
+                        if(this.pieces.every(p => p === null)) this.spawnPieces();
+                        else this.checkGameOver();
+                    } else {
+                        original.style.visibility = 'visible';
+                    }
+
+                    this.dragState.active = false;
+                };
+
+                this.els.dock.addEventListener('mousedown', start);
+                this.els.dock.addEventListener('touchstart', start, {passive:false});
+                window.addEventListener('mousemove', move, {passive:false});
+                window.addEventListener('touchmove', move, {passive:false});
+                window.addEventListener('mouseup', end);
+                window.addEventListener('touchend', end);
+            }
+
+            getGridPos(cx, cy) {
+                const rect = this.els.board.getBoundingClientRect();
+                if (cx < rect.left || cx > rect.right || cy < rect.top || cy > rect.bottom) return null;
+
+                const mirrorRect = this.dragState.el.getBoundingClientRect();
+                const pieceX = mirrorRect.left;
+                const pieceY = mirrorRect.top;
+
+                const cellSize = (rect.width - 16) / 10;
+                
+                const gx = Math.round((pieceX - rect.left - 8) / cellSize);
+                const gy = Math.round((pieceY - rect.top - 8) / cellSize);
+                
+                return { x: gx, y: gy };
+            }
+
+            checkHover(cx, cy) {
+                this.clearHighlight();
+                const pos = this.getGridPos(cx, cy);
+                if(!pos) return;
+
+                const p = this.pieces[this.dragState.pieceIdx];
+                if(this.canPlace(pos.x, pos.y, p)) {
+                    this.drawHighlight(pos.x, pos.y, p);
+                }
+            }
+
+            drawHighlight(gx, gy, p) {
+                for(let r=0; r<p.m.length; r++) {
+                    for(let c=0; c<p.m[r].length; c++) {
+                        if(p.m[r][c]) {
+                            const idx = (gy+r)*10 + (gx+c);
+                            const cell = this.els.board.children[idx];
+                            if(cell) cell.classList.add('highlight');
+                        }
+                    }
+                }
+            }
+
+            clearHighlight() {
+                const h = this.els.board.querySelectorAll('.highlight');
+                h.forEach(el => el.classList.remove('highlight'));
+            }
+
+            canPlace(gx, gy, p) {
+                for(let r=0; r<p.m.length; r++) {
+                    for(let c=0; c<p.m[r].length; c++) {
+                        if(p.m[r][c]) {
+                            if(gx+c < 0 || gx+c >= 10 || gy+r < 0 || gy+r >= 10) return false;
+                            if(this.grid[gy+r][gx+c] !== 0) return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
+            tryPlace(cx, cy) {
+                const pos = this.getGridPos(cx, cy);
+                if(!pos) return false;
+                
+                const p = this.pieces[this.dragState.pieceIdx];
+                if(!this.canPlace(pos.x, pos.y, p)) return false;
+
+                let pts = 0;
+                for(let r=0; r<p.m.length; r++) {
+                    for(let c=0; c<p.m[r].length; c++) {
+                        if(p.m[r][c]) {
+                            this.grid[pos.y+r][pos.x+c] = p.c;
+                            const idx = (pos.y+r)*10 + (pos.x+c);
+                            const cell = this.els.board.children[idx];
+                            cell.className = `cell filled c-${p.c}`;
+                            pts++;
+                        }
+                    }
+                }
+                this.addScore(pts);
+                this.audio.playDrop();
+                this.checkLines();
+                return true;
+            }
+
+            checkLines() {
+                let rows = [], cols = [];
+                for(let y=0; y<10; y++) {
+                    if(this.grid[y].every(v => v !== 0)) rows.push(y);
+                }
+                for(let x=0; x<10; x++) {
+                    let full = true;
+                    for(let y=0; y<10; y++) if(this.grid[y][x] === 0) { full = false; break; }
+                    if(full) cols.push(x);
+                }
+
+                if(rows.length || cols.length) this.clearLines(rows, cols);
+            }
+
+            async clearLines(rows, cols) {
+                const unique = new Set();
+                rows.forEach(y => { for(let x=0; x<10; x++) unique.add(`${x},${y}`); });
+                cols.forEach(x => { for(let y=0; y<10; y++) unique.add(`${x},${y}`); });
+
+                const total = rows.length + cols.length;
+                this.audio.playClear(total);
+
+                const cells = this.els.board.children;
+                unique.forEach(k => {
+                    const [x,y] = k.split(',').map(Number);
+                    this.grid[y][x] = 0;
+                    const idx = y*10 + x;
+                    const cell = cells[idx];
+                    
+                    this.spawnParticles(cell);
+
+                    cell.classList.add('anim-vanish');
+                    setTimeout(() => {
+                        cell.className = 'cell c-0';
+                    }, 250);
+                });
+
+                const combo = total > 1 ? total * 1.5 : 1;
+                const pts = Math.floor(unique.size * 10 * combo);
+                this.showFloatingScore(pts);
+                this.addScore(pts);
+            }
+
+            spawnParticles(el) {
+                const rect = el.getBoundingClientRect();
+                const color = window.getComputedStyle(el).backgroundColor;
+                for(let i=0; i<6; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    p.style.backgroundColor = color;
+                    p.style.width = (Math.random()*6+4)+'px';
+                    p.style.height = p.style.width;
+                    p.style.left = (rect.left + rect.width/2) + 'px';
+                    p.style.top = (rect.top + rect.height/2) + 'px';
+                    
+                    const angle = Math.random() * Math.PI * 2;
+                    const dist = Math.random() * 60 + 30;
+                    p.style.setProperty('--tx', Math.cos(angle)*dist + 'px');
+                    p.style.setProperty('--ty', Math.sin(angle)*dist + 'px');
+                    
+                    document.body.appendChild(p);
+                    setTimeout(() => p.remove(), 800);
+                }
+            }
+
+            showFloatingScore(pts) {
+                const f = document.createElement('div');
+                f.className = 'score-float';
+                f.innerText = '+' + pts;
+                const r = this.els.board.getBoundingClientRect();
+                f.style.left = (r.left + r.width/2 - 30) + 'px';
+                f.style.top = (r.top + r.height/2 - 30) + 'px';
+                document.body.appendChild(f);
+                setTimeout(() => f.remove(), 1000);
+            }
+
+            addScore(n) {
+                this.score += n;
+                this.els.score.innerText = this.score;
+                if(this.score > this.best) {
+                    this.best = this.score;
+                    this.els.best.innerText = this.best;
+                    localStorage.setItem('10x10_best', this.best);
+                }
+            }
+
+            checkGameOver() {
+                const avail = this.pieces.filter(p => p);
+                if(avail.length === 0) return;
+
+                let possible = false;
+                for(let p of avail) {
+                    for(let y=0; y<10; y++) {
+                        for(let x=0; x<10; x++) {
+                            if(this.canPlace(x, y, p)) { possible = true; break; }
+                        }
+                        if(possible) break;
+                    }
+                    if(possible) break;
+                }
+
+                if(!possible) {
+                    setTimeout(() => {
+                        this.audio.playGameOver();
+                        this.els.finalScore.innerText = this.score;
+                        this.els.modal.classList.remove('hidden');
+                        requestAnimationFrame(() => {
+                            this.els.modal.classList.remove('opacity-0');
+                            this.els.modalContent.classList.remove('scale-90');
+                        });
+                    }, 500);
+                }
+            }
+
+            restart() {
+                this.grid = Array(10).fill().map(() => Array(10).fill(0));
+                this.score = 0;
+                this.els.score.innerText = '0';
+                this.els.modal.classList.add('opacity-0');
+                this.els.modalContent.classList.add('scale-90');
+                setTimeout(() => this.els.modal.classList.add('hidden'), 300);
+                this.initBoard();
+                this.spawnPieces();
+            }
+        }
+
+        window.onload = () => new Game();
+    </script>
+</body>
+</html>

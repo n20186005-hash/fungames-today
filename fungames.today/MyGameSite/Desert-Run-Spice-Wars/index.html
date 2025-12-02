@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desert Run: Spice Wars - Play Online</title>
+    <style>
+        /* ====================
+           1. Global & Sidebar Styles
+           ==================== */
+        :root { 
+            --bg-color: #121212; 
+            --sidebar-bg: #1e1e1e; 
+            --text-color: #dfe6e9; 
+            --text-muted: #b2bec3; 
+            --accent-color: #e67e22; /* Orange to match Desert Run theme */
+            --accent-secondary: #f1c40f; /* Gold for spice/stars */
+            --card-bg: #2d3436; 
+        }
+        
+        body { margin: 0; padding: 0; font-family: 'Nunito', 'Segoe UI', 'Roboto', sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 240px; background-color: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100%; left: 0; top: 0; overflow-y: auto; z-index: 1000; box-shadow: 2px 0 10px rgba(0,0,0,0.5); border-right: 1px solid #333; }
+        .logo { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 30px; text-decoration: none; display: block; letter-spacing: 1px; }
+        .logo span { color: var(--accent-color); }
+        
+        .menu-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #333; }
+        .menu-group:last-child { border-bottom: none; }
+        .menu-title { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; font-weight: bold; }
+        .menu-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); text-decoration: none; padding: 10px 12px; margin-bottom: 5px; border-radius: 8px; transition: 0.2s; font-weight: 600; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(230, 126, 34, 0.1); color: var(--accent-color); }
+        .menu-item.active { border-left: 3px solid var(--accent-color); }
+        .lang-select { margin-top: auto; padding: 10px; background: #000; color: white; border: 1px solid #333; border-radius: 4px; width: 100%; cursor: pointer; font-family: inherit; }
+
+        /* ====================
+           2. Game Page Styles
+           ==================== */
+        .main-content { margin-left: 240px; padding: 30px; width: 100%; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
+        
+        /* Game Container */
+        .game-wrapper {
+            width: 100%;
+            max-width: 1080px;
+            background: #000;
+            border: 1px solid #333;
+            box-shadow: 0 0 50px rgba(230, 126, 34, 0.15);
+            margin-bottom: 20px;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        iframe { width: 100%; height: 640px; border: none; display: block; }
+
+        /* Toolbar */
+        .game-toolbar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #1e1e1e; padding: 10px 20px; border-top: 1px solid #333;
+        }
+        .btn-fullscreen {
+            background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color); padding: 6px 16px; cursor: pointer; transition: 0.2s; font-family: inherit; font-weight: bold; text-transform: uppercase; border-radius: 20px; font-size: 12px;
+        }
+        .btn-fullscreen:hover { background: var(--accent-color); color: #fff; box-shadow: 0 0 15px var(--accent-color); }
+
+        /* Layout Grid */
+        .info-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px; 
+            gap: 30px;
+            width: 100%;
+            max-width: 1080px;
+        }
+        
+        .game-details { background: var(--card-bg); padding: 30px; border: 1px solid #333; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .ad-sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .ad-box { background: #000; border: 1px dashed #333; color: #444; display: flex; align-items: center; justify-content: center; font-size: 14px; border-radius: 4px; }
+        .ad-300x250 { width: 300px; height: 250px; }
+        .ad-300x600 { width: 300px; height: 600px; }
+
+        /* Typography & Elements */
+        h1 { margin-top: 0; color: #fff; text-transform: uppercase; letter-spacing: 1px; font-size: 28px; }
+        h1 span { color: var(--accent-color); }
+        
+        /* Section Headers */
+        h3 { color: #fff; border-left: 4px solid var(--accent-color); padding-left: 12px; margin-top: 35px; margin-bottom: 15px; text-transform: uppercase; font-size: 18px; letter-spacing: 0.5px; }
+        h4 { color: var(--accent-secondary); margin-bottom: 10px; margin-top: 20px; font-size: 16px; border-bottom: 1px solid #444; padding-bottom: 5px; display: inline-block; }
+        
+        p, li { line-height: 1.7; color: #ccc; font-size: 15px; margin-bottom: 15px; }
+        strong { color: #fff; }
+        
+        /* Feature Lists */
+        .feature-list { list-style: none; padding: 0; }
+        .feature-list li { margin-bottom: 8px; padding-left: 20px; position: relative; }
+        .feature-list li::before { content: '✓'; color: var(--accent-color); position: absolute; left: 0; top: 0; font-weight: bold; }
+
+        /* FAQ Style */
+        .faq-item { margin-bottom: 15px; }
+        .faq-q { font-weight: bold; color: #fff; margin-bottom: 5px; display: block; }
+        .faq-a { color: #ccc; font-size: 14px; padding-left: 10px; border-left: 2px solid #555; }
+
+        /* Controls Table */
+        .control-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; color: #ccc; }
+        .control-table th { text-align: left; border-bottom: 2px solid #444; padding: 8px; color: var(--accent-color); background: rgba(0,0,0,0.2); }
+        .control-table td { border-bottom: 1px solid #333; padding: 10px 8px; }
+        .control-table tr:hover { background: rgba(255,255,255,0.05); }
+
+        /* Developer Tag */
+        .dev-tag { font-size: 12px; color: #888; margin-top: -15px; margin-bottom: 20px; display: block; font-style: italic; }
+
+        /* ====================
+           3. Interaction Section
+           ==================== */
+        .interaction-section {
+            background: var(--card-bg);
+            padding: 25px;
+            border: 1px solid #333;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        .rating-area { border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .stars { font-size: 28px; cursor: pointer; color: #333; }
+        .stars span { transition: color 0.2s; }
+        .stars span:hover, .stars span.active { color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.3); }
+        
+        .comment-form textarea {
+            width: 100%; background: #1e1e1e; border: 1px solid #333; color: #fff; padding: 15px; resize: vertical; min-height: 80px; font-family: inherit; box-sizing: border-box; border-radius: 4px;
+        }
+        .comment-form textarea:focus { outline: none; border-color: var(--accent-color); }
+        .btn-submit {
+            background-color: var(--accent-color); color: #fff; border: none; padding: 10px 25px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; text-transform: uppercase; font-family: inherit; border-radius: 4px;
+        }
+        .btn-submit:hover { background-color: #d35400; box-shadow: 0 0 15px var(--accent-color); color: white; }
+        
+        .comment-list { margin-top: 30px; max-height: 800px; overflow-y: auto; padding-right: 10px; }
+        .comment-list::-webkit-scrollbar { width: 6px; }
+        .comment-list::-webkit-scrollbar-track { background: #111; }
+        .comment-list::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+        
+        .comment-item { border-bottom: 1px solid #333; padding: 15px 0; display: flex; gap: 15px; }
+        .avatar { width: 40px; height: 40px; background: #1e1e1e; border: 1px solid #444; display: flex; align-items: center; justify-content: center; font-size: 20px; min-width: 40px; border-radius: 50%; }
+        .comment-content h4 { margin: 0 0 5px 0; color: #eee; font-size: 14px; font-weight: bold; }
+        .comment-content p { margin: 0; color: #999; font-size: 14px; }
+        .comment-date { font-size: 12px; color: #555; margin-left: 10px; font-weight: normal; }
+        .tag-feature { font-size: 10px; background: #222; padding: 2px 6px; border-radius: 4px; margin-left: 8px; color: var(--accent-color); border: 1px solid rgba(230, 126, 34, 0.3); }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 15px; }
+            .info-layout { grid-template-columns: 1fr; }
+            .ad-sidebar { align-items: center; }
+            iframe { height: 400px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="/" class="logo">Desert<span>Run</span></a>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_explore">Explore</div>
+            <a href="/" class="menu-item active" data-i18n="nav_home">🏠 Home</a>
+            <a href="#" class="menu-item" data-i18n="nav_new">🆕 New Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_hot">🔥 Hot Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_recent">🕹️ Recent</a>
+            <a href="#" class="menu-item" data-i18n="nav_rec">👍 Recommended</a>
+        </div>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_about">About</div>
+            <a href="#" class="menu-item" data-i18n="link_news">📰 News</a>
+            <a href="#" class="menu-item" data-i18n="link_privacy">🔒 Privacy</a>
+            <a href="#" class="menu-item" data-i18n="link_terms">📜 Terms</a>
+            <a href="#" class="menu-item" data-i18n="link_contact">📩 Contact</a>
+        </div>
+        <div style="margin-top: auto;">
+            <div class="menu-title" data-i18n="label_lang">Language</div>
+            <select class="lang-select" id="langSelector" onchange="switchLanguage(this.value)">
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 简体中文</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="game-wrapper">
+            <iframe src="game.html" id="gameFrame" allowfullscreen></iframe>
+            <div class="game-toolbar">
+                <span style="color: #666; font-size: 12px; letter-spacing: 1px;">VERSION 1.0.4 | HTML5</span>
+                <button class="btn-fullscreen" onclick="toggleFullScreen()" data-i18n="btn_fullscreen">⛶ Fullscreen</button>
+            </div>
+        </div>
+
+        <div class="info-layout">
+            
+            <div class="left-column">
+                
+                <div class="game-details">
+                    <h1 data-i18n="game_title">Desert Run: Spice Wars</h1>
+                    <span class="dev-tag" data-i18n="dev_label">Developer: Independent HTML5 Game Developer</span>
+                    
+                    <div class="lang-text en active">
+                        <h3>Description</h3>
+                        <p><strong>Desert Run: Spice Wars</strong> is an intense endless runner survival game inspired by the classic sci-fi masterpiece <em>Dune</em>. In this desolate desert world, massive underground sand worms constantly threaten the surface. You must pilot a modified desert truck, racing across treacherous dunes while avoiding deadly attacks.</p>
+                        <p>Your mission is not just to survive, but to thrive. Collect precious <strong>Spice</strong> (golden crystals) to use as currency, rescue stranded survivors to build your crew, and visit the shop to upgrade your survival gear. Can you outrun the worms and become a legend of the sands?</p>
+
+                        <h3>How to Play?</h3>
+                        <p>The goal is simple: stay alive and run as far as possible.</p>
+                        <ol>
+                            <li><strong>Drive & Dodge:</strong> Control the truck to move left or right to avoid worms erupting from the sand.</li>
+                            <li><strong>Jump Mechanism:</strong> Time your jumps perfectly to avoid obstacles or worm attacks.</li>
+                            <li><strong>Gather Resources:</strong>
+                                <ul>
+                                    <li><strong>Spice (Gold):</strong> Currency for the shop.</li>
+                                    <li><strong>Survivors (Blue):</strong> Increases score and crew size.</li>
+                                    <li><strong>Items:</strong> Hearts (Health) and Shields (Invincibility).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Shop System:</strong> Press 'P' to pause and buy Repair Kits or Energy Shields.</li>
+                        </ol>
+
+                        <h3>Online Control Guide</h3>
+                        <p>The game features intuitive controls designed for both Desktop and Mobile devices, allowing for "pick up and play" action without complex tutorials. The HUD displays your Health, Spice, Crew Count, and Distance in real-time.</p>
+
+                        <h3>Some Fun Points</h3>
+                        <ul class="feature-list">
+                            <li><strong>Worm Threat:</strong> React to the "!" warning signals. Worms have two attack modes: lurking from below or jumping from the sky.</li>
+                            <li><strong>Dynamic Crew:</strong> As you save people, they visually appear on the back of your truck. Watching your convoy grow is incredibly satisfying.</li>
+                            <li><strong>Infinite Mode:</strong> A built-in option for players who just want to relax, listen to the synth music, and enjoy the scenery without dying.</li>
+                            <li><strong>Multi-language:</strong> Switch between English, Traditional Chinese, and Simplified Chinese instantly inside the game.</li>
+                        </ul>
+
+                        <h3>Key Features</h3>
+                        <ul class="feature-list">
+                            <li><strong>Retro Pixel Style:</strong> Clean graphics with smooth parallax scrolling backgrounds (mountains, sun).</li>
+                            <li><strong>Strategic Shop:</strong> Risk management is key—do you keep running for more spice, or pause to heal?</li>
+                            <li><strong>High Score Save:</strong> The game automatically saves your total Spice collected and best distance locally.</li>
+                            <li><strong>Synth Audio:</strong> Unique retro synthesizer sound effects for jumps, collection, and impacts.</li>
+                        </ul>
+
+                        <h3>Excellence & Success</h3>
+                        <p>True success isn't just about distance. An excellent player manages to:</p>
+                        <ul>
+                            <li>Accumulate a vast fortune of <strong>Spice</strong>.</li>
+                            <li>Maintain a fully repaired truck with an <strong>Energy Shield</strong> active.</li>
+                            <li>Rescue over <strong>5 Survivors</strong> (filling the truck bed).</li>
+                            <li>Break the <strong>10,000m</strong> barrier without using Infinite Mode.</li>
+                        </ul>
+
+                        <h3>Gameplay Mechanics</h3>
+                        <p>Core Gameplay: <strong>Parkour + Resource Management</strong>.</p>
+                        <p>As distance increases, the game speed accelerates, and worm spawn rates increase. You must learn to predict dangers at high speeds while greedily grabbing every piece of spice. If damaged, you must weigh the risk of continuing versus pausing to buy a repair kit.</p>
+
+                        <h3>Compatibility</h3>
+                        <p>Responsive design adapts perfectly to all mainstream devices:</p>
+                        <ul>
+                            <li><strong>PC / Mac:</strong> Recommended for precision (Keyboard/Mouse).</li>
+                            <li><strong>Tablet (iPad/Android):</strong> Excellent large-screen touch experience.</li>
+                            <li><strong>Mobile (iOS/Android):</strong> Optimized touch zones for landscape play.</li>
+                        </ul>
+
+                        <h3>Controls: Detailed Key/Mouse Mapping</h3>
+                        
+                        <h4>Desktop (PC)</h4>
+                        <table class="control-table">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Keyboard</th>
+                                    <th>Mouse</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Move Left/Right</strong></td>
+                                    <td>-</td>
+                                    <td>Move Cursor</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Jump</strong></td>
+                                    <td>Spacebar / Up Arrow</td>
+                                    <td>Left Click</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pause / Shop</strong></td>
+                                    <td>'P' Key / ESC</td>
+                                    <td>Click Pause Icon</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Mobile (Touch)</h4>
+                        <table class="control-table">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Touch Operation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Move Left</strong></td>
+                                    <td>Tap Left 25% of Screen</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Move Right</strong></td>
+                                    <td>Tap Right 25% of Screen</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Jump</strong></td>
+                                    <td>Tap Center 50% of Screen</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>FAQ</h3>
+                        <div class="faq-item">
+                            <span class="faq-q">Q: Do I need to download the game?</span>
+                            <span class="faq-a">A: No, this is a pure HTML5 browser game. Just open and play.</span>
+                        </div>
+                        <div class="faq-item">
+                            <span class="faq-q">Q: How do I buy items?</span>
+                            <span class="faq-a">A: Press 'P' or the Pause button to open the shop menu.</span>
+                        </div>
+                        <div class="faq-item">
+                            <span class="faq-q">Q: Does progress save?</span>
+                            <span class="faq-a">A: Yes, total spice and high scores are saved locally in your browser.</span>
+                        </div>
+                    </div>
+
+                    <div class="lang-text zh" style="display:none;">
+                        <h3>游戏描述</h3>
+                        <p><strong>《荒野沙虫大逃亡》</strong>是一款紧张刺激的横版无尽跑酷生存游戏。在这个荒凉的沙漠世界中，巨大的地下沙虫（受到经典科幻作品《沙丘》启发）时刻威胁着地面的安全。玩家需要驾驶一辆经过改装的沙漠越野卡车，在危机四伏的沙丘上飞驰。</p>
+                        <p>你的任务不仅仅是生存，还要尽可能多地收集珍贵的“香料”（Spice），拯救受困的幸存者，并利用收集到的资源在商店中购买各种生存装备。</p>
+
+                        <h3>如何玩？</h3>
+                        <p>游戏的目标非常简单：活下去，跑得越远越好。</p>
+                        <ol>
+                            <li><strong>驾驶与躲避</strong>：控制卡车在沙漠中左右移动，避开突然钻出的巨大沙虫。</li>
+                            <li><strong>跳跃机制</strong>：遇到障碍物或沙虫攻击时，及时跳跃躲避。</li>
+                            <li><strong>资源收集</strong>：
+                                <ul>
+                                    <li><strong>香料 (金色晶体)</strong>：这是游戏中的货币，用于购买道具。</li>
+                                    <li><strong>幸存者 (蓝色小人)</strong>：拯救他们可以增加你的分数和卡车上的乘员数量。</li>
+                                    <li><strong>道具</strong>：收集红心（恢复生命）和护盾（提供无敌时间）。</li>
+                                </ul>
+                            </li>
+                            <li><strong>商店系统</strong>：随时按“P”键暂停游戏进入商店，使用香料购买急救包或能量护盾。</li>
+                        </ol>
+
+                        <h3>在线操控指南</h3>
+                        <p>游戏设计了直观的控制方式，支持电脑和移动设备，无需复杂的操作即可享受乐趣。界面上方会实时显示生命值、香料数量、获救人数以及行驶距离。</p>
+
+                        <h3>一些有趣之处</h3>
+                        <ul class="feature-list">
+                            <li><strong>沙虫威胁</strong>：沙虫有两种攻击模式——一种是在地下潜伏突然冲出，另一种是高高跃起从天而降，玩家需要根据沙虫的警告信号（感叹号）快速反应。</li>
+                            <li><strong>动态车队</strong>：随着你拯救的幸存者越来越多，你会看到他们出现在你的卡车后斗上，看着车队壮大非常有成就感。</li>
+                            <li><strong>无敌模式</strong>：对于只想放松看风景或练习的玩家，游戏开始前提供了一个“无敌模式”选项，勾选后你将不会死亡。</li>
+                            <li><strong>多语言支持</strong>：游戏内置了英文、繁体中文和简体中文，点击主界面的语言按钮即可一键切换。</li>
+                        </ul>
+
+                        <h3>主要特点</h3>
+                        <ul class="feature-list">
+                            <li><strong>复古像素风格</strong>：简洁明快的图形风格，配合流畅的视差滚动背景（山脉、太阳）。</li>
+                            <li><strong>商店升级系统</strong>：通过收集资源来购买“维修工具包”和“能量护盾”，增加了游戏的策略性。</li>
+                            <li><strong>高分记录</strong>：游戏会自动保存你收集的香料总量和最远行驶距离记录。</li>
+                            <li><strong>合成音效</strong>：独特的复古合成器音效，为跳跃、收集和碰撞提供听觉反馈。</li>
+                        </ul>
+
+                        <h3>卓越成功</h3>
+                        <p>在游戏中，真正的成功不仅仅是跑得远。卓越的玩家能够：</p>
+                        <ul>
+                            <li>积累大量的<strong>香料</strong>财富。</li>
+                            <li>保持卡车满血状态，并时刻开启<strong>能量护盾</strong>。</li>
+                            <li>拯救超过 <strong>5 名以上的幸存者</strong>（把卡车后座填满）。</li>
+                            <li>在不使用“无敌模式”的情况下突破 <strong>10000米</strong> 的行驶距离。</li>
+                        </ul>
+
+                        <h3>玩法机制</h3>
+                        <p>核心玩法是“跑酷+资源管理”。</p>
+                        <p>随着行驶距离的增加，游戏速度会逐渐加快，沙虫的生成频率也会变高。你需要学会在高速移动中预判危险，同时贪心地去吃掉路上的每一个香料和道具。如果你受损了，记得权衡是继续冒险收集香料，还是赶紧暂停购买维修包。</p>
+
+                        <h3>适配：电脑手机平板</h3>
+                        <p>游戏采用了响应式设计，完美适配所有主流设备：</p>
+                        <ul>
+                            <li><strong>电脑 (PC/Mac)</strong>：推荐使用，键盘鼠标操作精准。</li>
+                            <li><strong>平板 (iPad/Android)</strong>：大屏幕触控体验极佳。</li>
+                            <li><strong>手机 (iOS/Android)</strong>：支持横屏游玩，专门优化了触摸区域。</li>
+                        </ul>
+
+                        <h3>操作：键盘/鼠标的详细按键</h3>
+
+                        <h4>电脑端操作 (PC)</h4>
+                        <table class="control-table">
+                            <thead>
+                                <tr>
+                                    <th>动作</th>
+                                    <th>键盘按键</th>
+                                    <th>鼠标操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>左右移动</strong></td>
+                                    <td>鼠标移动跟随</td>
+                                    <td>移动鼠标指针</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>跳跃</strong></td>
+                                    <td>空格键 (Space) 或 向上箭头 (↑)</td>
+                                    <td>点击 左键</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>暂停/商店</strong></td>
+                                    <td>P 键 或 ESC 键</td>
+                                    <td>点击屏幕右上角暂停图标</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>移动端操作 (手机/平板)</h4>
+                        <table class="control-table">
+                            <thead>
+                                <tr>
+                                    <th>动作</th>
+                                    <th>触屏操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>向左移动</strong></td>
+                                    <td>点击/触摸屏幕 左侧 25% 区域</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>向右移动</strong></td>
+                                    <td>点击/触摸屏幕 右侧 25% 区域</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>跳跃</strong></td>
+                                    <td>点击/触摸屏幕 中间 50% 区域</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>暂停/商店</strong></td>
+                                    <td>点击屏幕右上角的 暂停按钮</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>常见问题解答 (FAQ)</h3>
+                        <div class="faq-item">
+                            <span class="faq-q">Q: 游戏需要下载吗？</span>
+                            <span class="faq-a">A: 不需要，这是一款纯网页游戏，在浏览器中打开即可游玩。</span>
+                        </div>
+                        <div class="faq-item">
+                            <span class="faq-q">Q: 如何购买道具？</span>
+                            <span class="faq-a">A: 在游戏中按下“P”键或点击暂停按钮，即可打开商店界面使用香料购买。</span>
+                        </div>
+                        <div class="faq-item">
+                            <span class="faq-q">Q: 游戏进度会保存吗？</span>
+                            <span class="faq-a">A: 是的，游戏会自动在本地保存你的香料总量和最高分记录。</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="interaction-section">
+                    <h3 style="margin-top:0;" data-i18n="label_rate">Rate this game</h3>
+                    <div class="rating-area">
+                        <div class="stars" id="gameStars">
+                            <span data-value="1">★</span>
+                            <span data-value="2">★</span>
+                            <span data-value="3">★</span>
+                            <span data-value="4">★</span>
+                            <span data-value="5">★</span>
+                        </div>
+                        <span id="gameRatingText" style="color: var(--accent-secondary); font-size: 14px; font-weight:bold;">4.5 / 5.0 (Global Rating)</span>
+                    </div>
+
+                    <h3 data-i18n="label_comment">Comments</h3>
+                    <div class="comment-form">
+                        <textarea id="commentInput" placeholder="Join the discussion..."></textarea>
+                        <button class="btn-submit" onclick="submitComment()" data-i18n="btn_submit">Post Comment</button>
+                    </div>
+
+                    <div class="comment-list" id="commentList">
+                        
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#e67e22">🏜️</div>
+                            <div class="comment-content">
+                                <h4>DuneWalker <span class="tag-feature">Theme</span> <span class="comment-date">2 mins ago</span></h4>
+                                <p>Finally, a game that captures the <strong>Dune</strong> vibe perfectly! The moment that giant worm jumps over the truck is terrifying and awesome. The synthwave music matches the atmosphere so well.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#f1c40f">🐼</div>
+                            <div class="comment-content">
+                                <h4>摸鱼队长 <span class="tag-feature">Immortal Mode</span> <span class="comment-date">10 mins ago</span></h4>
+                                <p>强烈推荐开启**无敌模式**！上班摸鱼的时候玩简直太解压了，只要专心吃金币和救人就行，不用担心被虫子吃掉。看着卡车后面坐满了小人特别有成就感。</p>
+                            </div>
+                        </div>
+
+                         <div class="comment-item">
+                            <div class="avatar" style="color:#e74c3c">🇪🇸</div>
+                            <div class="comment-content">
+                                <h4>Carlos_Gamer <span class="tag-feature">Strategy</span> <span class="comment-date">15 mins ago</span></h4>
+                                <p>A diferencia de otros 'endless runners', aquí la tienda es clave. Tienes que decidir si gastar las especias en curarte o ahorrar para el escudo. ¡Muy buena mecánica!</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#2ecc71">🇯🇵</div>
+                            <div class="comment-content">
+                                <h4>Yuki_Sato <span class="comment-date">25 mins ago</span></h4>
+                                <p>スマホでの操作がとても快適です。画面のどこをタッチすればいいか分かりやすい。暇つぶしに最適です。</p>
+                            </div>
+                        </div>
+
+                         <div class="comment-item">
+                            <div class="avatar" style="color:#3498db">🚀</div>
+                            <div class="comment-content">
+                                <h4>SpeedDemon <span class="tag-feature">High Score</span> <span class="comment-date">40 mins ago</span></h4>
+                                <p>Just hit 15,000m! The trick is to stay in the middle and only move when you see the "!" alert. Also, don't get greedy with the spice if a worm is nearby.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#9b59b6">🇷🇺</div>
+                            <div class="comment-content">
+                                <h4>IvanDrago <span class="comment-date">1 hour ago</span></h4>
+                                <p>Отличная пиксельная графика. Анимация червей очень плавная. Мне нравится, как меняется скорость по мере прохождения.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#f39c12">🇩🇪</div>
+                            <div class="comment-content">
+                                <h4>HansMüller <span class="comment-date">1.5 hours ago</span></h4>
+                                <p>Besser als Chrome Dino! Das hier hat Musik, Upgrades und echte Gegner. Das Shop-System macht süchtig.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#1abc9c">🇧🇷</div>
+                            <div class="comment-content">
+                                <h4>JoãoSilva <span class="tag-feature">Crew</span> <span class="comment-date">2 hours ago</span></h4>
+                                <p>Adorei ver os sobreviventes na traseira do caminhão! É um detalhe pequeno, mas faz você querer salvar todos eles.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#e84393">🇫🇷</div>
+                            <div class="comment-content">
+                                <h4>PierreLuc <span class="comment-date">3 hours ago</span></h4>
+                                <p>J'adore le mode invincible. C'est parfait pour se détendre après le travail sans frustration.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#34495e">🇰🇷</div>
+                            <div class="comment-content">
+                                <h4>MusicLover <span class="tag-feature">Sound</span> <span class="comment-date">4 hours ago</span></h4>
+                                <p>배경 음악과 효과음이 레트로 감성을 완벽하게 살렸네요. 이어폰 끼고 플레이하는 것을 추천합니다!</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#c0392b">🔥</div>
+                            <div class="comment-content">
+                                <h4>硬核玩家 <span class="comment-date">5 hours ago</span></h4>
+                                <p>后期难度很高，沙虫出来的频率太快了。不过判定很精准，死得心服口服。希望能出个排行榜功能。</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#7f8c8d">💻</div>
+                            <div class="comment-content">
+                                <h4>DevGuy <span class="comment-date">6 hours ago</span></h4>
+                                <p>Runs super smooth on my old laptop. It's rare to see an HTML5 canvas game optimized this well without eating all my RAM. Good job dev.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ad-sidebar">
+                <div class="ad-box ad-300x250">ADVERTISEMENT (300x250)</div>
+                <div class="ad-box ad-300x600">ADVERTISEMENT (300x600)</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ========================
+        // Game Portal Logic
+        // ========================
+
+        // 1. Fullscreen Toggle
+        function toggleFullScreen() {
+            var iframe = document.getElementById("gameFrame");
+            if (iframe.requestFullscreen) iframe.requestFullscreen();
+            else if (iframe.mozRequestFullScreen) iframe.mozRequestFullScreen();
+            else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+            else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+        }
+
+        // 2. Rating Logic
+        const stars = document.querySelectorAll('#gameStars span');
+        const ratingText = document.getElementById('gameRatingText');
+        let hasRated = false;
+
+        // Init: Set default fake rating visually (4 stars filled + partial implied by text)
+        function initRating() {
+            if(!hasRated) {
+                stars.forEach(s => {
+                    // Activate first 4 stars to represent 4.5 visually
+                    if (s.dataset.value <= 4) s.classList.add('active');
+                    else s.classList.remove('active');
+                });
+            }
+        }
+        initRating();
+        
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function() { 
+                if(!hasRated) highlightStars(this.dataset.value); 
+            });
+            star.addEventListener('mouseout', function() { 
+                if(!hasRated) initRating(); // Return to default
+            });
+            star.addEventListener('click', function() {
+                const val = this.dataset.value;
+                hasRated = true;
+                highlightStars(val);
+                stars.forEach(s => s.style.pointerEvents = 'none'); // Lock
+                
+                const lang = localStorage.getItem('preferred_lang') || 'en';
+                const thanks = translations[lang]['msg_thanks'] || "Thanks for rating!";
+                ratingText.innerText = `You rated: ${val}/5`;
+                ratingText.style.color = "#f1c40f";
+            });
+        });
+
+        function highlightStars(value) {
+            stars.forEach(s => {
+                if (s.dataset.value <= value) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        }
+
+        // 3. Comment Logic
+        function submitComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            const list = document.getElementById('commentList');
+            const lang = localStorage.getItem('preferred_lang') || 'en';
+            
+            if (text === "") {
+                alert(lang === 'zh' ? "输入无效！" : "Input Invalid!");
+                return;
+            }
+
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <div class="avatar" style="border-color:#e67e22; color:#e67e22">👤</div>
+                <div class="comment-content">
+                    <h4>You <span class="comment-date">Just now</span></h4>
+                    <p>${text}</p>
+                </div>
+            `;
+            list.prepend(newComment);
+            input.value = "";
+        }
+
+        // 4. Translations
+        const translations = {
+            en: {
+                group_explore: "Explore", nav_home: "🏠 Home", nav_new: "🆕 New", nav_hot: "🔥 Hot", nav_recent: "🕹️ Recent", nav_rec: "👍 Recommended", group_about: "About", link_news: "📰 News", link_privacy: "🔒 Privacy", link_terms: "📜 Terms", link_contact: "📩 Contact", label_lang: "Language", 
+                btn_fullscreen: "⛶ Fullscreen",
+                game_title: "Desert Run: Spice Wars",
+                dev_label: "Developer: Independent HTML5 Game Developer",
+                label_rate: "Rate this game",
+                label_comment: "Comments",
+                btn_submit: "Post Comment",
+                msg_thanks: "Thanks for rating!"
+            },
+            zh: {
+                group_explore: "探索", nav_home: "🏠 主页", nav_new: "🆕 新品", nav_hot: "🔥 热门", nav_recent: "🕹️ 最近", nav_rec: "👍 推荐", group_about: "关于", link_news: "📰 资讯", link_privacy: "🔒 隐私", link_terms: "📜 条款", link_contact: "📩 联系", label_lang: "语言 / Language", 
+                btn_fullscreen: "⛶ 全屏模式",
+                game_title: "荒野沙虫大逃亡",
+                dev_label: "开发者：独立 HTML5 游戏开发者",
+                label_rate: "游戏评分",
+                label_comment: "玩家评论",
+                btn_submit: "发表评论",
+                msg_thanks: "感谢评分！"
+            }
+        };
+
+        function switchLanguage(lang) {
+            localStorage.setItem('preferred_lang', lang);
+            
+            // Text replacement for data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const dict = translations[lang] || translations['en'];
+                if (dict[key]) el.innerText = dict[key];
+            });
+
+            // Block replacement (Description/Controls)
+            document.querySelectorAll('.lang-text').forEach(el => el.style.display = 'none');
+            const targets = document.querySelectorAll(`.lang-text.${lang}`);
+            if(targets.length > 0) targets.forEach(el => el.style.display = 'block');
+            else document.querySelectorAll(`.lang-text.en`).forEach(el => el.style.display = 'block');
+
+            document.getElementById('langSelector').value = lang;
+            
+            // Input placeholder
+            const commentInput = document.getElementById('commentInput');
+            if(lang === 'zh') commentInput.placeholder = "参与讨论...";
+            else commentInput.placeholder = "Join the discussion...";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferred_lang') || 'en';
+            switchLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

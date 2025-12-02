@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Details - Fun Games Today</title>
+    <style>
+        /* --- 1. 全局与侧边栏样式 (保持一致) --- */
+        :root { --bg-color: #1a1a1a; --sidebar-bg: #2d2d2d; --text-color: #ffffff; --text-muted: #aaaaaa; --accent-color: #00d2ff; --card-bg: #333333; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; }
+        
+        /* 侧边栏 */
+        .sidebar { width: 240px; background-color: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100%; left: 0; top: 0; overflow-y: auto; z-index: 100; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
+        .logo { font-size: 24px; font-weight: bold; color: var(--accent-color); margin-bottom: 30px; text-decoration: none; display: block; }
+        .menu-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #444; }
+        .menu-group:last-child { border-bottom: none; }
+        .menu-title { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; }
+        .menu-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); text-decoration: none; padding: 10px 12px; margin-bottom: 5px; border-radius: 8px; transition: 0.2s; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(0, 210, 255, 0.1); color: var(--accent-color); }
+        .lang-select { margin-top: auto; padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 5px; width: 100%; cursor: pointer; }
+        
+        /* --- 2. 文章详情页专用样式 --- */
+        .main-content { margin-left: 240px; padding: 60px 80px; width: 100%; max-width: 800px; }
+        
+        /* 返回按钮 */
+        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--accent-color); text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid var(--accent-color); padding: 8px 15px; border-radius: 5px; transition: 0.2s; }
+        .back-btn:hover { background: var(--accent-color); color: #000; }
+
+        /* 文章主体 */
+        .article-container { background: var(--card-bg); padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        
+        .article-meta { display: flex; gap: 15px; margin-bottom: 20px; font-size: 13px; color: #888; border-bottom: 1px solid #444; padding-bottom: 15px; }
+        .article-tag { color: var(--accent-color); font-weight: bold; text-transform: uppercase; }
+        
+        h1 { margin: 0 0 20px 0; color: #fff; font-size: 28px; line-height: 1.4; }
+        
+        .article-body { color: #ccc; line-height: 1.8; font-size: 16px; }
+        .article-body p { margin-bottom: 20px; }
+        .article-body strong { color: #fff; }
+        
+        /* 手机适配 */
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; padding: 20px; } .article-container { padding: 20px; } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="../index.html" class="logo">🎮 FunGames</a>
+        <div class="menu-group">
+            <div class="menu-title">Explore</div>
+            <a href="../index.html" class="menu-item">🏠 Home</a>
+            <a href="#" class="menu-item">🆕 New Games</a>
+            <a href="#" class="menu-item">🔥 Hot Games</a>
+        </div>
+        <div class="menu-group">
+            <div class="menu-title">About</div>
+            <a href="../news.html" class="menu-item active">📰 Game News</a>
+            <a href="../privacy.html" class="menu-item">🔒 Privacy Policy</a>
+            <a href="../cookies.html" class="menu-item">🍪 Cookie Policy</a>
+            <a href="../terms.html" class="menu-item">📜 Terms of Use</a>
+            <a href="../contact.html" class="menu-item">📩 Contact Us</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <a href="../news.html" class="back-btn">← Back to News List</a>
+
+        <div class="article-container">
+            <h1>Unveiling the .io Domain: From Geographic Code to Tech Industry Favorite</h1>
+            
+            <div class="article-meta">
+                <span class="article-date">Dec 01, 2025</span>
+                <span class="article-tag">Tech & Internet</span>
+                <span>Source: Tech Insights</span>
+            </div>
+
+            <div class="article-body">
+                <p>Have you noticed that web addresses with the .io suffix are becoming increasingly common in the tech sector? Whether it’s the official website of an emerging startup or a popular online tool platform, this concise two-letter domain frequently makes an appearance. Far from being just an ornament at the end of a web address, it carries unique industry connotations and a distinctive developmental history.</p>
+
+                <h2>I. The Origin of the .io Domain: From Exclusive to Global</h2>
+                <p>The development path of the .io domain has far exceeded its initial positioning. Evolving from a domain exclusive to a specific region to a popular choice in the global tech field, this transformation has an interesting historical background.</p>
+                <p>Officially, the .io domain is the country code top-level domain (ccTLD) for the British Indian Ocean Territory (BIOT). Similar in nature to the UK’s .uk and Canada’s .ca, this type of domain is an exclusive two-letter code assigned to a specific country or region. However, unlike domains with strict restrictions such as .gov and .edu, the .io domain has almost no registration restrictions. This openness broke the barriers of geographical boundaries and laid the groundwork for its widespread adoption in the tech community.</p>
+
+                <h2>II. The "New Favorite" in the Tech World</h2>
+                <p>The rapid rise of the .io domain in the tech and startup sectors is not due to its geographical attributes, but rather its unique advantages that align with industry needs.</p>
+                
+                <h3>(I) Inherent Technical Relevance</h3>
+                <p>In the fields of computer science and engineering, "I/O" is a fundamental term representing "Input/Output." The .io domain suffix exactly corresponds to this abbreviation, inherently carrying a technical gene that can quickly resonate with tech professionals. Choosing a .io domain has become a form of identity symbol for integrating into the tech field.</p>
+
+                <h3>(II) Abundant Supply of High-Quality Domain Names</h3>
+                <p>With the development of the Internet, concise and memorable .com domains have long been in short supply. The .io domain provides an ideal alternative. Many short and high-quality domain names that have already been registered under the .com suffix are still available for registration under .io.</p>
+
+                <h3>(III) Brand Advantage</h3>
+                <p>The .io domain consists of only two letters, making it concise, impactful, and easy to remember. Tech companies generally prefer a concise and modern brand style, and the format "yourbrand.io" helps enterprises create a unique online image.</p>
+
+                <h2>III. Interpretation of Dual Meanings</h2>
+                <p>The .io domain has dual meanings: the official geographical definition and the industry-specific technical interpretation.</p>
+                <ul>
+                    <li><strong>Official Meaning:</strong> Managed by Identity Digital, it remains the ccTLD for the British Indian Ocean Territory.</li>
+                    <li><strong>Industry Meaning:</strong> It represents "Input/Output," highly associated with computer science, API development, and data science. It symbolizes modern entrepreneurial culture and has become an exclusive identifier for APIs and online services.</li>
+                </ul>
+
+                <h2>IV. Mainstream Application Scenarios</h2>
+                <p><strong>Tech Companies and Startups:</strong> From Silicon Valley to global tech hubs, SaaS platforms and AI labs utilize .io (e.g., itch.io).</p>
+                <p><strong>Open-Source Projects:</strong> The "Input/Output" connotation aligns perfectly with the open-source philosophy of code exchange and collaboration.</p>
+                <p><strong>Gaming Industry:</strong> It has spawned a dedicated category—".io games" (like Agar.io and Slither.io), binding the domain to browser-based multiplayer experiences.</p>
+
+                <h2>V. SEO Impact Analysis</h2>
+                <p><strong>Google’s Positioning:</strong> Although .io is a country code domain, Google treats it as a Generic Top-Level Domain (gTLD). This means it enjoys the same geographical weight as .com or .net and is not limited to a specific region in search rankings.</p>
+                <p><strong>Advantages:</strong> It enhances keyword relevance for tech websites and offers better availability for short, branding-friendly names.</p>
+                <p><strong>Considerations:</strong> Registration costs are generally higher than .com, and general public recognition is still growing compared to traditional domains.</p>
+
+                <h2>VI. Conclusion</h2>
+                <p>From being a domain exclusive to the British Indian Ocean Territory to a sought-after generic domain in the tech world, the .io domain has undergone a remarkable transformation. For practitioners pursuing a concise, modern, and professional technical image, the .io domain is undoubtedly an attractive choice. It is not just a web address suffix but also a unique "business card" that highlights the brand’s technical genes.</p>
+            </div>
+        </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

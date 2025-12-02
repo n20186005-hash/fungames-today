@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Use - Fun Games Today</title>
+    <style>
+        /* --- 全局样式 (与首页保持一致) --- */
+        :root { --bg-color: #1a1a1a; --sidebar-bg: #2d2d2d; --text-color: #ffffff; --text-muted: #aaaaaa; --accent-color: #00d2ff; --card-bg: #333333; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; }
+        
+        /* 侧边栏 */
+        .sidebar { width: 240px; background-color: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100%; left: 0; top: 0; overflow-y: auto; z-index: 100; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
+        .logo { font-size: 24px; font-weight: bold; color: var(--accent-color); margin-bottom: 30px; text-decoration: none; display: block; }
+        .menu-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #444; }
+        .menu-group:last-child { border-bottom: none; }
+        .menu-title { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; }
+        .menu-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); text-decoration: none; padding: 10px 12px; margin-bottom: 5px; border-radius: 8px; transition: 0.2s; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(0, 210, 255, 0.1); color: var(--accent-color); }
+        .lang-select { margin-top: auto; padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 5px; width: 100%; cursor: pointer; }
+        
+        /* 主内容区 */
+        .main-content { margin-left: 240px; padding: 60px 80px; width: 100%; max-width: 800px; }
+        .back-btn { display: inline-block; margin-bottom: 30px; color: #888; text-decoration: none; font-size: 14px; }
+        .back-btn:hover { color: var(--accent-color); }
+        
+        /* 法律文档排版 */
+        h1 { color: var(--accent-color); border-bottom: 2px solid #444; padding-bottom: 20px; margin-bottom: 30px; }
+        h2 { margin-top: 40px; color: #fff; font-size: 20px; border-left: 4px solid var(--accent-color); padding-left: 10px; }
+        h3 { color: #ddd; font-size: 18px; margin-top: 25px; }
+        p { line-height: 1.8; color: #ccc; margin-bottom: 15px; text-align: justify; }
+        ul { color: #ccc; line-height: 1.8; }
+        li { margin-bottom: 10px; }
+        a { color: var(--accent-color); text-decoration: none; }
+
+        /* 多语言切换控制 */
+        .lang-content { display: none; }
+        .lang-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; padding: 30px; } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="/" class="logo">🎮 FunGames</a>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_explore">Explore</div>
+            <a href="/" class="menu-item" data-i18n="nav_home">🏠 Home</a>
+            <a href="#" class="menu-item" data-i18n="nav_new">🆕 New Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_hot">🔥 Hot Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_recent">🕹️ Recently Played</a>
+            <a href="#" class="menu-item" data-i18n="nav_rec">👍 Recommended</a>
+        </div>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_about">About</div>
+            <a href="news.html" class="menu-item" data-i18n="link_news">📰 Game News</a>
+            <a href="privacy.html" class="menu-item" data-i18n="link_privacy">🔒 Privacy Policy</a>
+            <a href="cookies.html" class="menu-item" data-i18n="link_cookies">🍪 Cookie Policy</a>
+            <a href="terms.html" class="menu-item active" data-i18n="link_terms">📜 Terms of Use</a>
+            <a href="contact.html" class="menu-item" data-i18n="link_contact">📩 Contact Us</a>
+        </div>
+        <div style="margin-top: auto;">
+            <div class="menu-title" data-i18n="label_lang">Language</div>
+            <select class="lang-select" id="langSelector" onchange="switchLanguage(this.value)">
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 简体中文</option>
+                <option value="jp">🇯🇵 日本語</option>
+                <option value="kr">🇰🇷 한국어</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <a href="/" class="back-btn" data-i18n="btn_back">← Back Home</a>
+
+        <div class="lang-content en active">
+            <h1>Terms and Conditions</h1>
+            <p><strong>Last Modified: June 2018</strong></p>
+            <p>By browsing or accessing fungames.today (hereinafter referred to as the "Site") and/or using fungames.today online games, software, applications, products, or services, you explicitly agree to the following terms and conditions (hereinafter referred to as "Terms of Use", "Terms"). fungames.today and its network of websites are products of Web Entertainment Limited (hereinafter referred to as "WEL" and any second-person pronouns).</p>
+            <p>These Terms govern your use of our Site and all its content, software, and services provided.</p>
+
+            <h2>1. Terms and Conditions</h2>
+            <h3>1.1. Changes to Terms</h3>
+            <p>We may change these Terms of Use at any time, and it is your responsibility to review any changes regularly. The "Last Modified" date will be noted in the Terms so you are aware of any changes. If you do not agree to future changes to our Terms, please do not continue to use our Site.</p>
+            <h3>1.2. Additional Terms</h3>
+            <p>Certain areas of this Site available for you to download or upload files may contain guidelines and rules that supplement these Terms. By using these services on this Site, you agree to abide by these guidelines and rules.</p>
+
+            <h2>2. Electronic Delivery Policy and Your Consent</h2>
+            <p>You agree that we may provide you with necessary notices, agreements, and other information related to this Site electronically. If you no longer agree to receive notices electronically, please stop using this Site.</p>
+
+            <h2>3. Service Availability</h2>
+            <p>fungames.today is committed to providing a stable and reliable website. However, games and services may be temporarily unavailable due to system maintenance or technical issues. fungames.today may also suspend or permanently remove any game or service for any reason without your consent or prior notice.</p>
+
+            <h2>4. Registration and Login</h2>
+            <p>You can access and/or use our website and services without registering.</p>
+
+            <h2>5. Privacy Policy</h2>
+            <p>We have established a Privacy Policy to make important disclosures about our privacy practices regarding any personal data you may provide to us or that we receive from you. For all questions about how we use information obtained through your use of this Site, please visit our Privacy Policy.</p>
+
+            <h2>6. Access Costs</h2>
+            <p>You must bear the cost of equipment and internet connection required to access and use this Site.</p>
+
+            <h2>7. Your Responsibilities</h2>
+            <h3>7.1. Use of the Site</h3>
+            <p>You may only use this Site for lawful purposes. When using this Site, you must ensure your contact information remains up to date and must not share your password with others or allow others to access your account.</p>
+            <h3>7.2. Restrictions on Use</h3>
+            <p>You may not use our Site: (i) for your own commercial gain; (ii) to provide any form of advertising or promotion without our prior written consent; or (iii) to provide false personal information or represent others without permission.</p>
+            <h3>7.3. Submissions via the Site</h3>
+            <p>You may not submit or transmit any information, content, or materials through this Site that infringe on the rights of others, are illegal, threatening, abusive, or contain viruses.</p>
+
+            <h2>8. User Conduct</h2>
+            <p>WEL reserves the right to ban users from accessing the entire fungames.today network or specific games if they use inappropriate language or behavior.</p>
+
+            <h2>9. Age Restrictions</h2>
+            <p>Children under 13 may register for a child account under the guidance of a parent or guardian. Parents are responsible for determining the suitability of the Site for their children.</p>
+
+            <h2>10. Uploading Games</h2>
+            <p>By uploading files, you warrant that you own the copyright or have the necessary rights. Uploaded games are for non-commercial use only.</p>
+
+            <h2>11. Viruses</h2>
+            <p>You understand and agree that it is your responsibility to ensure your computer has suitable, up-to-date anti-virus software.</p>
+
+            <h2>12. Third-Party Websites</h2>
+            <p>Our Site may contain links to other websites or resources. We are not responsible for the availability or content of these external sites.</p>
+
+            <h2>14. Intellectual Property</h2>
+            <p>fungames.today, fungames.today.com, and the fungames.today logo are trademarks of Web Entertainment Limited. Our Site and its content are protected by international intellectual property laws.</p>
+
+            <h2>15. Indemnification</h2>
+            <p>You agree to indemnify and hold us harmless from any claims arising out of your use of the service or violation of these Terms.</p>
+
+            <h2>16. Jurisdiction</h2>
+            <p>These Terms and your use of the Site are governed by the laws of Hong Kong.</p>
+        </div>
+
+        <div class="lang-content zh">
+            <h1>fungames.today 条款及细则</h1>
+            <p><strong>最后修改日期：2018年06月</strong></p>
+            
+            <p>通过浏览或访问 fungames.today（以下简称“网站”）和/或使用 fungames.today 网络游戏、软件、应用程序、产品或服务，您明确同意以下条款和条件（以下简称“使用条款”、“条款”）。fungames.today 及其网站网络是 Web Entertainment Limited（以下简称“WEL”及任何第二人称代词）的产品。</p>
+            <p>这些条款约束您对我们网站及其所有内容、软件和所提供服务的使用。</p>
+            <p>使用本网站即表示您同意这些条款，并同意接收必要的通知，以及通过计算机与我们进行交易。如果您不同意这些条款，我们建议您不要使用本网站。</p>
+
+            <h2>1. 条款和条件</h2>
+            <h3>1.1. 条款变更</h3>
+            <p>我们可能随时更改本使用条款，您有责任定期查看任何变更。条款中会注明“最后修改日期”，以便您了解条款的变更。如果您不同意我们条款的未来变更，请勿继续使用我们的网站。</p>
+            <h3>1.2. 附加条款</h3>
+            <p>本网站某些可供您下载或上传文件的区域可能包含使用指南和规则，这些指南和规则是对本条款的补充。使用本网站的这些服务，即表示您同意遵守这些指南和规则。</p>
+
+            <h2>2. 电子交付政策及您的同意</h2>
+            <p>您同意我们可以通过电子方式向您提供与本网站相关的必要通知、协议及其他信息。如果您不再同意以电子方式接收通知，请停止使用本网站。</p>
+
+            <h2>3. 服务可用性</h2>
+            <p>fungames.today致力于提供稳定可靠的网站。然而，由于系统维护或技术问题，游戏和服务可能会暂时无法使用。fungames.today也可能出于任何原因，在未经您同意或事先通知的情况下，暂停或永久移除任何游戏或服务。</p>
+
+            <h2>4. 注册和登录</h2>
+            <p>您无需注册即可访问和/或使用我们的网站和服务。</p>
+
+            <h2>5. 隐私政策</h2>
+            <p>我们制定了本隐私政策，旨在就您可能向我们提供或我们从您处收到的任何个人数据，对我们的隐私保护措施做出重要披露。有关我们如何使用通过您使用本网站而获得的信息的所有问题，请访问我们的隐私政策。</p>
+
+            <h2>6. 接入成本</h2>
+            <p>您必须自行承担访问和使用本网站所需的设备和网络连接费用。</p>
+
+            <h2>7. 你的职责</h2>
+            <h3>7.1. 网站的使用</h3>
+            <p>您仅可将本网站用于合法用途。使用本网站时，您必须确保您的联系信息始终保持最新，并且不得与他人分享您的密码或允许他人访问您的帐户。</p>
+            <h3>7.2 使用限制</h3>
+            <p>您不得使用我们的网站：（一）为了你自己的商业利益；（二）未经我方事先书面同意，不得提供任何形式的广告或促销活动；或（三）提供任何虚假的个人信息。</p>
+            <h3>7.3. 通过网站提交</h3>
+            <p>您不得通过本网站提交或传输任何信息、内容或材料，或从事任何侵犯他人权利、违法、包含病毒等行为。</p>
+
+            <h2>8. 用户行为准则</h2>
+            <p>如果用户使用不当语言或行为，WEL有权禁止其访问整个fungames.today网络网站或我们网站上的任何游戏，或将其账号暂停或终止。</p>
+
+            <h2>9. 年龄限制</h2>
+            <p>fungames.today网络网站及其服务旨在吸引广泛的用户群体。13岁以下的儿童可以在父母或监护人的指导下注册儿童账户。</p>
+
+            <h2>10. 上传游戏</h2>
+            <p>上传文件即表示您保证您拥有该文件的版权或拥有上传该文件的必要权利。上传游戏仅限非商业用途。</p>
+
+            <h2>11. 病毒</h2>
+            <p>您理解并同意，您有责任确保您的计算机安装了合适的、最新的防病毒软件。</p>
+
+            <h2>12. 第三方网站</h2>
+            <p>我们的网站可能包含指向其他网站或资源的链接。由于我们无法控制此类网站和资源，您承认并同意，我们不对这些外部网站或资源的可用性负责。</p>
+
+            <h2>13. 关于第三方游戏、应用程序或服务的免责声明</h2>
+            <p>您特此确认并同意，任何可通过 WEL fungames.today 网络网站访问的第三方游戏、应用程序或服务，例如但不限于由第三方提供商而非 WEL 向您提供的游戏。</p>
+
+            <h2>14. fungames.today.com 知识产权</h2>
+            <p>fungames.today、fungames.today.com 和 fungames.today 标志是 Web Entertainment Limited 的商标。</p>
+
+            <h2>15. 赔偿</h2>
+            <p>您同意赔偿并使我们及我们的子公司、关联公司、管理人员、代理人、员工、合作伙伴和许可人免受任何第三方因您提交、发布、传输、通过服务提供的任何内容而提出的任何索赔或要求。</p>
+
+            <h2>16. 管辖权</h2>
+            <p>本条款及您对网站及服务的访问和使用均受香港法律管辖。</p>
+        </div>
+
+        <div class="lang-content jp">
+            <h1>利用規約</h1>
+            <p>（翻訳中... English content displayed）</p>
+        </div>
+        <div class="lang-content kr">
+            <h1>이용 약관</h1>
+            <p>（번역 중... English content displayed）</p>
+        </div>
+    </div>
+
+    <script>
+        const uiTranslations = {
+            zh: { group_explore: "探索", nav_home: "🏠 主页", nav_new: "🆕 新游戏", nav_hot: "🔥 热门游戏", nav_recent: "🕹️ 最近玩过", nav_rec: "👍 推荐游戏", group_about: "关于", link_news: "📰 游戏资讯", link_privacy: "🔒 隐私政策", link_cookies: "🍪 Cookie 政策", link_terms: "📜 使用条款", link_contact: "📩 联系我们", label_lang: "语言 / Language", btn_back: "← 返回首页" },
+            en: { group_explore: "Explore", nav_home: "🏠 Home", nav_new: "🆕 New Games", nav_hot: "🔥 Hot Games", nav_recent: "🕹️ Recently Played", nav_rec: "👍 Recommended", group_about: "About", link_news: "📰 News", link_privacy: "🔒 Privacy", link_cookies: "🍪 Cookies", link_terms: "📜 Terms", link_contact: "📩 Contact", label_lang: "Language", btn_back: "← Back Home" },
+            jp: { group_explore: "探索", nav_home: "🏠 ホーム", nav_new: "🆕 新作", nav_hot: "🔥 人気", nav_recent: "🕹️ 履歴", nav_rec: "👍 おすすめ", group_about: "情報", link_news: "📰 ニュース", link_privacy: "🔒 プライバシー", link_cookies: "🍪 Cookie", link_terms: "📜 規約", link_contact: "📩 連絡先", label_lang: "言語", btn_back: "← ホームに戻る" },
+            kr: { group_explore: "탐구", nav_home: "🏠 홈", nav_new: "🆕 신규", nav_hot: "🔥 인기", nav_recent: "🕹️ 최근", nav_rec: "👍 추천", group_about: "정보", link_news: "📰 뉴스", link_privacy: "🔒 개인정보", link_cookies: "🍪 쿠키", link_terms: "📜 약관", link_contact: "📩 문의", label_lang: "언어", btn_back: "← 홈으로 돌아가기" }
+        };
+
+        function switchLanguage(lang) {
+            localStorage.setItem('preferred_lang', lang);
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (uiTranslations[lang] && uiTranslations[lang][key]) el.innerText = uiTranslations[lang][key];
+            });
+            document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+            const target = document.querySelector(`.lang-content.${lang}`);
+            if(target) target.classList.add('active'); 
+            else document.querySelector('.lang-content.en').classList.add('active');
+            document.getElementById('langSelector').value = lang;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferred_lang') || 'en';
+            switchLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

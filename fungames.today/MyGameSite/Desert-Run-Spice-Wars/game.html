@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Desert Run: Spice Wars</title>
+    <style>
+        :root {
+            --primary: #e67e22;
+            --accent: #f1c40f;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        #gameContainer {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 16/9;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            background: #000;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #ff9966, #ff5e62);
+            cursor: crosshair;
+        }
+        /* UI Overlay General */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            text-align: center;
+            z-index: 20;
+            transition: opacity 0.3s;
+        }
+        .hidden {
+            display: none !important;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Top Bar UI */
+        #hud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none; /* Let clicks pass through to canvas */
+            z-index: 10;
+        }
+        .hud-group {
+            display: flex;
+            gap: 15px;
+            pointer-events: auto; /* Re-enable clicks for buttons */
+        }
+        .stat-box {
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: #fff;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+        .icon-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.4); }
+        
+        /* Main Menu & Modals */
+        h1 {
+            font-size: clamp(24px, 5vw, 48px);
+            color: var(--accent);
+            text-shadow: 4px 4px 0 #8b4500;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .btn {
+            background: var(--primary);
+            border: 2px solid #fff;
+            color: white;
+            padding: 10px 30px;
+            font-size: clamp(16px, 3vw, 24px);
+            font-family: inherit;
+            cursor: pointer;
+            margin: 10px;
+            min-width: 150px;
+            transition: transform 0.1s;
+        }
+        .btn:hover { background: #d35400; transform: scale(1.05); }
+        .btn:active { transform: scale(0.95); }
+        .btn-secondary { background: var(--dark); border-color: #7f8c8d; }
+
+        /* Shop Styles */
+        #shopGrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .shop-item {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #555;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .shop-item:hover { border-color: var(--accent); background: rgba(255,255,255,0.2); }
+        .shop-item.disabled { opacity: 0.5; cursor: not-allowed; border-color: #333; }
+        .item-price { color: var(--accent); font-weight: bold; display: block; margin-top: 5px; }
+
+        /* Mobile Controls Hint */
+        #mobileControls {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            pointer-events: none;
+            display: none;
+        }
+        @media (hover: none) and (pointer: coarse) {
+            #mobileControls { display: block; }
+            .btn { padding: 15px 40px; } /* Larger buttons for touch */
+        }
+        
+        .mode-select {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* Health Hearts */
+        #healthDisplay { color: #e74c3c; font-size: 20px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+<div id="gameContainer">
+    <!-- HUD -->
+    <div id="hud">
+        <div class="hud-group">
+            <div class="stat-box">❤️ <span id="healthDisplay">3</span></div>
+            <div class="stat-box">✨ <span id="spiceDisplay">0</span></div>
+            <div class="stat-box">👥 <span id="crewDisplay">1</span></div>
+            <div class="stat-box">📏 <span id="distDisplay">0m</span></div>
+        </div>
+        <div class="hud-group">
+            <button class="icon-btn" id="langBtn">EN</button>
+            <button class="icon-btn" id="muteBtn">🔊</button>
+            <button class="icon-btn" id="pauseBtn" title="Press 'P' to Pause">⏸️</button>
+        </div>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="startScreen" class="overlay">
+        <h1 data-i18n="title">DESERT RUN</h1>
+        <p data-i18n="tutorial">Mouse/Touch Sides to Move • Click/Space to Jump</p>
+        <p style="font-size: 14px; color: #f1c40f;" data-i18n="pauseHint">Press 'P' to Pause/Shop</p>
+        
+        <div class="mode-select">
+            <input type="checkbox" id="immortalMode">
+            <label for="immortalMode" data-i18n="infiniteMode">Infinite Mode (No Death)</label>
+        </div>
+
+        <button class="btn" onclick="if(window.game) window.game.start()" data-i18n="start">START ENGINE</button>
+    </div>
+
+    <!-- Pause/Shop Screen -->
+    <div id="pauseScreen" class="overlay hidden">
+        <h1 data-i18n="paused">PAUSED</h1>
+        
+        <div id="shopGrid">
+            <div class="shop-item" onclick="if(window.game) window.game.buyItem('health')">
+                <div style="font-size: 30px;">❤️</div>
+                <div data-i18n="buyHealth">Repair Kit</div>
+                <span class="item-price">50 ✨</span>
+            </div>
+            <div class="shop-item" onclick="if(window.game) window.game.buyItem('shield')">
+                <div style="font-size: 30px;">🛡️</div>
+                <div data-i18n="buyShield">Shield</div>
+                <span class="item-price">100 ✨</span>
+            </div>
+        </div>
+
+        <button class="btn" onclick="if(window.game) window.game.resume()" data-i18n="resume">RESUME</button>
+        <button class="btn btn-secondary" onclick="if(window.game) window.game.quit()" data-i18n="quit">QUIT</button>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" class="overlay hidden">
+        <h1 style="color: #e74c3c;" data-i18n="gameOver">MISSION FAILED</h1>
+        <p><span data-i18n="score">Survivors Saved</span>: <span id="finalScore" style="color: gold; font-size: 24px;">0</span></p>
+        <p><span data-i18n="collected">Spice Collected</span>: <span id="finalSpice" style="color: gold;">0</span></p>
+        <button class="btn" onclick="if(window.game) window.game.reset()" data-i18n="retry">RETRY</button>
+        <button class="btn btn-secondary" onclick="if(window.game) window.game.openShopFromGameOver()" data-i18n="shop">SHOP</button>
+    </div>
+
+    <div id="mobileControls">
+        <span data-i18n="mobileHint">Tap Left/Right to Move • Center to Jump</span>
+    </div>
+
+    <canvas id="gameCanvas" width="800" height="450"></canvas>
+</div>
+
+<script>
+/** * AUDIO SYSTEM (Synthesizer)
+ * Lazy initialization to fix browser policy issues
+ */
+const Sound = {
+    ctx: null,
+    muted: false,
+    init: () => {
+        if (!Sound.ctx) {
+            try {
+                Sound.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            } catch(e) {
+                console.warn("AudioContext not supported");
+            }
+        }
+        if (Sound.ctx && Sound.ctx.state === 'suspended') {
+            Sound.ctx.resume();
+        }
+    },
+    playTone: (freq, type, duration, vol = 0.1) => {
+        if (Sound.muted || !Sound.ctx) return;
+        try {
+            const osc = Sound.ctx.createOscillator();
+            const gain = Sound.ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, Sound.ctx.currentTime);
+            gain.gain.setValueAtTime(vol, Sound.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, Sound.ctx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(Sound.ctx.destination);
+            osc.start();
+            osc.stop(Sound.ctx.currentTime + duration);
+        } catch(e) { /* ignore audio errors */ }
+    },
+    jump: () => Sound.playTone(300, 'square', 0.1, 0.1),
+    collect: () => Sound.playTone(800, 'sine', 0.1, 0.05),
+    hit: () => {
+        if (Sound.muted || !Sound.ctx) return;
+        try {
+            const osc = Sound.ctx.createOscillator();
+            const gain = Sound.ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(100, Sound.ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(10, Sound.ctx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.2, Sound.ctx.currentTime);
+            gain.gain.linearRampToValueAtTime(0, Sound.ctx.currentTime + 0.3);
+            osc.connect(gain);
+            gain.connect(Sound.ctx.destination);
+            osc.start();
+            osc.stop(Sound.ctx.currentTime + 0.3);
+        } catch(e) {}
+    },
+    spice: () => Sound.playTone(1200, 'sine', 0.15, 0.05),
+    buy: () => Sound.playTone(600, 'square', 0.2, 0.1),
+    shieldPickup: () => {
+        if (Sound.muted || !Sound.ctx) return;
+        try {
+            const osc = Sound.ctx.createOscillator();
+            const gain = Sound.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(200, Sound.ctx.currentTime);
+            osc.frequency.linearRampToValueAtTime(800, Sound.ctx.currentTime + 0.5); // Rising pitch
+            gain.gain.setValueAtTime(0.1, Sound.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, Sound.ctx.currentTime + 0.5);
+            osc.connect(gain);
+            gain.connect(Sound.ctx.destination);
+            osc.start();
+            osc.stop(Sound.ctx.currentTime + 0.5);
+        } catch(e) {}
+    },
+    healthPickup: () => {
+        if (Sound.muted || !Sound.ctx) return;
+        try {
+            const osc = Sound.ctx.createOscillator();
+            const gain = Sound.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(300, Sound.ctx.currentTime);
+            osc.frequency.linearRampToValueAtTime(500, Sound.ctx.currentTime + 0.1);
+            osc.frequency.linearRampToValueAtTime(800, Sound.ctx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.1, Sound.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, Sound.ctx.currentTime + 0.3);
+            osc.connect(gain);
+            gain.connect(Sound.ctx.destination);
+            osc.start();
+            osc.stop(Sound.ctx.currentTime + 0.3);
+        } catch(e) {}
+    }
+};
+
+/**
+ * LOCALIZATION
+ */
+const i18nData = {
+    en: {
+        title: "DESERT RUN",
+        tutorial: "Mouse/Touch Sides to Move • Click/Space to Jump",
+        pauseHint: "Press 'P' to Pause/Shop",
+        start: "START ENGINE",
+        paused: "PAUSED",
+        resume: "RESUME",
+        quit: "QUIT",
+        gameOver: "MISSION FAILED",
+        score: "Survivors Saved",
+        collected: "Spice Collected",
+        retry: "RETRY",
+        shop: "OPEN SHOP",
+        buyHealth: "Repair Kit",
+        buyShield: "Shield",
+        infiniteMode: "Infinite Mode (No Death)",
+        mobileHint: "Tap Left/Right to Move • Center to Jump"
+    },
+    zh: {
+        title: "荒野沙蟲大逃亡",
+        tutorial: "鼠標/觸摸左右移動 • 點擊/空白鍵跳躍",
+        pauseHint: "按 'P' 鍵暫停/商店",
+        start: "發動引擎",
+        paused: "遊戲暫停",
+        resume: "繼續遊戲",
+        quit: "退出",
+        gameOver: "任務失敗",
+        score: "成功營救",
+        collected: "收集香料",
+        retry: "再次出發",
+        shop: "打開商店",
+        buyHealth: "維修工具包",
+        buyShield: "能量護盾",
+        infiniteMode: "無敵模式 (不死)",
+        mobileHint: "點擊左右移動 • 點擊中間跳躍"
+    },
+    cn: {
+        title: "荒野沙虫大逃亡",
+        tutorial: "鼠标/触摸左右移动 • 点击/空格键跳跃",
+        pauseHint: "按 'P' 键暂停/商店",
+        start: "发动引擎",
+        paused: "游戏暂停",
+        resume: "继续游戏",
+        quit: "退出",
+        gameOver: "任务失败",
+        score: "成功营救",
+        collected: "收集香料",
+        retry: "再次出发",
+        shop: "打开商店",
+        buyHealth: "维修工具包",
+        buyShield: "能量护盾",
+        infiniteMode: "无敌模式 (不死)",
+        mobileHint: "点击左右移动 • 点击中间跳跃"
+    }
+};
+
+/**
+ * GAME ENGINE
+ */
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+const GameData = {
+    lang: 'en',
+    totalSpice: 0,
+    highScore: 0,
+    load: () => {
+        try {
+            const data = JSON.parse(localStorage.getItem('desertRunSave') || '{}');
+            GameData.totalSpice = data.totalSpice || 0;
+            GameData.highScore = data.highScore || 0;
+        } catch(e) {
+            console.log("Storage not available");
+        }
+    },
+    save: () => {
+        try {
+            localStorage.setItem('desertRunSave', JSON.stringify({
+                totalSpice: GameData.totalSpice,
+                highScore: GameData.highScore
+            }));
+        } catch(e) {}
+    }
+};
+
+class Game {
+    constructor() {
+        this.state = 'MENU'; // MENU, PLAYING, PAUSED, GAMEOVER
+        this.frames = 0;
+        this.score = 1;
+        this.spice = 0;
+        this.distance = 0;
+        this.speed = 6;
+        this.isImmortal = false;
+        
+        // Entities
+        this.player = null;
+        this.entities = [];
+        this.particles = [];
+        this.mountains = [];
+        
+        // Input
+        this.mouseX = canvas.width / 2;
+        this.keys = {};
+        
+        this.initInput();
+        this.initEnvironment();
+        
+        GameData.load();
+        this.updateUI();
+    }
+
+    initInput() {
+        // Mouse/Touch logic adapted for both desktop and mobile
+        const updatePos = (clientX) => {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            let x = (clientX - rect.left) * scaleX;
+            this.mouseX = x;
+        };
+
+        canvas.addEventListener('mousemove', e => updatePos(e.clientX));
+        
+        // Touch controls
+        canvas.addEventListener('touchstart', e => {
+            // Only prevent default if inside canvas and playing to avoid blocking UI clicks
+            if (e.target === canvas) e.preventDefault();
+            
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const width = rect.width;
+            
+            // Zoning: Center 50% = Jump, Left 25% = Move Left, Right 25% = Move Right
+            if (x > width * 0.25 && x < width * 0.75) {
+                if (this.state === 'PLAYING' && this.player) this.player.jump();
+            } else {
+                updatePos(touch.clientX);
+            }
+        }, {passive: false});
+
+        canvas.addEventListener('touchmove', e => {
+            if (e.target === canvas) e.preventDefault(); // Prevent scrolling
+            updatePos(e.touches[0].clientX);
+        }, {passive: false});
+
+        canvas.addEventListener('mousedown', (e) => {
+             // Only jump if clicking the canvas directly, not UI buttons
+            if (this.state === 'PLAYING' && e.target === canvas && this.player) this.player.jump();
+        });
+
+        window.addEventListener('keydown', e => {
+            // Space/ArrowUp to Jump
+            if (e.code === 'Space' || e.code === 'ArrowUp') {
+                if (this.state === 'PLAYING' && this.player) this.player.jump();
+            }
+            // ESC or P to Pause
+            if (e.code === 'Escape' || e.code === 'KeyP') {
+                this.togglePause();
+            }
+        });
+
+        // UI Buttons - attached safely
+        const attachBtn = (id, fn) => {
+            const el = document.getElementById(id);
+            if(el) {
+                el.onclick = fn;
+                // Stop mouse events on buttons from affecting canvas
+                el.addEventListener('mousemove', (e) => e.stopPropagation());
+            }
+        };
+
+        attachBtn('pauseBtn', () => this.togglePause());
+        attachBtn('muteBtn', () => {
+            Sound.muted = !Sound.muted;
+            const btn = document.getElementById('muteBtn');
+            if(btn) btn.innerText = Sound.muted ? '🔇' : '🔊';
+        });
+        attachBtn('langBtn', () => {
+            const langs = ['en', 'zh', 'cn'];
+            let idx = langs.indexOf(GameData.lang);
+            GameData.lang = langs[(idx + 1) % langs.length];
+            this.updateLanguage();
+        });
+        
+        // Stop canvas mouse tracking when hovering HUD buttons
+        const hud = document.getElementById('hud');
+        if(hud) {
+            hud.addEventListener('mouseenter', () => {
+                // Optional: You could set a flag here to stop player movement
+                // but for now, just adding the key P is the main fix.
+            }, true);
+        }
+    }
+
+    initEnvironment() {
+        for(let i=0; i<5; i++) {
+            this.mountains.push({
+                x: i * 200,
+                height: 50 + Math.random() * 100,
+                width: 200 + Math.random() * 100
+            });
+        }
+    }
+
+    start() {
+        // Init sound on user gesture
+        Sound.init();
+
+        const immortalCheck = document.getElementById('immortalMode');
+        this.isImmortal = immortalCheck ? immortalCheck.checked : false;
+        
+        this.state = 'PLAYING';
+        this.resetStats();
+        
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('gameOverScreen').classList.add('hidden');
+        document.getElementById('pauseScreen').classList.add('hidden');
+        
+        this.player = new Player(this);
+        this.loop();
+    }
+
+    resetStats() {
+        this.frames = 0;
+        this.score = 1; // Just driver
+        this.spice = 0;
+        this.distance = 0;
+        this.speed = 6;
+        this.entities = [];
+        this.particles = [];
+    }
+
+    togglePause() {
+        if (this.state === 'PLAYING') {
+            this.state = 'PAUSED';
+            document.getElementById('pauseScreen').classList.remove('hidden');
+        } else if (this.state === 'PAUSED') {
+            this.resume();
+        }
+    }
+
+    resume() {
+        this.state = 'PLAYING';
+        document.getElementById('pauseScreen').classList.add('hidden');
+        this.loop();
+    }
+
+    quit() {
+        this.state = 'MENU';
+        document.getElementById('pauseScreen').classList.add('hidden');
+        document.getElementById('startScreen').classList.remove('hidden');
+    }
+
+    gameOver() {
+        this.state = 'GAMEOVER';
+        // Auto Save
+        GameData.totalSpice += this.spice;
+        if (this.distance > GameData.highScore) GameData.highScore = Math.floor(this.distance);
+        GameData.save();
+
+        document.getElementById('finalScore').innerText = this.score - 1;
+        document.getElementById('finalSpice').innerText = this.spice;
+        document.getElementById('gameOverScreen').classList.remove('hidden');
+        
+        this.updateUI(); // Update spice total
+    }
+
+    reset() {
+        this.start();
+    }
+
+    openShopFromGameOver() {
+        document.getElementById('gameOverScreen').classList.add('hidden');
+        this.state = 'PAUSED'; // Reuse pause screen logic for shop
+        document.getElementById('pauseScreen').classList.remove('hidden');
+    }
+
+    buyItem(type) {
+        if (type === 'health') {
+            if (GameData.totalSpice >= 50) {
+                GameData.totalSpice -= 50;
+                if (this.player) this.player.health = Math.min(this.player.health + 1, 5);
+                Sound.buy();
+                this.updateUI();
+            }
+        } else if (type === 'shield') {
+            if (GameData.totalSpice >= 100) {
+                GameData.totalSpice -= 100;
+                if (this.player) this.player.invincible = 600; // 10 seconds
+                Sound.buy();
+                this.updateUI();
+            }
+        }
+        GameData.save();
+    }
+
+    updateLanguage() {
+        document.getElementById('langBtn').innerText = GameData.lang.toUpperCase();
+        const texts = i18nData[GameData.lang];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (texts[key]) el.innerText = texts[key];
+        });
+    }
+
+    updateUI() {
+        // FIXED: Removed invalid scoreDisplay reference which was causing the crash
+        const setIfExists = (id, val) => {
+            const el = document.getElementById(id);
+            if(el) el.innerText = val;
+        };
+        const setHTMLIfExists = (id, val) => {
+            const el = document.getElementById(id);
+            if(el) el.innerHTML = val;
+        };
+
+        setIfExists('spiceDisplay', this.spice + " (" + GameData.totalSpice + ")");
+        setIfExists('distDisplay', Math.floor(this.distance/10) + "m");
+        setIfExists('crewDisplay', this.score);
+        
+        let healthStr = '';
+        const hp = this.player ? this.player.health : 3;
+        for(let i=0; i<hp; i++) healthStr += '❤️';
+        setHTMLIfExists('healthDisplay', healthStr);
+    }
+
+    spawnManager() {
+        const difficulty = 1 + (this.distance / 5000);
+        
+        // Spawn Worms
+        let spawnRate = Math.max(50, 120 - difficulty * 10);
+        if (this.frames % Math.floor(spawnRate) === 0) {
+            this.entities.push(new Worm(this));
+        }
+
+        // Spawn Humans
+        if (this.frames % 180 === 0) {
+            this.entities.push(new Human(this));
+        }
+
+        // Spawn Spice (Currency)
+        if (this.frames % 60 === 0) {
+            this.entities.push(new Spice(this));
+        }
+
+        // Spawn Shield (Rare Item)
+        // Spawn chance based on frame count (approx every 20 seconds)
+        if (this.frames % 1200 === 0) {
+            this.entities.push(new ShieldItem(this));
+        }
+        
+        // Spawn Health (Rare Item)
+        // Spawn chance based on frame count (approx every 16 seconds)
+        if (this.frames % 1000 === 0) {
+            this.entities.push(new HealthItem(this));
+        }
+    }
+
+    checkCollisions() {
+        if (!this.player) return;
+
+        for (let i = this.entities.length - 1; i >= 0; i--) {
+            let e = this.entities[i];
+            
+            // Simple AABB
+            if (
+                this.player.x < e.x + e.width &&
+                this.player.x + this.player.width > e.x &&
+                this.player.y < e.y + e.height &&
+                this.player.y + this.player.height > e.y
+            ) {
+                if (e instanceof Worm && e.state === 'ATTACK') {
+                    if (!this.player.invincible && !this.isImmortal) {
+                        this.player.hit();
+                        if (this.player.health <= 0) {
+                            this.gameOver();
+                            return;
+                        }
+                    }
+                } else if (e instanceof Human && e.active) {
+                    e.active = false;
+                    this.score++;
+                    Sound.collect();
+                    this.createExplosion(e.x, e.y, '#fff');
+                    this.entities.splice(i, 1);
+                } else if (e instanceof Spice && e.active) {
+                    e.active = false;
+                    this.spice++;
+                    Sound.spice();
+                    this.createExplosion(e.x, e.y, '#f1c40f');
+                    this.entities.splice(i, 1);
+                } else if (e instanceof ShieldItem && e.active) {
+                    e.active = false;
+                    this.player.invincible = 600; // 10 seconds of invincibility
+                    Sound.shieldPickup();
+                    this.createExplosion(e.x, e.y, '#00ffff');
+                    this.entities.splice(i, 1);
+                } else if (e instanceof HealthItem && e.active) {
+                    e.active = false;
+                    this.player.health = Math.min(this.player.health + 1, 5); // Heal 1HP, max 5
+                    Sound.healthPickup();
+                    this.createExplosion(e.x, e.y, '#e74c3c');
+                    this.entities.splice(i, 1);
+                }
+            }
+        }
+    }
+
+    createExplosion(x, y, color) {
+        for(let i=0; i<8; i++) {
+            this.particles.push(new Particle(x, y, color));
+        }
+    }
+
+    loop() {
+        if (this.state !== 'PLAYING') return;
+
+        this.frames++;
+        this.distance += this.speed;
+        this.speed = 6 + (this.distance / 10000); // Slow acceleration
+
+        // Logic
+        if (this.player) this.player.update();
+        this.spawnManager();
+        
+        this.entities.forEach((e, i) => {
+            e.update();
+            if (e.x + e.width < -100) this.entities.splice(i, 1);
+        });
+
+        this.particles.forEach((p, i) => {
+            p.update();
+            if (p.life <= 0) this.particles.splice(i, 1);
+        });
+
+        this.checkCollisions();
+        this.updateUI();
+
+        // Draw
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.drawBackground();
+        
+        // Z-Index: Spice > Shield > Health > Human > Truck > Worm
+        this.entities.forEach(e => { if (e instanceof Spice) e.draw(); });
+        this.entities.forEach(e => { if (e instanceof ShieldItem) e.draw(); });
+        this.entities.forEach(e => { if (e instanceof HealthItem) e.draw(); });
+        this.entities.forEach(e => { if (e instanceof Human) e.draw(); });
+        
+        if (this.player) this.player.draw();
+        
+        this.entities.forEach(e => { if (e instanceof Worm) e.draw(); });
+        this.particles.forEach(p => p.draw());
+
+        requestAnimationFrame(() => this.loop());
+    }
+
+    drawBackground() {
+        // Sun
+        ctx.fillStyle = 'rgba(255, 235, 59, 0.8)';
+        ctx.beginPath();
+        ctx.arc(650, 100, 40, 0, Math.PI*2);
+        ctx.fill();
+
+        // Mountains (Parallax)
+        ctx.fillStyle = '#5d4037';
+        this.mountains.forEach(m => {
+            let screenX = m.x - (this.distance * 0.2) % (canvas.width + 400);
+            if (screenX < -200) screenX += canvas.width + 400;
+            ctx.beginPath();
+            ctx.moveTo(screenX, 350);
+            ctx.lineTo(screenX + m.width/2, 350 - m.height);
+            ctx.lineTo(screenX + m.width, 350);
+            ctx.fill();
+        });
+
+        // Ground
+        ctx.fillStyle = '#C2B280';
+        ctx.fillRect(0, 350, canvas.width, 100);
+        
+        // Speed lines
+        ctx.fillStyle = '#A19266';
+        let lineOffset = (this.distance) % 100;
+        for(let i=0; i<canvas.width + 100; i+=100) {
+            ctx.fillRect(i - lineOffset, 360, 60, 5);
+            ctx.fillRect(i - lineOffset + 50, 400, 30, 5);
+        }
+    }
+}
+
+/**
+ * ENTITIES
+ */
+class Player {
+    constructor(game) {
+        this.game = game;
+        this.width = 100;
+        this.height = 50;
+        this.x = 100;
+        this.groundY = 350;
+        this.y = this.groundY - this.height;
+        this.dy = 0;
+        this.health = 3;
+        this.jumpPower = -14;
+        this.gravity = 0.7;
+        this.isJumping = false;
+        this.invincible = 0;
+        this.colors = { body: '#3498db', dark: '#2980b9' };
+    }
+
+    update() {
+        // Move
+        let targetX = this.game.mouseX - this.width / 2;
+        if (targetX < 0) targetX = 0;
+        if (targetX > canvas.width - this.width) targetX = canvas.width - this.width;
+        this.x += (targetX - this.x) * 0.15;
+
+        // Jump
+        if (this.isJumping) {
+            this.dy += this.gravity;
+            this.y += this.dy;
+            if (this.y > this.groundY - this.height) {
+                this.y = this.groundY - this.height;
+                this.isJumping = false;
+                this.dy = 0;
+                // Dust
+                for(let i=0;i<3;i++) this.game.particles.push(new Particle(this.x+Math.random()*80, this.y+50, '#8d6e63'));
+            }
+        } else {
+            this.y = (this.groundY - this.height) + Math.sin(this.game.frames * 0.2) * 2;
+        }
+
+        if (this.invincible > 0) this.invincible--;
+    }
+
+    jump() {
+        if (!this.isJumping) {
+            this.isJumping = true;
+            this.dy = this.jumpPower;
+            Sound.jump();
+        }
+    }
+
+    hit() {
+        if (this.invincible > 0) return;
+        this.health--;
+        this.invincible = 120; // 2 seconds invulnerability
+        Sound.hit();
+        this.game.createExplosion(this.x + 50, this.y + 25, '#ff0000');
+    }
+
+    draw() {
+        if (this.invincible > 0 && Math.floor(this.game.frames / 4) % 2 === 0) return;
+
+        ctx.save();
+        ctx.translate(this.x, this.y);
+
+        // Shield Effect
+        if (this.invincible > 0) { // Active shield visual
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(50, 25, 60, 0, Math.PI*2);
+            ctx.stroke();
+            // Pulse effect for shield
+            ctx.globalAlpha = 0.2;
+            ctx.fillStyle = '#00ffff';
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+        }
+
+        // Truck Body
+        ctx.fillStyle = this.colors.body;
+        ctx.fillRect(0, 20, 100, 25);
+        ctx.fillStyle = this.colors.dark;
+        ctx.fillRect(0, 45, 100, 5); 
+        ctx.fillStyle = this.colors.body;
+        ctx.fillRect(70, 20, 30, 25);
+        ctx.fillStyle = '#fff700';
+        ctx.fillRect(95, 25, 5, 10);
+        ctx.fillStyle = '#87cefa';
+        ctx.fillRect(20, 0, 50, 20);
+        ctx.fillStyle = this.colors.dark;
+        ctx.fillRect(20, 0, 50, 3);
+        ctx.fillRect(20, 0, 5, 20);
+        ctx.fillRect(65, 0, 5, 20);
+        
+        // Wheels
+        this.drawWheel(15, 40);
+        this.drawWheel(75, 40);
+
+        // Crew
+        this.drawCrew();
+
+        ctx.restore();
+    }
+
+    drawWheel(wx, wy) {
+        ctx.fillStyle = '#111';
+        ctx.beginPath();
+        ctx.arc(wx, wy, 10, 0, Math.PI*2);
+        ctx.fill();
+        ctx.fillStyle = '#555';
+        ctx.beginPath();
+        ctx.arc(wx, wy, 4, 0, Math.PI*2);
+        ctx.fill();
+        if (this.game.state === 'PLAYING') {
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            let angle = this.game.frames * 0.5;
+            ctx.moveTo(wx, wy);
+            ctx.lineTo(wx + Math.cos(angle)*10, wy + Math.sin(angle)*10);
+            ctx.stroke();
+        }
+    }
+
+    drawCrew() {
+        let crewCount = Math.min(this.game.score, 5);
+        for(let i=0; i<crewCount; i++) {
+            let cx = 30 - (i * 8);
+            let cy = 10;
+            if (i===0) cx = 45;
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(cx, cy, 8, 10);
+            ctx.fillStyle = '#ffcc80';
+            ctx.fillRect(cx, cy-6, 8, 6);
+            ctx.fillStyle = '#8d6e63';
+            ctx.fillRect(cx-2, cy-8, 12, 3);
+        }
+    }
+}
+
+class Worm {
+    constructor(game) {
+        this.game = game;
+        this.width = 60;
+        this.height = 120;
+        this.x = canvas.width + Math.random() * 200;
+        this.y = 350;
+        this.speedX = game.speed;
+        this.state = 'WARNING';
+        this.timer = 0;
+        this.type = Math.random() > 0.6 ? 'JUMPER' : 'LURKER';
+        
+        if (this.type === 'JUMPER') {
+            this.y = 400; 
+            this.dy = -18 - Math.random()*3;
+            this.gravity = 0.6;
+            this.vx = -4 - Math.random() * 2;
+        }
+    }
+
+    update() {
+        if (this.state === 'WARNING') {
+            this.x -= this.speedX;
+            this.timer++;
+            if (this.type === 'LURKER' && this.timer > 40) this.state = 'ATTACK';
+            else if (this.type === 'JUMPER' && this.timer > 30) this.state = 'ATTACK';
+        } else if (this.state === 'ATTACK') {
+            if (this.type === 'LURKER') {
+                this.x -= this.speedX;
+            } else if (this.type === 'JUMPER') {
+                this.x += this.vx;
+                this.y += this.dy;
+                this.dy += this.gravity;
+            }
+        }
+    }
+
+    draw() {
+        if (this.state === 'WARNING') {
+            ctx.fillStyle = 'rgba(231, 76, 60, 0.6)';
+            ctx.beginPath();
+            ctx.ellipse(this.x + 30, 360, 40, 10, 0, 0, Math.PI*2);
+            ctx.fill();
+            if (this.game.frames % 10 < 5) {
+                ctx.fillStyle = '#ff0000';
+                ctx.font = 'bold 30px Arial';
+                ctx.fillText('!', this.x + 20, 330);
+            }
+        } else {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.fillStyle = '#5d4037';
+            
+            if (this.type === 'LURKER') {
+                ctx.beginPath();
+                ctx.moveTo(0, 50);
+                ctx.quadraticCurveTo(30, -this.height, 60, 50);
+                ctx.fill();
+                // Teeth
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.moveTo(20, -this.height+10); ctx.lineTo(25, -this.height+25); ctx.lineTo(30, -this.height+10);
+                ctx.fill();
+            } else {
+                let angle = Math.atan2(this.dy, this.vx);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.ellipse(30, 0, 40, 20, 0, 0, Math.PI*2);
+                ctx.fill();
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.arc(-10, 0, 15, 0, Math.PI*2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+    }
+}
+
+class Human {
+    constructor(game) {
+        this.game = game;
+        this.width = 20;
+        this.height = 40;
+        this.x = canvas.width;
+        this.y = 350 - this.height;
+        this.active = true;
+    }
+    update() { this.x -= this.game.speed; }
+    draw() {
+        if (!this.active) return;
+        ctx.fillStyle = '#3f51b5'; ctx.fillRect(this.x, this.y + 20, this.width, 20);
+        ctx.fillStyle = '#fff'; ctx.fillRect(this.x, this.y, this.width, 20);
+        ctx.fillStyle = '#ffcc80'; ctx.fillRect(this.x + 2, this.y - 10, 16, 10);
+        if (Math.floor(this.game.frames / 10) % 2 === 0) {
+            ctx.strokeStyle = '#ffcc80'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(this.x, this.y + 5); ctx.lineTo(this.x - 5, this.y - 15); ctx.stroke();
+        }
+    }
+}
+
+class Spice {
+    constructor(game) {
+        this.game = game;
+        this.width = 20;
+        this.height = 20;
+        this.x = canvas.width;
+        // Float at different heights
+        this.y = 350 - 40 - Math.random() * 80; 
+        this.active = true;
+        this.oscillation = Math.random() * Math.PI;
+    }
+    update() {
+        this.x -= this.game.speed;
+        this.y += Math.sin(this.game.frames * 0.1 + this.oscillation) * 0.5;
+    }
+    draw() {
+        if (!this.active) return;
+        ctx.fillStyle = '#f1c40f';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#f39c12';
+        ctx.beginPath();
+        ctx.moveTo(this.x + 10, this.y);
+        ctx.lineTo(this.x + 20, this.y + 10);
+        ctx.lineTo(this.x + 10, this.y + 20);
+        ctx.lineTo(this.x, this.y + 10);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+    }
+}
+
+class ShieldItem {
+    constructor(game) {
+        this.game = game;
+        this.width = 25;
+        this.height = 25;
+        this.x = canvas.width;
+        this.y = 350 - 50 - Math.random() * 60;
+        this.active = true;
+    }
+    update() {
+        this.x -= this.game.speed;
+        this.y += Math.sin(this.game.frames * 0.1) * 0.5;
+    }
+    draw() {
+        if (!this.active) return;
+        // Glow effect
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#00ffff';
+        
+        ctx.fillStyle = 'rgba(0, 255, 255, 0.2)';
+        ctx.strokeStyle = '#00ffff';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(this.x + 12.5, this.y + 12.5, 12, 0, Math.PI*2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Inner Shield Icon
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('S', this.x + 12.5, this.y + 13.5);
+        
+        // Reset shadow
+        ctx.shadowBlur = 0;
+    }
+}
+
+class HealthItem {
+    constructor(game) {
+        this.game = game;
+        this.width = 25;
+        this.height = 25;
+        this.x = canvas.width;
+        this.y = 350 - 50 - Math.random() * 60;
+        this.active = true;
+    }
+    update() {
+        this.x -= this.game.speed;
+        this.y += Math.sin(this.game.frames * 0.1 + 2) * 0.5; // offset phase
+    }
+    draw() {
+        if (!this.active) return;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#e74c3c';
+        
+        ctx.fillStyle = 'rgba(231, 76, 60, 0.2)';
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(this.x + 12.5, this.y + 12.5, 12, 0, Math.PI*2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Heart Icon
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('❤', this.x + 12.5, this.y + 13.5);
+        
+        ctx.shadowBlur = 0;
+    }
+}
+
+class Particle {
+    constructor(x, y, color) {
+        this.x = x; this.y = y; this.color = color;
+        this.size = Math.random() * 5 + 2;
+        this.vx = (Math.random() - 0.5) * 4;
+        this.vy = (Math.random() - 1) * 4;
+        this.life = 1.0;
+    }
+    update() { this.x += this.vx; this.y += this.vy; this.life -= 0.05; this.size *= 0.95; }
+    draw() {
+        ctx.fillStyle = this.color; ctx.globalAlpha = this.life;
+        ctx.fillRect(this.x, this.y, this.size, this.size); ctx.globalAlpha = 1.0;
+    }
+}
+
+// Initialize safely on load
+window.addEventListener('DOMContentLoaded', () => {
+    window.game = new Game();
+    window.game.updateLanguage();
+});
+
+</script>
+</body>
+</html>

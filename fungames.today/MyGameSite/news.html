@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game News - Fun Games Today</title>
+    <style>
+        /* ====================
+           1. 全局与侧边栏样式
+           ==================== */
+        :root { --bg-color: #1a1a1a; --sidebar-bg: #2d2d2d; --text-color: #ffffff; --text-muted: #aaaaaa; --accent-color: #00d2ff; --card-bg: #333333; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; }
+        
+        .sidebar { width: 240px; background-color: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100%; left: 0; top: 0; overflow-y: auto; z-index: 100; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
+        .logo { font-size: 24px; font-weight: bold; color: var(--accent-color); margin-bottom: 30px; text-decoration: none; display: block; }
+        .menu-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #444; }
+        .menu-group:last-child { border-bottom: none; }
+        .menu-title { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; }
+        .menu-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); text-decoration: none; padding: 10px 12px; margin-bottom: 5px; border-radius: 8px; transition: 0.2s; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(0, 210, 255, 0.1); color: var(--accent-color); }
+        .lang-select { margin-top: auto; padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 5px; width: 100%; cursor: pointer; }
+        
+        /* ====================
+           2. 新闻页专用样式
+           ==================== */
+        .main-content { margin-left: 240px; padding: 60px 80px; width: 100%; max-width: 800px; }
+        .back-btn { display: inline-block; margin-bottom: 30px; color: #888; text-decoration: none; font-size: 14px; }
+        .back-btn:hover { color: var(--accent-color); }
+        
+        h1 { color: var(--accent-color); border-bottom: 3px solid var(--accent-color); padding-bottom: 15px; margin-bottom: 40px; display: inline-block; }
+
+        .platform-intro {
+            background: linear-gradient(135deg, #2d2d2d, #222);
+            border-left: 5px solid var(--accent-color);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .platform-intro h2 { margin-top: 0; color: #fff; font-size: 22px; }
+        .platform-intro p { color: #ccc; line-height: 1.6; }
+
+        .news-item {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px dashed #444; 
+            animation: fadeInItem 0.5s ease-in-out;
+        }
+        
+        .news-item.hidden { display: none; }
+
+        .news-meta { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; font-size: 13px; }
+        .news-date { background: #333; padding: 4px 8px; border-radius: 4px; color: #fff; border: 1px solid #555; }
+        .news-tag { color: var(--accent-color); font-weight: bold; text-transform: uppercase; }
+        
+        .news-title { margin: 0 0 15px 0; color: #fff; font-size: 22px; line-height: 1.3; }
+        .news-desc { color: #ccc; line-height: 1.7; margin: 0; font-size: 15px; }
+        
+        /* 来源样式：去掉了中括号，保留了媒体名 */
+        .news-source { 
+            display: inline-block; 
+            margin-top: 15px; 
+            font-size: 13px; 
+            color: #888; 
+            font-style: italic; 
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .load-more-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #333;
+            color: #fff;
+            text-align: center;
+            border: 1px solid #555;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 40px;
+            transition: 0.2s;
+            font-weight: bold;
+        }
+        .load-more-btn:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
+        
+        .lang-content { display: none; }
+        .lang-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInItem { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; padding: 30px; } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="/" class="logo">🎮 FunGames</a>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_explore">Explore</div>
+            <a href="/" class="menu-item" data-i18n="nav_home">🏠 Home</a>
+            <a href="#" class="menu-item" data-i18n="nav_new">🆕 New Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_hot">🔥 Hot Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_recent">🕹️ Recently Played</a>
+            <a href="#" class="menu-item" data-i18n="nav_rec">👍 Recommended</a>
+        </div>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_about">About</div>
+            <a href="news.html" class="menu-item active" data-i18n="link_news">📰 Game News</a>
+            <a href="privacy.html" class="menu-item" data-i18n="link_privacy">🔒 Privacy Policy</a>
+            <a href="cookies.html" class="menu-item" data-i18n="link_cookies">🍪 Cookie Policy</a>
+            <a href="terms.html" class="menu-item" data-i18n="link_terms">📜 Terms of Use</a>
+            <a href="contact.html" class="menu-item" data-i18n="link_contact">📩 Contact Us</a>
+        </div>
+        <div style="margin-top: auto;">
+            <div class="menu-title" data-i18n="label_lang">Language</div>
+            <select class="lang-select" id="langSelector" onchange="switchLanguage(this.value)">
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 简体中文</option>
+                <option value="jp">🇯🇵 日本語</option>
+                <option value="kr">🇰🇷 한국어</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <a href="/" class="back-btn" data-i18n="btn_back">← Back Home</a>
+
+        <div class="lang-content en active">
+            <h1>Game News</h1>
+            <div class="platform-intro">
+                <h2>Latest Updates</h2>
+                <p>Stay tuned with the latest game releases, industry news, and platform updates.</p>
+            </div>
+
+            <div class="news-list" id="news-list-en">
+                
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Dec 1, 2025</span><span class="news-tag">Top Story</span></div>
+                    <h3 class="news-title">Metroid Prime 4: Beyond Release Imminent, Confirmed for Switch 2</h3>
+                    <p class="news-desc">Nintendo's highly anticipated flagship title, Metroid Prime 4: Beyond, is set to launch this week (December 4). Media outlets have confirmed that it will be a cross-generation title, launching on both the Switch and the Switch 2, featuring significant graphical enhancements on the new console.</p>
+                    <span class="news-source">Source: ScreenRant, GameSpot</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Dec 1, 2025</span><span class="news-tag">TV & Media</span></div>
+                    <h3 class="news-title">Amazon's "God of War" Live-Action Series Confirms Director</h3>
+                    <p class="news-desc">Amazon Prime Video's live-action adaptation of God of War has made major progress. Veteran director Frederick E.O. Toye, known for directing episodes of Shōgun, The Boys, and Fallout, has been confirmed to direct the first two episodes. Casting for Kratos and Atreus is reportedly underway.</p>
+                    <span class="news-source">Source: GamesRadar+, IGN</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Dec 1, 2025</span><span class="news-tag">DLC Update</span></div>
+                    <h3 class="news-title">"Elden Ring" New DLC "Nightreign" Pre-Launch Stats Revealed</h3>
+                    <p class="news-desc">Ahead of the launch of the Elden Ring Nightreign: The Forsaken Hollows DLC on December 4, FromSoftware has released interesting statistics revealing "survivorship bias" among players in the base game, implying that the new DLC will remain brutally hardcore. Media outlets are calling it the most anticipated DLC of the month.</p>
+                    <span class="news-source">Source: GamesRadar+, ScreenRant</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Dec 1, 2025</span><span class="news-tag">Hardware</span></div>
+                    <h3 class="news-title">Ayaneo Announces "Monster" Handheld Next II</h3>
+                    <p class="news-desc">Handheld brand Ayaneo officially unveiled its new flagship device today, the Ayaneo Next II. Dubbed a "monster" by IGN, it features a 9-inch 165Hz OLED screen and AMD's latest Ryzen AI Max+ 395 chip, equipped with a massive 115Wh battery, aiming to crush all existing Windows handhelds in performance.</p>
+                    <span class="news-source">Source: IGN Hardware</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Dec 1, 2025</span><span class="news-tag">Industry</span></div>
+                    <h3 class="news-title">CD Projekt Red Reaffirms: New "Witcher" Trilogy Within 6 Years</h3>
+                    <p class="news-desc">Despite development challenges, CD Projekt Red executives reassured investors and players that the plan for the new The Witcher trilogy (featuring Ciri as the protagonist) remains unchanged. All three games are scheduled to be released within a 6-year cycle starting from the release of the first title.</p>
+                    <span class="news-source">Source: IGN, Eurogamer</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Dec 1, 2025</span><span class="news-tag">Movie News</span></div>
+                    <h3 class="news-title">Sonic Cinematic Universe Expands: New Spinoff Movie Planned for 2028</h3>
+                    <p class="news-desc">Riding the wave of the IP's popularity, Sega and Paramount announced plans to release a brand new Sonic spinoff movie in 2028, further expanding the Sonic Cinematic Universe (SCU).</p>
+                    <span class="news-source">Source: GamesRadar+</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Dec 1, 2025</span><span class="news-tag">New Release</span></div>
+                    <h3 class="news-title">"Marvel Cosmic Invasion" Launches Today</h3>
+                    <p class="news-desc">Developed by Dotemu (creators of TMNT: Shredder's Revenge), the Marvel-themed side-scroller Marvel Cosmic Invasion officially launches today (December 1) on PC, PS5, and Switch 2. The game has received praise from media for its retro arcade aesthetic.</p>
+                    <span class="news-source">Source: GameSpot, PureXbox</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Dec 1, 2025</span><span class="news-tag">Industry</span></div>
+                    <h3 class="news-title">Shooter "REPO" Insists on "Zero Microtransactions"</h3>
+                    <p class="news-desc">The developers of the highly watched new title REPO issued a statement today clarifying that all cosmetic items added to the game can only be unlocked through gameplay, with absolutely no microtransaction systems. This firm stance against industry trends has garnered widespread support from the player community.</p>
+                    <span class="news-source">Source: GamesRadar+</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Dec 1, 2025</span><span class="news-tag">Anniversary</span></div>
+                    <h3 class="news-title">"Hitman" Developers Hint at Series Future While Celebrating 25th Anniversary</h3>
+                    <p class="news-desc">In an interview celebrating the 25th anniversary of the Hitman series, IO Interactive stated that while they are currently focused on their 007 project, there "will definitely be a Hitman 4." They emphasized that the series still has massive potential, reassuring long-time fans.</p>
+                    <span class="news-source">Source: IGN</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Nov 30, 2025</span><span class="news-tag">Esports</span></div>
+                    <h3 class="news-title">VALORANT Game Changers Championship: Team Liquid Brazil Takes the Crown</h3>
+                    <p class="news-desc">The 2025 Game Changers Championship in Seoul, South Korea, concluded today. Team Liquid Brazil defeated Shopify Rebellion Gold 3-2 in a thrilling grand final to secure the title of world champions.</p>
+                    <span class="news-source">Source: VLR.gg, Liquipedia</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Nov 30, 2025</span><span class="news-tag">Esports</span></div>
+                    <h3 class="news-title">DreamHack Stockholm: Monte Wins CS2 Title</h3>
+                    <p class="news-desc">At DreamHack Stockholm, Monte emerged victorious in the "Knockout" CS2 tournament, defeating FUT Esports 2-1 in the grand final. This victory secures them a direct invite to ESL Pro League Season 23 alongside the cash prize.</p>
+                    <span class="news-source">Source: HLTV.org, Dust2.us</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Nov 28, 2025</span><span class="news-tag">Policy</span></div>
+                    <h3 class="news-title">Valve Removes LGBTQ+ Game in Russia; Apple & Google Refuse</h3>
+                    <p class="news-desc">Reports confirm that Valve (Steam) complied with a request from Russia’s media regulator to remove the game Flick Solitaire from the Russian region due to its LGBTQ+ content. Notably, both Apple and Google reportedly received the same request but ignored it, leaving the game available on their platforms.</p>
+                    <span class="news-source">Source: GamesIndustry.biz</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Nov 28, 2025</span><span class="news-tag">Industry</span></div>
+                    <h3 class="news-title">Bungie on Destiny 2's Struggles: "We Don't Want a Dead Game"</h3>
+                    <p class="news-desc">In a candid interview with IGN, Bungie Game Director Tyson Green admitted that the previous expansion strategy "didn't work." They emphasized that the studio is pivoting hard with the upcoming Renegades content update to ensure Destiny 2 does not become a "dead live game."</p>
+                    <span class="news-source">Source: IGN</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Nov 28, 2025</span><span class="news-tag">New Release</span></div>
+                    <h3 class="news-title">"Arknights: Endfield" Kicks Off Full-Scale Test</h3>
+                    <p class="news-desc">The game has launched a limited paid closed beta, supporting both PC and mobile platforms. This test introduces an extensive industrial gameplay system, optimizes combat performance and mechanics, and expands level and map content. With a playable duration of 50-60 hours, it is regarded by the industry as a crucial pre-launch test.</p>
+                    <span class="news-source">Source: Official Announcement</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">Nov 28, 2025</span><span class="news-tag">Business</span></div>
+                    <h3 class="news-title">Nintendo Acquires Bandai Namco Studios Singapore</h3>
+                    <p class="news-desc">Nintendo has officially acquired Bandai Namco Studios Singapore, a team known for supporting the development of Splatoon 3. The studio will be rebranded as Nintendo Studios Singapore to focus exclusively on first-party Nintendo titles.</p>
+                    <span class="news-source">Source: Nintendo Corporate, IGN</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">History</span><span class="news-tag">IO Games</span></div>
+                    <h3 class="news-title">The Rise of IO Games (2015-2020)</h3>
+                    <p class="news-desc">In April 2015, Brazilian developer Matheus Valadares released Agar.io on 4chan, spawning the IO game genre, which gained over 100 million global players within months. By 2016, classic works such as Slither.io and Diep.io were released, forming the genre's characteristics of "low threshold and high competitiveness."</p>
+                    <span class="news-source">Source: Industry Analysis</span>
+                </div>
+
+            </div>
+            
+            <button class="load-more-btn" onclick="loadMore('en')">▼ View More News</button>
+        </div>
+
+
+        <div class="lang-content zh">
+            <h1>游戏资讯</h1>
+            <div class="platform-intro">
+                <h2>最新动态</h2>
+                <p>关注全球最新游戏发售、行业资讯及平台更新。</p>
+            </div>
+
+            <div class="news-list" id="news-list-zh">
+                
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">2025年12月1日</span><span class="news-tag">重磅</span></div>
+                    <h3 class="news-title">《银河战士 Prime 4: Beyond》发售在即，确认登陆 Switch 2</h3>
+                    <p class="news-desc">任天堂备受期待的压轴大作《Metroid Prime 4: Beyond》将于本周（12月4日）正式发售。媒体确认该作将作为跨世代游戏，同时登陆 Switch 和 Switch 2 平台，且在 Switch 2 上会有显著的画质提升。</p>
+                    <span class="news-source">来源: ScreenRant, GameSpot</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">2025年12月1日</span><span class="news-tag">影视</span></div>
+                    <h3 class="news-title">亚马逊《战神》真人剧集确认导演人选</h3>
+                    <p class="news-desc">亚马逊 Prime Video 的《战神 (God of War)》真人改编剧集迎来重大进展。曾执导过《幕府将军》、《黑袍纠察队》和《辐射》的资深导演 Frederick E.O. Toye 确认将执导该剧的前两集。目前剧组已开始着手奎托斯和阿特柔斯的选角工作。</p>
+                    <span class="news-source">来源: GamesRadar+, IGN</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">2025年12月1日</span><span class="news-tag">DLC前瞻</span></div>
+                    <h3 class="news-title">《艾尔登法环》新 DLC "Nightreign" 发布前夕，官方公布趣味数据</h3>
+                    <p class="news-desc">在《Elden Ring Nightreign: The Forsaken Hollows》DLC 于12月4日发售前，FromSoftware 公布了部分统计数据，揭示了玩家在本体游戏中的“幸存者偏差”现象，并暗示新 DLC 的难度将依然硬核。媒体评价其为本月最受期待的 DLC 之一。</p>
+                    <span class="news-source">来源: GamesRadar+, ScreenRant</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">2025年12月1日</span><span class="news-tag">硬件</span></div>
+                    <h3 class="news-title">Ayaneo 发布 "怪兽级" 掌机 Next II，挑战硬件极限</h3>
+                    <p class="news-desc">掌机品牌 Ayaneo 今日正式公布了新款旗舰掌机 Ayaneo Next II。该掌机被 IGN 称为“怪兽”，搭载 9英寸 165Hz OLED 屏幕和 AMD 最新 Ryzen AI Max+ 395 芯片，配备 115Wh 超大电池，旨在性能上碾压市面上现有的所有 Windows 掌机。</p>
+                    <span class="news-source">来源: IGN Hardware</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">2025年12月1日</span><span class="news-tag">行业</span></div>
+                    <h3 class="news-title">CD Projekt Red 重申：新《巫师》三部曲将在6年内全部发售</h3>
+                    <p class="news-desc">尽管面临开发挑战，CD Projekt Red 高层再次向投资者和玩家保证，由“希里 (Ciri)”为主角的新《巫师 (The Witcher)》三部曲计划依然未变，三款游戏将在首作发布后的 6年周期内 全部推出。</p>
+                    <span class="news-source">来源: IGN, Eurogamer</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">2025年12月1日</span><span class="news-tag">电影</span></div>
+                    <h3 class="news-title">索尼克 (Sonic) 电影宇宙扩张：2028年将推全新衍生电影</h3>
+                    <p class="news-desc">随着索尼克 IP 的持续火热，世嘉和派拉蒙宣布计划在 2028年 推出一部全新的《索尼克》衍生电影，进一步扩展该系列的电影宇宙（SCU）。</p>
+                    <span class="news-source">来源: GamesRadar+</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">2025年12月1日</span><span class="news-tag">新游</span></div>
+                    <h3 class="news-title">《Marvel Cosmic Invasion》今日首发，回归复古街机风</h3>
+                    <p class="news-desc">由《忍者神龟：施莱德的复仇》开发商 Dotemu 打造的漫威题材横版过关游戏《Marvel Cosmic Invasion》于今日（12月1日）正式发售，登陆 PC、PS5、Switch 2 等全平台。该作以复古街机风格获得媒体好评。</p>
+                    <span class="news-source">来源: GameSpot, PureXbox</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">2025年12月1日</span><span class="news-tag">行业</span></div>
+                    <h3 class="news-title">射击游戏《REPO》坚持“零微交易”，外观仅靠游玩解锁</h3>
+                    <p class="news-desc">备受关注的新作《REPO》开发商今日发表声明，明确表示游戏中新增的所有外观饰品 只能通过游玩游戏解锁，绝不包含任何微交易系统。这一反行业潮流的硬气表态赢得了玩家社区的广泛支持。</p>
+                    <span class="news-source">来源: GamesRadar+</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">11月30日</span><span class="news-tag">电竞</span></div>
+                    <h3 class="news-title">VALORANT Game Changers 全球冠军赛：Team Liquid Brazil 夺冠</h3>
+                    <p class="news-desc">在韩国首尔举办的2025无畏契约（Valorant）女子全球冠军赛落下帷幕。Team Liquid Brazil 在总决赛中以 3-2 击败了 Shopify Rebellion Gold，捧起了冠军奖杯。这是该赛事年度最高荣誉。</p>
+                    <span class="news-source">来源: VLR.gg, Liquipedia</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">11月30日</span><span class="news-tag">电竞</span></div>
+                    <h3 class="news-title">DreamHack 斯德哥尔摩：Monte 战队赢下 CS2 冠军</h3>
+                    <p class="news-desc">在瑞典举办的 DreamHack 斯德哥尔摩站“Knockout”锦标赛中，Monte 战队在决赛中以 2-1 战胜 FUT Esports 夺得冠军。该胜利不仅带来了奖金，还直接锁定了 ESL Pro League 第23赛季的参赛席位。</p>
+                    <span class="news-source">来源: HLTV.org, Dust2.us</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">11月28日</span><span class="news-tag">政策</span></div>
+                    <h3 class="news-title">Valve 独自下架 LGBTQ+ 游戏，Apple 与 Google 未跟进</h3>
+                    <p class="news-desc">据报道，Valve（Steam平台）响应俄罗斯监管机构的要求，从俄罗斯区下架了一款名为《Flick Solitaire》的游戏，原因是该游戏包含 LGBTQ+ 主题。值得注意的是，Apple App Store 和 Google Play 同样收到了该请求，但据报道均选择忽略，未下架该游戏。</p>
+                    <span class="news-source">来源: GamesIndustry.biz</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">11月28日</span><span class="news-tag">新游</span></div>
+                    <h3 class="news-title">《明日方舟：终末地》开启大规模测试</h3>
+                    <p class="news-desc">该作现已启动付费限量封闭测试，同步支持PC与移动端双平台。本次测试推出了完善的工业玩法体系，优化了战斗表现与机制，并扩充了关卡地图内容，可玩时长达50-60小时，被业内视为上线前的关键测试。</p>
+                    <span class="news-source">来源: 官方公告</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">11月28日</span><span class="news-tag">商业</span></div>
+                    <h3 class="news-title">任天堂收购万代南梦宫新加坡工作室</h3>
+                    <p class="news-desc">任天堂正式宣布收购曾协助开发《Splatoon 3》等大作的 Bandai Namco Studios Singapore。收购后，该工作室将更名为 Nintendo Studios Singapore，专注于任天堂第一方游戏的开发支持。</p>
+                    <span class="news-source">来源: Nintendo Corporate, IGN</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">11月28日</span><span class="news-tag">电竞</span></div>
+                    <h3 class="news-title">2025 PGC全球总决赛启幕</h3>
+                    <p class="news-desc">《绝地求生》PGC全球总决赛在泰国曼谷正式开赛。本次赛事共有33支战队分为三组展开角逐，中国战队17、4AM、JDG同处“死亡之组”。小组赛采用16进5的赛制，冠军将斩获150万美元奖金及玩家投注收益分成。</p>
+                    <span class="news-source">来源: PUBG Esports, 虎牙直播</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">11月28日</span><span class="news-tag">新游</span></div>
+                    <h3 class="news-title">《熔火之环》开启全球公开测试</h3>
+                    <p class="news-desc">这款由叠纸游戏投资的全新2D角色+3D体素场景风格动作游戏今日正式开启公测。游戏以横版动作玩法结合元素策略战斗为核心特色，预约下载量已突破200万次，在TapTap平台评分达8.5分。</p>
+                    <span class="news-source">来源: TapTap</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-meta"><span class="news-date">历史</span><span class="news-tag">IO游戏</span></div>
+                    <h3 class="news-title">IO 游戏的崛起 (2015-2020)</h3>
+                    <p class="news-desc">2015年4月：巴西开发者马修斯·瓦拉达雷斯在4chan平台发布《球球大作战》（Agar.io），开创了IO游戏品类，上线数月内全球玩家数量便突破1亿。随后《贪吃蛇大作战》等作品密集推出，形成了“低门槛、高竞技性”的品类特征。</p>
+                    <span class="news-source">来源: 游戏发展史</span>
+                </div>
+
+            </div>
+
+            <button class="load-more-btn" onclick="loadMore('zh')">▼ 加载更多历史新闻</button>
+        </div>
+        
+        <div class="lang-content jp"><h1>News</h1><p>Running in English mode...</p></div>
+        <div class="lang-content kr"><h1>News</h1><p>Running in English mode...</p></div>
+
+    </div>
+
+    <script>
+        const ITEMS_PER_PAGE = 5; 
+        
+        function initNewsList(lang) {
+            const container = document.getElementById(`news-list-${lang}`);
+            if (!container) return;
+            
+            const items = container.querySelectorAll('.news-item');
+            const btn = container.parentElement.querySelector('.load-more-btn');
+
+            items.forEach((item, index) => {
+                if (index >= ITEMS_PER_PAGE) {
+                    item.classList.add('hidden');
+                } else {
+                    item.classList.remove('hidden');
+                }
+            });
+
+            if (items.length <= ITEMS_PER_PAGE) {
+                if(btn) btn.style.display = 'none';
+            } else {
+                if(btn) btn.style.display = 'block';
+                if(btn) btn.innerText = lang === 'zh' ? '▼ 加载更多历史新闻' : '▼ View More News';
+            }
+        }
+
+        function loadMore(lang) {
+            const container = document.getElementById(`news-list-${lang}`);
+            const hiddenItems = container.querySelectorAll('.news-item.hidden');
+            const btn = container.parentElement.querySelector('.load-more-btn');
+
+            let count = 0;
+            hiddenItems.forEach(item => {
+                if (count < ITEMS_PER_PAGE) {
+                    item.classList.remove('hidden');
+                    count++;
+                }
+            });
+
+            if (container.querySelectorAll('.news-item.hidden').length === 0) {
+                btn.style.display = 'none';
+            }
+        }
+
+        const uiTranslations = {
+            zh: { group_explore: "探索", nav_home: "🏠 主页", nav_new: "🆕 新游戏", nav_hot: "🔥 热门游戏", nav_recent: "🕹️ 最近玩过", nav_rec: "👍 推荐游戏", group_about: "关于", link_news: "📰 游戏资讯", link_privacy: "🔒 隐私政策", link_cookies: "🍪 Cookie 政策", link_terms: "📜 使用条款", link_contact: "📩 联系我们", label_lang: "语言 / Language", btn_back: "← 返回首页" },
+            en: { group_explore: "Explore", nav_home: "🏠 Home", nav_new: "🆕 New Games", nav_hot: "🔥 Hot Games", nav_recent: "🕹️ Recently Played", nav_rec: "👍 Recommended", group_about: "About", link_news: "📰 Game News", link_privacy: "🔒 Privacy Policy", link_cookies: "🍪 Cookie Policy", link_terms: "📜 Terms of Use", link_contact: "📩 Contact Us", label_lang: "Language", btn_back: "← Back Home" },
+            jp: { group_explore: "探索", nav_home: "🏠 ホーム", nav_new: "🆕 新作", nav_hot: "🔥 人気", nav_recent: "🕹️ 履歴", nav_rec: "👍 おすすめ", group_about: "情報", link_news: "📰 ニュース", link_privacy: "🔒 プライバシー", link_cookies: "🍪 Cookie", link_terms: "📜 規約", link_contact: "📩 連絡先", label_lang: "言語", btn_back: "← ホームに戻る" },
+            kr: { group_explore: "탐구", nav_home: "🏠 홈", nav_new: "🆕 신규", nav_hot: "🔥 인기", nav_recent: "🕹️ 최근", nav_rec: "👍 추천", group_about: "정보", link_news: "📰 뉴스", link_privacy: "🔒 개인정보", link_cookies: "🍪 쿠키", link_terms: "📜 약관", link_contact: "📩 문의", label_lang: "언어", btn_back: "← 홈으로 돌아가기" }
+        };
+
+        function switchLanguage(lang) {
+            localStorage.setItem('preferred_lang', lang);
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (uiTranslations[lang] && uiTranslations[lang][key]) el.innerText = uiTranslations[lang][key];
+            });
+
+            document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+            const target = document.querySelector(`.lang-content.${lang}`);
+            if(target) {
+                target.classList.add('active');
+            } else {
+                document.querySelector('.lang-content.en').classList.add('active'); 
+            }
+            
+            document.getElementById('langSelector').value = lang;
+            initNewsList(lang);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferred_lang') || 'en';
+            switchLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

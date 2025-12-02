@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Knife Hit</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b1e27;
+            overflow: hidden;
+            touch-action: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .score-board {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .apple-score {
+            color: #ff4444;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stage-title {
+            position: absolute;
+            top: 18%;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 48px;
+            font-weight: 800;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+        .stage-title.visible {
+            opacity: 1;
+        }
+        #message-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(40, 40, 40, 0.95));
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            display: none;
+            pointer-events: auto;
+            border: 2px solid #555;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            min-width: 260px;
+            backdrop-filter: blur(10px);
+            z-index: 20;
+        }
+        #message-box h1 { margin: 0 0 15px 0; font-size: 36px; color: #ff4444; text-transform: uppercase; letter-spacing: 2px; }
+        #message-box p { margin: 0 0 25px 0; font-size: 20px; color: #eee; }
+        button {
+            background: linear-gradient(to bottom, #ff5555, #cc0000);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+            text-transform: uppercase;
+        }
+        button:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(255, 0, 0, 0.2); }
+        
+        #lang-select {
+            pointer-events: auto;
+            background: rgba(0, 0, 0, 0.4);
+            color: #ddd;
+            border: 1px solid #555;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            outline: none;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .top-right-controls {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="ui-layer">
+    <div class="score-board">
+        <div id="score">0</div>
+        <div class="top-right-controls">
+            <select id="lang-select" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+            <div class="apple-score">
+                <span>🍎</span> <span id="apples">0</span>
+            </div>
+        </div>
+    </div>
+    <div id="stage-display" class="stage-title">STAGE 1</div>
+</div>
+
+<div id="message-box">
+    <h1 id="msg-title">GAME OVER</h1>
+    <p id="msg-score">Score: 0</p>
+    <button id="btn-restart" onclick="game.resetGame()">RESTART</button>
+</div>
+
+<canvas id="gameCanvas"></canvas>
+
+<script>
+const STRINGS = {
+    en: { gameOver: "GAME OVER", stage: "STAGE", restart: "RESTART", score: "Score" },
+    zh: { gameOver: "游戏结束", stage: "第 %s 关", restart: "重新开始", score: "得分" },
+    ja: { gameOver: "ゲームオーバー", stage: "ステージ %s", restart: "リスタート", score: "スコア" },
+    ko: { gameOver: "게임 오버", stage: "스테이지 %s", restart: "다시 시작", score: "점수" },
+    es: { gameOver: "JUEGO TERMINADO", stage: "NIVEL %s", restart: "REINICIAR", score: "Puntuación" },
+    fr: { gameOver: "PERDU", stage: "NIVEAU %s", restart: "REJOUER", score: "Score" },
+    de: { gameOver: "SPIEL VORBEI", stage: "LEVEL %s", restart: "NEUSTART", score: "Punktzahl" }
+};
+
+function getLang() {
+    const l = navigator.language || navigator.userLanguage;
+    const code = l.split('-')[0];
+    return STRINGS[code] ? code : 'en';
+}
+
+let currentLang = getLang();
+
+function t(key, param) {
+    let str = STRINGS[currentLang][key] || STRINGS['en'][key];
+    if (param !== undefined) str = str.replace('%s', param);
+    return str;
+}
+
+function changeLanguage(lang) {
+    currentLang = lang;
+    updateText();
+}
+
+function updateText() {
+    document.getElementById('btn-restart').innerText = t('restart');
+    if (game && game.state === 'GAMEOVER') {
+        document.getElementById('msg-title').innerText = t('gameOver');
+        document.getElementById('msg-score').innerText = `${t('score')}: ${score}`;
+    }
+}
+
+const langSelect = document.getElementById('lang-select');
+if (STRINGS[currentLang]) {
+    langSelect.value = currentLang;
+} else {
+    langSelect.value = 'en';
+}
+
+document.getElementById('btn-restart').innerText = t('restart');
+
+class SoundManager {
+    constructor() {
+        this.ctx = window.AudioContext || window.webkitAudioContext;
+        this.context = null;
+        this.enabled = false;
+    }
+    init() {
+        if (!this.enabled && this.ctx) {
+            this.context = new this.ctx();
+            this.enabled = true;
+            this.playSilent();
+        }
+        if (this.context && this.context.state === 'suspended') {
+            this.context.resume();
+        }
+    }
+    playSilent() {
+        const osc = this.context.createOscillator();
+        const gain = this.context.createGain();
+        gain.gain.value = 0.001;
+        osc.connect(gain);
+        gain.connect(this.context.destination);
+        osc.start();
+        osc.stop(0.1);
+    }
+    playThrow() {
+        if (!this.enabled) return;
+        const osc = this.context.createOscillator();
+        const gain = this.context.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(600, this.context.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, this.context.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.1, this.context.currentTime);
+        gain.gain.linearRampToValueAtTime(0, this.context.currentTime + 0.1);
+        osc.connect(gain);
+        gain.connect(this.context.destination);
+        osc.start();
+        osc.stop(this.context.currentTime + 0.1);
+    }
+    playWoodHit() {
+        if (!this.enabled) return;
+        const osc = this.context.createOscillator();
+        const gain = this.context.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(150, this.context.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(40, this.context.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.15, this.context.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + 0.1);
+        osc.connect(gain);
+        gain.connect(this.context.destination);
+        osc.start();
+        osc.stop(this.context.currentTime + 0.1);
+    }
+    playWoodBreak() {
+        if (!this.enabled) return;
+        const t = this.context.currentTime;
+        const osc1 = this.context.createOscillator();
+        const gain1 = this.context.createGain();
+        osc1.frequency.setValueAtTime(100, t);
+        osc1.frequency.exponentialRampToValueAtTime(10, t + 0.3);
+        gain1.gain.setValueAtTime(0.3, t);
+        gain1.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
+        osc1.connect(gain1);
+        gain1.connect(this.context.destination);
+        osc1.start();
+        osc1.stop(t + 0.3);
+        
+        const osc2 = this.context.createOscillator();
+        const gain2 = this.context.createGain();
+        osc2.type = 'sawtooth';
+        osc2.frequency.setValueAtTime(400, t);
+        osc2.frequency.linearRampToValueAtTime(100, t + 0.1);
+        gain2.gain.setValueAtTime(0.2, t);
+        gain2.gain.linearRampToValueAtTime(0, t + 0.1);
+        osc2.connect(gain2);
+        gain2.connect(this.context.destination);
+        osc2.start();
+        osc2.stop(t + 0.1);
+    }
+    playMetalHit() {
+        if (!this.enabled) return;
+        const osc = this.context.createOscillator();
+        const gain = this.context.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(800, this.context.currentTime);
+        osc.frequency.linearRampToValueAtTime(200, this.context.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.2, this.context.currentTime);
+        gain.gain.linearRampToValueAtTime(0, this.context.currentTime + 0.2);
+        osc.connect(gain);
+        gain.connect(this.context.destination);
+        osc.start();
+        osc.stop(this.context.currentTime + 0.2);
+    }
+    playApple() {
+        if (!this.enabled) return;
+        const osc = this.context.createOscillator();
+        const gain = this.context.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1200, this.context.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1800, this.context.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.1, this.context.currentTime);
+        gain.gain.linearRampToValueAtTime(0, this.context.currentTime + 0.2);
+        osc.connect(gain);
+        gain.connect(this.context.destination);
+        osc.start();
+        osc.stop(this.context.currentTime + 0.2);
+    }
+}
+
+const audio = new SoundManager();
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+const COLORS = {
+    bg: '#0b1e27',
+    woodLight: '#eecfa1',
+    woodDark: '#8b4513',
+    woodBorder: '#5c4033',
+    knifeHandle: '#4a3b2a',
+    knifeBlade: '#e0e0e0',
+    apple: '#ff3333',
+    leaf: '#4caf50'
+};
+
+let score = 0;
+let appleCount = 0;
+let stage = 1;
+
+class Game {
+    constructor() {
+        // 先初始化 log 对象，给默认值
+        this.log = {
+            x: 0,
+            y: 0,
+            radius: 0, 
+            angle: 0,
+            rotationSpeed: 0.02,
+            pattern: 'constant',
+            patternTimer: 0,
+            items: [],
+            flash: 0,
+            visible: true
+        };
+        
+        // 再调用 resize，这样 log 的 radius 就能被正确计算了
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        this.inputActive = true;
+        
+        this.currentKnife = null;
+        this.flyingKnife = null;
+        this.knivesLeft = 7;
+        this.particles = [];
+        this.logDebris = [];
+        this.screenShake = 0;
+
+        const inputHandler = (e) => {
+            if(e.target.tagName === 'SELECT' || e.target.tagName === 'BUTTON') return;
+            audio.init();
+            this.handleInput(e);
+        };
+        document.addEventListener('pointerdown', inputHandler);
+        
+        this.state = 'MENU';
+        this.resetGame();
+        this.loop = this.loop.bind(this);
+        requestAnimationFrame(this.loop);
+    }
+
+    resize() {
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        canvas.width = this.width;
+        canvas.height = this.height;
+        if (this.log) {
+            this.log.x = this.width / 2;
+            this.log.y = this.height * 0.32;
+            this.log.radius = Math.min(this.width, this.height) * 0.22;
+        }
+    }
+
+    resetGame() {
+        score = 0;
+        appleCount = 0;
+        stage = 1;
+        this.updateUI();
+        this.startLevel(1);
+        document.getElementById('message-box').style.display = 'none';
+        this.state = 'PLAYING';
+    }
+
+    startLevel(levelNum) {
+        stage = levelNum;
+        this.showStageTitle();
+        this.knivesLeft = 6 + Math.min(Math.floor(levelNum / 2), 6);
+        
+        this.log.items = [];
+        this.log.angle = 0;
+        this.log.visible = true;
+        this.logDebris = [];
+        
+        const patterns = ['constant', 'sine', 'stop_go', 'reverse', 'erratic'];
+        this.log.pattern = patterns[Math.min(levelNum - 1, 4)] || patterns[Math.floor(Math.random() * patterns.length)];
+        this.log.patternTimer = 0;
+        this.log.rotationSpeed = 0.025 + (levelNum * 0.003);
+
+        const initialObstacles = Math.min(Math.floor((levelNum - 1) / 2), 5);
+        for(let i=0; i<initialObstacles; i++) {
+            this.log.items.push({
+                type: 'knife',
+                angle: (Math.PI * 2 / initialObstacles) * i + Math.random() * 0.5
+            });
+        }
+
+        const appleChance = 0.6;
+        if (Math.random() < appleChance) {
+            let angle = Math.random() * Math.PI * 2;
+            if (!this.checkCollisionAngle(angle, 0.25)) {
+                this.log.items.push({
+                    type: 'apple',
+                    angle: angle
+                });
+            }
+        }
+
+        this.spawnKnife();
+        this.inputActive = true;
+    }
+
+    showStageTitle() {
+        const title = document.getElementById('stage-display');
+        title.innerText = t('stage', stage);
+        title.classList.add('visible');
+        setTimeout(() => title.classList.remove('visible'), 2000);
+    }
+
+    spawnKnife() {
+        const scale = Math.min(this.width, this.height) / 800;
+        this.currentKnife = {
+            x: this.width / 2,
+            y: this.height - (180 * scale),
+            width: 28 * scale,
+            height: 150 * scale
+        };
+    }
+
+    handleInput(e) {
+        e.preventDefault();
+        if (this.state !== 'PLAYING' || !this.inputActive) return;
+        if (this.flyingKnife) return; 
+        if (this.knivesLeft <= 0) return;
+
+        audio.playThrow();
+        this.flyingKnife = { ...this.currentKnife, speed: this.height * 0.06 }; 
+        this.currentKnife = null;
+        this.knivesLeft--;
+    }
+
+    update() {
+        if (this.state !== 'PLAYING') return;
+
+        this.updateLogRotation();
+
+        if (this.log.flash > 0) this.log.flash--;
+
+        if (this.flyingKnife) {
+            this.flyingKnife.y -= this.flyingKnife.speed;
+            
+            if (this.log.visible && this.flyingKnife.y <= this.log.y + this.log.radius) {
+                this.onKnifeHitLog();
+            }
+        }
+
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+            let p = this.particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= 0.015;
+            p.vy += 0.4;
+            p.rotation += p.vRot;
+            if (p.life <= 0) this.particles.splice(i, 1);
+        }
+
+        for (let i = this.logDebris.length - 1; i >= 0; i--) {
+            let d = this.logDebris[i];
+            d.x += d.vx;
+            d.y += d.vy;
+            d.vy += 0.5;
+            d.rotation += d.vRot;
+            
+            if (d.y > this.height + 100) {
+                this.logDebris.splice(i, 1);
+            }
+        }
+    }
+
+    updateLogRotation() {
+        if (!this.log.visible) return;
+        this.log.patternTimer++;
+        
+        switch (this.log.pattern) {
+            case 'constant':
+                this.log.angle += this.log.rotationSpeed;
+                break;
+            case 'sine':
+                this.log.angle += Math.sin(this.log.patternTimer * 0.05) * (this.log.rotationSpeed * 1.5) + 0.01;
+                break;
+            case 'stop_go':
+                if (this.log.patternTimer % 180 < 40) {
+                   
+                } else {
+                    this.log.angle += this.log.rotationSpeed * 1.8;
+                }
+                break;
+            case 'reverse':
+                if (this.log.patternTimer % 240 < 120) {
+                    this.log.angle += this.log.rotationSpeed;
+                } else {
+                    this.log.angle -= this.log.rotationSpeed;
+                }
+                break;
+            case 'erratic':
+                if (Math.random() < 0.02) this.log.rotationSpeed *= -1;
+                this.log.angle += this.log.rotationSpeed * (1 + Math.random());
+                break;
+            default:
+                this.log.angle += 0.02;
+        }
+    }
+
+    onKnifeHitLog() {
+        let hitAngle = (Math.PI / 2) - this.log.angle;
+        hitAngle = hitAngle % (Math.PI * 2);
+        if (hitAngle < 0) hitAngle += Math.PI * 2;
+
+        const hitResult = this.checkCollision(hitAngle);
+
+        if (hitResult === 'knife') {
+            audio.playMetalHit();
+            this.screenShake = 15;
+            this.gameOver();
+        } else {
+            audio.playWoodHit();
+            this.createWoodParticles(this.width/2, this.log.y + this.log.radius);
+            this.log.items.push({
+                type: 'knife',
+                angle: hitAngle
+            });
+            this.log.flash = 3;
+
+            this.flyingKnife = null;
+            score++;
+            this.screenShake = 4;
+
+            if (this.knivesLeft === 0) {
+                this.levelComplete();
+            } else {
+                this.spawnKnife();
+            }
+        }
+        this.updateUI();
+    }
+
+    checkCollision(angle) {
+        const threshold = 0.25; 
+        
+        for (let i = 0; i < this.log.items.length; i++) {
+            let item = this.log.items[i];
+            let diff = Math.abs(item.angle - angle);
+            if (diff > Math.PI) diff = (Math.PI * 2) - diff;
+
+            if (item.type === 'knife') {
+                if (diff < threshold) return 'knife';
+            } else if (item.type === 'apple') {
+                if (diff < threshold + 0.12) {
+                    audio.playApple();
+                    this.collectApple(i);
+                    i--; 
+                }
+            }
+        }
+        return 'none';
+    }
+    
+    checkCollisionAngle(angle, threshold) {
+        for (let item of this.log.items) {
+            if (item.type === 'knife') {
+                let diff = Math.abs(item.angle - angle);
+                if (diff > Math.PI) diff = (Math.PI * 2) - diff;
+                if (diff < threshold) return true;
+            }
+        }
+        return false;
+    }
+
+    collectApple(index) {
+        let item = this.log.items[index];
+        let rot = this.log.angle + item.angle;
+        let ax = this.log.x + Math.cos(rot) * this.log.radius;
+        let ay = this.log.y + Math.sin(rot) * this.log.radius;
+        
+        this.createAppleParticles(ax, ay);
+        this.log.items.splice(index, 1);
+        appleCount++;
+        score += 5;
+    }
+
+    createWoodParticles(x, y, count = 12) {
+        for(let i=0; i<count; i++) {
+            this.particles.push({
+                x: x, y: y,
+                vx: (Math.random() - 0.5) * 8,
+                vy: (Math.random() - 0.5) * 8 - 2,
+                life: 1.0,
+                color: COLORS.woodLight,
+                size: Math.random() * 5 + 3,
+                rotation: Math.random() * Math.PI,
+                vRot: (Math.random() - 0.5) * 0.2
+            });
+        }
+    }
+
+    createAppleParticles(x, y) {
+        for(let i=0; i<12; i++) {
+            this.particles.push({
+                x: x, y: y,
+                vx: (Math.random() - 0.5) * 10,
+                vy: (Math.random() - 0.5) * 10,
+                life: 1.0,
+                color: '#ffdddd',
+                size: Math.random() * 4 + 3,
+                rotation: 0,
+                vRot: 0
+            });
+            this.particles.push({
+                x: x, y: y,
+                vx: (Math.random() - 0.5) * 8,
+                vy: (Math.random() - 0.5) * 8,
+                life: 0.8,
+                color: '#ff0000',
+                size: Math.random() * 3 + 2,
+                rotation: 0,
+                vRot: 0
+            });
+        }
+    }
+
+    breakLog() {
+        audio.playWoodBreak();
+        this.log.visible = false;
+        this.screenShake = 15;
+
+        const chunks = 8;
+        for (let i = 0; i < chunks; i++) {
+            const angle = (Math.PI * 2 / chunks) * i;
+            const spread = 0.5;
+            this.logDebris.push({
+                type: 'woodChunk',
+                x: this.log.x,
+                y: this.log.y,
+                vx: Math.cos(angle) * (2 + Math.random() * 4),
+                vy: Math.sin(angle) * (2 + Math.random() * 4) - 3,
+                rotation: angle,
+                vRot: (Math.random() - 0.5) * 0.1,
+                radius: this.log.radius,
+                startAngle: -spread,
+                endAngle: spread,
+                color: COLORS.woodLight
+            });
+        }
+
+        for (let item of this.log.items) {
+            const totalAngle = this.log.angle + item.angle;
+            const itemX = this.log.x + Math.cos(totalAngle) * this.log.radius;
+            const itemY = this.log.y + Math.sin(totalAngle) * this.log.radius;
+            
+            const vx = Math.cos(totalAngle) * 5 + (Math.random() - 0.5) * 4;
+            const vy = Math.sin(totalAngle) * 5 - 4;
+
+            this.logDebris.push({
+                type: item.type,
+                x: itemX,
+                y: itemY,
+                vx: vx,
+                vy: vy,
+                rotation: totalAngle + (item.type === 'knife' ? 0 : Math.PI),
+                vRot: (Math.random() - 0.5) * 0.3
+            });
+        }
+        
+        this.createWoodParticles(this.log.x, this.log.y, 30);
+    }
+
+    levelComplete() {
+        this.inputActive = false;
+        this.breakLog();
+        setTimeout(() => {
+            this.startLevel(stage + 1);
+        }, 1500);
+    }
+
+    gameOver() {
+        this.state = 'GAMEOVER';
+        
+        if (this.flyingKnife) {
+            this.flyingKnife.vy = 15;
+            this.flyingKnife.vx = (Math.random() - 0.5) * 15;
+            
+            let fallAnim = () => {
+                if (!this.flyingKnife) return;
+                this.flyingKnife.x += this.flyingKnife.vx;
+                this.flyingKnife.y += this.flyingKnife.vy;
+                this.flyingKnife.vy += 1.5;
+                this.flyingKnife.rotation = (this.flyingKnife.rotation || 0) + 0.3;
+                
+                ctx.clearRect(0,0,this.width, this.height);
+                this.draw();
+                ctx.save();
+                ctx.translate(this.flyingKnife.x, this.flyingKnife.y);
+                ctx.rotate(this.flyingKnife.rotation);
+                this.drawKnife(0, 0);
+                ctx.restore();
+
+                if (this.flyingKnife.y < this.height + 100) {
+                    requestAnimationFrame(fallAnim);
+                } else {
+                    document.getElementById('msg-title').innerText = t('gameOver');
+                    document.getElementById('msg-score').innerText = `${t('score')}: ${score}`;
+                    document.getElementById('message-box').style.display = 'block';
+                }
+            };
+            fallAnim();
+        } else {
+             document.getElementById('msg-title').innerText = t('gameOver');
+             document.getElementById('msg-score').innerText = `${t('score')}: ${score}`;
+             document.getElementById('message-box').style.display = 'block';
+        }
+    }
+
+    updateUI() {
+        document.getElementById('score').innerText = score;
+        document.getElementById('apples').innerText = appleCount;
+    }
+
+    draw() {
+        if (this.state === 'GAMEOVER' && !this.flyingKnife) return;
+
+        ctx.fillStyle = COLORS.bg;
+        ctx.fillRect(0, 0, this.width, this.height);
+
+        ctx.save();
+        if (this.screenShake > 0) {
+            let dx = (Math.random() - 0.5) * this.screenShake;
+            let dy = (Math.random() - 0.5) * this.screenShake;
+            ctx.translate(dx, dy);
+            this.screenShake *= 0.9;
+            if (this.screenShake < 0.5) this.screenShake = 0;
+        }
+
+        this.drawLog();
+        this.drawDebris();
+        
+        for(let p of this.particles) {
+            ctx.globalAlpha = p.life;
+            ctx.fillStyle = p.color;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation);
+            ctx.beginPath();
+            ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+            ctx.restore();
+            ctx.globalAlpha = 1.0;
+        }
+
+        if (this.flyingKnife) {
+            ctx.save();
+            ctx.translate(this.flyingKnife.x, this.flyingKnife.y);
+            this.drawKnife(0, 0);
+            ctx.restore();
+        }
+
+        if (this.currentKnife) {
+            ctx.save();
+            ctx.translate(this.currentKnife.x, this.currentKnife.y);
+            this.drawKnife(0, 0);
+            ctx.restore();
+        }
+
+        this.drawKnivesUI();
+
+        ctx.restore();
+    }
+
+    drawLog() {
+        if (!this.log.visible) return;
+
+        ctx.save();
+        ctx.translate(this.log.x, this.log.y);
+        ctx.rotate(this.log.angle);
+
+        for (let item of this.log.items) {
+            ctx.save();
+            ctx.rotate(item.angle);
+            ctx.translate(0, this.log.radius); 
+            
+            if (item.type === 'knife') {
+                ctx.translate(0, 10); 
+                this.drawKnife(0, 0);
+            } else if (item.type === 'apple') {
+                ctx.rotate(Math.PI);
+                ctx.translate(0, -5); 
+                this.drawApple(0, 0);
+            }
+            
+            ctx.restore();
+        }
+
+        ctx.beginPath();
+        ctx.arc(0, 0, this.log.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.log.flash > 0 ? '#ffeedd' : COLORS.woodLight;
+        ctx.fill();
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = COLORS.woodBorder;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(0, 0, this.log.radius * 0.75, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(139, 69, 19, 0.2)";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.arc(0, 0, this.log.radius * 0.45, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.arc(0, 0, this.log.radius * 0.18, 0, Math.PI * 2);
+        ctx.fillStyle = COLORS.woodDark;
+        ctx.fill();
+
+        ctx.restore();
+    }
+
+    drawDebris() {
+        for (let d of this.logDebris) {
+            ctx.save();
+            ctx.translate(d.x, d.y);
+            ctx.rotate(d.rotation);
+
+            if (d.type === 'woodChunk') {
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, d.radius, d.startAngle, d.endAngle);
+                ctx.lineTo(0, 0);
+                ctx.closePath();
+                ctx.fillStyle = d.color;
+                ctx.fill();
+                ctx.strokeStyle = COLORS.woodBorder;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.arc(0, 0, d.radius * 0.15, d.startAngle, d.endAngle);
+                ctx.fillStyle = COLORS.woodDark;
+                ctx.fill();
+            } else if (d.type === 'knife') {
+                ctx.rotate(Math.PI); 
+                this.drawKnife(0, 0);
+            } else if (d.type === 'apple') {
+                this.drawApple(0, 0);
+            }
+
+            ctx.restore();
+        }
+    }
+
+    drawKnife(x, y) {
+        const w = 28;
+        const bladeH = 120;
+        const handleH = 50;
+        
+        ctx.save();
+        ctx.translate(x, y);
+        
+        ctx.fillStyle = COLORS.knifeHandle;
+        ctx.beginPath();
+        ctx.moveTo(-w/2, 0);
+        ctx.lineTo(w/2, 0);
+        ctx.lineTo(w/2, handleH);
+        ctx.lineTo(0, handleH + 5);
+        ctx.lineTo(-w/2, handleH);
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.fillStyle = '#888';
+        ctx.fillRect(-w, -4, w*2, 12);
+
+        ctx.fillStyle = COLORS.knifeBlade;
+        ctx.beginPath();
+        ctx.moveTo(-w/2, 0);
+        ctx.lineTo(w/2, 0);
+        ctx.lineTo(0, -bladeH);
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(w/4, 0);
+        ctx.lineTo(0, -bladeH + 15);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+    }
+
+    drawApple(x, y) {
+        const size = 32; 
+        
+        ctx.save();
+        ctx.translate(x, y);
+        
+        ctx.shadowColor = 'rgba(0,0,0,0.3)';
+        ctx.shadowBlur = 5;
+        
+        ctx.fillStyle = COLORS.apple;
+        ctx.beginPath();
+        ctx.arc(0, 0, size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.beginPath();
+        ctx.arc(-size*0.3, -size*0.3, size*0.25, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = COLORS.leaf;
+        ctx.beginPath();
+        ctx.ellipse(8, -size - 2, 12, 6, Math.PI/3, 0, Math.PI*2);
+        ctx.fill();
+
+        ctx.fillStyle = '#5c4033';
+        ctx.beginPath();
+        ctx.moveTo(0, -size + 2);
+        ctx.lineTo(0, -size - 8);
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#5c4033';
+        ctx.stroke();
+
+        ctx.restore();
+    }
+
+    drawKnivesUI() {
+        const startX = 30;
+        const startY = this.height - 50;
+        const spacing = 35;
+        
+        for (let i = 0; i < this.knivesLeft; i++) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.beginPath();
+            let bx = startX;
+            let by = startY - (i * spacing * 1.5);
+            
+            ctx.moveTo(bx, by);
+            ctx.lineTo(bx + 12, by);
+            ctx.lineTo(bx + 6, by - 30);
+            ctx.fill();
+        }
+    }
+
+    loop() {
+        this.update();
+        if (this.state !== 'GAMEOVER') {
+            this.draw();
+        }
+        requestAnimationFrame(this.loop);
+    }
+}
+
+const game = new Game();
+
+</script>
+</body>
+</html>

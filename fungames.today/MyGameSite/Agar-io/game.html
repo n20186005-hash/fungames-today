@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Agar.io Clone - Ultimate Optimized</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #111;
+            font-family: 'Ubuntu', sans-serif;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        canvas {
+            display: block;
+        }
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 5;
+        }
+        /* Mobile Specific UI Controls */
+        #mobile-controls {
+            display: none; /* Shown via JS on touch devices */
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            pointer-events: auto;
+            gap: 15px;
+            z-index: 20;
+        }
+        .touch-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            transition: transform 0.1s, background 0.1s;
+        }
+        .touch-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        #menu-overlay, #pause-overlay, #gameover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 20, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+        }
+        .hud-text {
+            text-shadow: 2px 2px 0px #000;
+        }
+        .btn-primary {
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px; width: 16px;
+            border-radius: 50%;
+            background: #FBBF24;
+            margin-top: -6px;
+            cursor: pointer;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 4px;
+            background: #4B5563;
+            border-radius: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            #mobile-controls { display: flex; }
+            #leaderboard-container { display: none; } /* Hide leaderboard on small screens to save space */
+            .desktop-only { display: none; }
+            h1 { font-size: 2.5rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas Game Layer -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- HUD Layer -->
+    <div id="ui-layer" class="p-4">
+        <!-- Top Bar -->
+        <div class="flex justify-between items-start w-full pointer-events-auto">
+            <div class="flex flex-col gap-3">
+                <div class="text-white">
+                    <div class="text-2xl font-black hud-text"><span id="lblScore">Score</span>: <span id="scoreDisplay" class="text-yellow-400">0</span></div>
+                    <div class="text-xs text-gray-400 hud-text font-mono">FPS: <span id="fpsDisplay">60</span></div>
+                </div>
+                
+                <!-- Speed Control -->
+                <div class="bg-gray-900/60 p-2 rounded border border-gray-700 w-48">
+                    <label class="text-white text-xs font-bold block mb-1 flex justify-between">
+                        <span id="lblSpeed">Game Speed</span>
+                        <span id="speedVal" class="text-yellow-400">1.0x</span>
+                    </label>
+                    <input type="range" id="speedSlider" min="0.5" max="2.0" step="0.1" value="1.0" class="w-full">
+                </div>
+
+                <!-- Controls -->
+                <div class="flex gap-2">
+                    <button id="pauseBtn" class="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded border border-gray-600 shadow text-xs min-w-[60px]">
+                        ⏸ <span id="lblPause">Pause</span>
+                    </button>
+                    <button id="muteBtn" class="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded border border-gray-600 shadow text-xs">
+                        🔊
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Leaderboard -->
+            <div id="leaderboard-container" class="bg-gray-900/80 p-3 rounded-lg border border-gray-700 text-white w-48 shadow-xl">
+                <h3 class="text-center font-bold text-gray-400 text-xs tracking-widest uppercase mb-2 border-b border-gray-700 pb-1" id="lblLeaderboard">Leaderboard</h3>
+                <ul id="leaderboard" class="text-sm space-y-1 font-mono">
+                    <!-- Leaderboard items injected here -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Mobile Controls (Bottom Right) -->
+        <div id="mobile-controls">
+            <button id="btnMobileSplit" class="touch-btn bg-indigo-600/50 border-indigo-400">⚡</button>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pause-overlay" style="display: none;">
+        <div class="bg-gray-900 border border-gray-700 p-8 rounded-xl shadow-2xl text-center max-w-sm w-full mx-4">
+            <h2 class="text-3xl font-bold text-white mb-6 tracking-wider" id="lblPausedTitle">PAUSED</h2>
+            <div class="space-y-4">
+                <button id="resumeBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded btn-primary" id="lblResume">Resume</button>
+                <button id="saveQuitBtn" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded btn-primary" id="lblQuit">Save & Quit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Menu -->
+    <div id="gameover-overlay" style="display: none;">
+        <div class="bg-gray-900 border border-gray-700 p-8 rounded-xl shadow-2xl text-center max-w-sm w-full mx-4 animate-bounce-in">
+            <h2 class="text-4xl font-black text-red-500 mb-2 tracking-widest" id="lblGameOverTitle">GAME OVER</h2>
+            <div class="text-gray-300 mb-8 text-lg">
+                <span id="lblFinalScoreText">Final Score</span>: <span id="finalScoreVal" class="text-yellow-400 font-bold text-2xl ml-2">0</span>
+            </div>
+            <button id="btnReturnMenu" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl btn-primary uppercase tracking-widest text-lg">
+                <span id="lblReturnToMenu">Return to Menu</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Menu -->
+    <div id="menu-overlay">
+        <!-- Language Switcher -->
+        <div class="absolute top-6 right-6">
+            <select id="langSelect" class="bg-gray-800 text-white text-sm border border-gray-600 rounded p-2 focus:outline-none">
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 中文</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="ko">🇰🇷 한국어</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="ru">🇷🇺 Русский</option>
+            </select>
+        </div>
+
+        <div class="bg-white dark:bg-gray-900 p-6 md:p-8 rounded-2xl shadow-2xl text-center max-w-md w-full mx-4 border border-gray-200 dark:border-gray-800 flex flex-col max-h-[90vh] overflow-y-auto">
+            <h1 class="text-4xl md:text-5xl font-black mb-2 text-indigo-600 tracking-tighter">Agar.io</h1>
+            <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm" id="lblSubtitle">Eat cells, grow bigger, survive.</p>
+            
+            <div class="mb-6 relative">
+                <input type="text" id="playerNameInput" placeholder="Nickname" maxlength="12" 
+                       class="w-full p-4 bg-gray-100 dark:bg-gray-800 border-2 border-transparent focus:border-indigo-500 rounded-lg text-lg focus:outline-none transition dark:text-white font-bold text-center" value="">
+            </div>
+
+            <!-- Game Mode Selection -->
+            <div class="mb-6">
+                <p class="text-gray-400 text-xs uppercase tracking-widest mb-2 font-bold text-left" id="lblMode">Game Mode</p>
+                <div class="flex gap-2">
+                    <button class="mode-select-btn flex-1 py-3 px-1 border-2 border-gray-700 rounded text-gray-500 font-bold text-sm active" data-mode="FFA" onclick="selectMode('FFA')">
+                        <span id="lblModeStandard">Standard</span>
+                    </button>
+                    <button class="mode-select-btn flex-1 py-3 px-1 border-2 border-gray-700 rounded text-gray-500 font-bold text-sm" data-mode="INFINITE" onclick="selectMode('INFINITE')">
+                        <span id="lblModeInfinite">Infinite ∞</span>
+                    </button>
+                </div>
+                <p class="text-xs text-left mt-2 text-indigo-400 h-4" id="modeDescription">Classic FFA survival.</p>
+            </div>
+            
+            <button id="startBtn" class="w-full bg-green-500 hover:bg-green-400 text-white font-black py-4 px-4 rounded-xl text-xl shadow-lg btn-primary mb-4 uppercase tracking-widest">
+                <span id="lblPlay">Play Now</span>
+            </button>
+
+            <!-- Saved Game Info -->
+            <div id="saveInfo" class="hidden mb-4 p-2 bg-gray-800 rounded text-xs text-yellow-500 border border-yellow-700 cursor-pointer hover:bg-gray-700 transition">
+                <span id="lblFoundSave">Found saved game! Score:</span> <span id="savedScoreVal">0</span>
+                <div class="text-[10px] text-gray-400 mt-1">(Click to Restore)</div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-800 text-left desktop-only">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2" id="lblControls">Controls</p>
+                <div class="grid grid-cols-2 gap-2 text-xs text-gray-500 dark:text-gray-400">
+                    <div class="flex items-center gap-2">🖱️ <span id="ctrlMove">Move</span></div>
+                    <div class="flex items-center gap-2"><kbd class="bg-gray-700 text-white px-1 rounded">Space</kbd> <span id="ctrlSplit">Split</span></div>
+                    <div class="flex items-center gap-2"><kbd class="bg-gray-700 text-white px-1 rounded">ESC</kbd> <span id="ctrlPause">Pause</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Localization System ---
+        const TEXTS = {
+            en: {
+                lblScore: "Score", lblPause: "Pause", lblLeaderboard: "Leaderboard", lblPausedTitle: "PAUSED",
+                lblResume: "Resume", lblQuit: "Save & Quit", lblSubtitle: "Eat cells, grow bigger, survive.",
+                lblMode: "Game Mode", lblModeStandard: "Standard", lblModeInfinite: "Infinite ∞",
+                lblPlay: "Play Now", lblControls: "Controls", ctrlMove: "Mouse to Move", ctrlSplit: "Split Cell",
+                ctrlPause: "Pause Menu", descStandard: "Classic FFA survival. Avoid bigger cells.",
+                descInfinite: "Undead mode. Bounce off walls. No stress.", lblFoundSave: "Found auto-save! Score:",
+                lblSpeed: "Game Speed", lblGameOverTitle: "GAME OVER", lblFinalScoreText: "Final Score", lblReturnToMenu: "Return to Menu"
+            },
+            zh: {
+                lblScore: "分数", lblPause: "暂停", lblLeaderboard: "排行榜", lblPausedTitle: "已暂停",
+                lblResume: "继续游戏", lblQuit: "保存并退出", lblSubtitle: "大球吃小球，生存是唯一的规则。",
+                lblMode: "游戏模式", lblModeStandard: "标准模式", lblModeInfinite: "无限模式 ∞",
+                lblPlay: "开始游戏", lblControls: "操作指南", ctrlMove: "鼠标/触摸移动", ctrlSplit: "分裂 (加速)",
+                ctrlPause: "暂停菜单", descStandard: "经典大逃杀。躲避大球，吞噬小球。",
+                descInfinite: "无敌模式。撞墙反弹，永不死亡。", lblFoundSave: "发现自动存档！分数：",
+                lblSpeed: "游戏倍速", lblGameOverTitle: "游戏结束", lblFinalScoreText: "最终得分", lblReturnToMenu: "返回主菜单"
+            },
+            ja: {
+                lblScore: "スコア", lblPause: "一時停止", lblLeaderboard: "リーダーボード", lblPausedTitle: "一時停止中",
+                lblResume: "再開", lblQuit: "保存して終了", lblSubtitle: "細胞を食べて、大きく成長し、生き残ろう。",
+                lblMode: "ゲームモード", lblModeStandard: "標準モード", lblModeInfinite: "無限モード ∞",
+                lblPlay: "プレイ開始", lblControls: "操作方法", ctrlMove: "マウスで移動", ctrlSplit: "分裂 (加速)",
+                ctrlPause: "メニュー", descStandard: "クラシックなサバイバル。大きな細胞を避けよう。",
+                descInfinite: "無敵モード。壁で跳ね返る。ストレスなし。", lblFoundSave: "保存データあり！スコア：",
+                lblSpeed: "スピード", lblGameOverTitle: "ゲームオーバー", lblFinalScoreText: "最終スコア", lblReturnToMenu: "メインメニュー"
+            },
+            ko: {
+                lblScore: "점수", lblPause: "일시정지", lblLeaderboard: "순위표", lblPausedTitle: "일시정지됨",
+                lblResume: "계속하기", lblQuit: "저장 및 종료", lblSubtitle: "세포를 먹고, 성장하고, 살아남으세요.",
+                lblMode: "게임 모드", lblModeStandard: "표준 모드", lblModeInfinite: "무한 모드 ∞",
+                lblPlay: "게임 시작", lblControls: "조작법", ctrlMove: "마우스 이동", ctrlSplit: "세포 분열",
+                ctrlPause: "메뉴", descStandard: "클래식 서바이벌. 큰 세포를 피하세요.",
+                descInfinite: "무적 모드. 벽에서 튕깁니다. 스트레스 없음.", lblFoundSave: "저장된 게임! 점수:",
+                lblSpeed: "게임 속도", lblGameOverTitle: "게임 오버", lblFinalScoreText: "최종 점수", lblReturnToMenu: "메인 메뉴"
+            },
+            es: {
+                lblScore: "Puntuación", lblPause: "Pausa", lblLeaderboard: "Clasificación", lblPausedTitle: "PAUSADO",
+                lblResume: "Reanudar", lblQuit: "Guardar y Salir", lblSubtitle: "Come células, crece y sobrevive.",
+                lblMode: "Modo de Juego", lblModeStandard: "Estándar", lblModeInfinite: "Infinito ∞",
+                lblPlay: "Jugar Ahora", lblControls: "Controles", ctrlMove: "Ratón para Mover", ctrlSplit: "Dividir Célula",
+                ctrlPause: "Menú", descStandard: "Supervivencia clásica. Evita los grandes.",
+                descInfinite: "Modo inmortal. Rebota en paredes.", lblFoundSave: "¡Partida guardada! Puntuación:",
+                lblSpeed: "Velocidad", lblGameOverTitle: "JUEGO TERMINADO", lblFinalScoreText: "Puntuación", lblReturnToMenu: "Menú Principal"
+            },
+            ru: {
+                lblScore: "Счет", lblPause: "Пауза", lblLeaderboard: "Лидеры", lblPausedTitle: "ПАУЗА",
+                lblResume: "Продолжить", lblQuit: "Сохр. и Выйти", lblSubtitle: "Ешьте клетки, растите и выживайте.",
+                lblMode: "Режим игры", lblModeStandard: "Стандарт", lblModeInfinite: "Бесконечный ∞",
+                lblPlay: "Играть", lblControls: "Управление", ctrlMove: "Мышь для движения", ctrlSplit: "Разделение",
+                ctrlPause: "Меню", descStandard: "Классическое выживание. Избегайте больших.",
+                descInfinite: "Режим бессмертия. Отскок от стен.", lblFoundSave: "Найдено сохранение! Счет:",
+                lblSpeed: "Скорость", lblGameOverTitle: "ИГРА ОКОНЧЕНА", lblFinalScoreText: "Итоговый счет", lblReturnToMenu: "Главное меню"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            const t = TEXTS[lang];
+            if (!t) return;
+            Object.keys(t).forEach(key => {
+                const el = document.getElementById(key);
+                if (el) el.innerText = t[key];
+            });
+            const nickMap = { 'zh': "输入昵称", 'ja': "ニックネーム", 'ko': "닉네임", 'ru': "Никнейм", 'es': "Apodo", 'en': "Nickname" };
+            document.getElementById('playerNameInput').placeholder = nickMap[lang] || "Nickname";
+            updateModeDescription();
+        }
+
+        // --- Performance & Logic Constants ---
+        const CONFIG = {
+            MAP_W: 3000,
+            MAP_H: 3000,
+            GRID: 50,
+            GRID_CELL_SIZE: 100, // Spatial Hash Cell Size (Performance Critical)
+            INIT_MASS: 30,
+            FOOD_GAIN: 3, 
+            MAX_FOOD: 400, // Reduced slightly for mobile perf
+            MAX_BOTS: 20
+        };
+
+        // --- Spatial Hash Grid (Core Performance Optimization) ---
+        class SpatialGrid {
+            constructor() {
+                this.cellSize = CONFIG.GRID_CELL_SIZE;
+                this.cols = Math.ceil(CONFIG.MAP_W / this.cellSize);
+                this.rows = Math.ceil(CONFIG.MAP_H / this.cellSize);
+                this.buckets = new Map(); // Key: "x_y", Value: Set<Entity>
+            }
+
+            clear() {
+                this.buckets.clear();
+            }
+
+            _getKey(x, y) {
+                const cx = Math.floor(x / this.cellSize);
+                const cy = Math.floor(y / this.cellSize);
+                return `${cx}_${cy}`;
+            }
+
+            add(entity) {
+                // Determine cells this entity overlaps
+                const r = entity.radius;
+                const startX = Math.floor((entity.x - r) / this.cellSize);
+                const endX = Math.floor((entity.x + r) / this.cellSize);
+                const startY = Math.floor((entity.y - r) / this.cellSize);
+                const endY = Math.floor((entity.y + r) / this.cellSize);
+
+                for(let cx = startX; cx <= endX; cx++) {
+                    for(let cy = startY; cy <= endY; cy++) {
+                        const key = `${cx}_${cy}`;
+                        if(!this.buckets.has(key)) this.buckets.set(key, new Set());
+                        this.buckets.get(key).add(entity);
+                    }
+                }
+            }
+
+            // Get entities near a specific entity
+            query(entity) {
+                const neighbors = new Set();
+                const r = entity.radius + 100; // Search radius buffer
+                const startX = Math.floor((entity.x - r) / this.cellSize);
+                const endX = Math.floor((entity.x + r) / this.cellSize);
+                const startY = Math.floor((entity.y - r) / this.cellSize);
+                const endY = Math.floor((entity.y + r) / this.cellSize);
+
+                for(let cx = startX; cx <= endX; cx++) {
+                    for(let cy = startY; cy <= endY; cy++) {
+                        const key = `${cx}_${cy}`;
+                        const bucket = this.buckets.get(key);
+                        if(bucket) {
+                            for(let e of bucket) neighbors.add(e);
+                        }
+                    }
+                }
+                neighbors.delete(entity); // Remove self
+                return neighbors;
+            }
+        }
+
+        // --- Audio System ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let isMuted = false;
+
+        const Sounds = {
+            playTone: (freq, type, duration, vol = 0.1) => {
+                if (isMuted || audioCtx.state === 'suspended') {
+                    if(audioCtx.state === 'suspended') audioCtx.resume();
+                    if(isMuted) return;
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            },
+            eat: () => Sounds.playTone(600 + Math.random()*200, 'sine', 0.08, 0.05),
+            split: () => Sounds.playTone(150, 'square', 0.2, 0.1),
+            die: () => { Sounds.playTone(100, 'sawtooth', 0.3, 0.2); setTimeout(() => Sounds.playTone(50, 'sawtooth', 0.4, 0.2), 150); },
+            bounce: () => Sounds.playTone(300, 'triangle', 0.1, 0.1)
+        };
+
+        document.getElementById('muteBtn').onclick = function() {
+            isMuted = !isMuted;
+            this.innerText = isMuted ? '🔇' : '🔊';
+        };
+
+        // --- Game Setup ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false }); // Optimization: Disable transparency on canvas buffer
+        
+        let gameState = 'MENU'; 
+        let gameMode = 'FFA'; 
+        let gameSpeed = 1.0;
+        let entities = { foods: [], viruses: [], bots: [], player: [] };
+        let particles = []; 
+        let grid = new SpatialGrid();
+        
+        let cam = { x: 0, y: 0, scale: 1, left: 0, right: 0, top: 0, bottom: 0 };
+        let playerStats = { score: 0, name: "Guest" };
+        let inputs = { x: 0, y: 0 };
+        let frameID = 0; 
+        let saveTimer = 0;
+        let lastTime = performance.now();
+
+        // --- Classes ---
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y; this.color = color;
+                this.life = 1.0;
+                this.vx = (Math.random() - 0.5) * 5;
+                this.vy = (Math.random() - 0.5) * 5;
+            }
+            update(dt) {
+                this.x += this.vx * dt;
+                this.y += this.vy * dt;
+                this.life -= 0.05 * dt;
+            }
+            draw(ctx) {
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        class Entity {
+            constructor(x, y, mass, color) {
+                this.x = x; this.y = y; this.mass = mass; this.color = color;
+                this.radius = Math.sqrt(this.mass * 10);
+            }
+            updateRadius() { this.radius = Math.sqrt(this.mass * 10); }
+        }
+
+        class Cell extends Entity {
+            constructor(x, y, mass, color, name, isBot = false) {
+                super(x, y, mass, color);
+                this.name = name;
+                this.isBot = isBot;
+                this.vx = 0; this.vy = 0;
+                this.mergeTimer = 0;
+                this.targetX = x; this.targetY = y;
+                this.botTimer = 0;
+            }
+            
+            move(targetX, targetY, dt) {
+                const dx = targetX - this.x;
+                const dy = targetY - this.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                
+                // Speed formula modified by Game Speed
+                const speed = Math.max(1.5, 7 * Math.pow(this.mass, -0.4)) * gameSpeed; 
+                
+                if (dist > 0) {
+                    this.vx = (dx / dist) * speed;
+                    this.vy = (dy / dist) * speed;
+                }
+
+                this.x += this.vx * dt;
+                this.y += this.vy * dt;
+
+                // Wall Collision
+                if (gameMode === 'INFINITE' && !this.isBot) {
+                    let bounced = false;
+                    if (this.x < this.radius) { this.x = this.radius; this.vx *= -1; bounced = true; }
+                    if (this.x > CONFIG.MAP_W - this.radius) { this.x = CONFIG.MAP_W - this.radius; this.vx *= -1; bounced = true; }
+                    if (this.y < this.radius) { this.y = this.radius; this.vy *= -1; bounced = true; }
+                    if (this.y > CONFIG.MAP_H - this.radius) { this.y = CONFIG.MAP_H - this.radius; this.vy *= -1; bounced = true; }
+                    if (bounced) {
+                        const cx = CONFIG.MAP_W/2; const cy = CONFIG.MAP_H/2;
+                        this.x += (cx - this.x) * 0.01; this.y += (cy - this.y) * 0.01;
+                        Sounds.bounce();
+                    }
+                } else {
+                    this.x = Math.max(this.radius, Math.min(CONFIG.MAP_W - this.radius, this.x));
+                    this.y = Math.max(this.radius, Math.min(CONFIG.MAP_H - this.radius, this.y));
+                }
+            }
+
+            draw(ctx) {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Optimized Border: Only draw if big enough
+                if(this.radius > 5) {
+                    ctx.lineWidth = Math.max(2, this.radius * 0.05);
+                    ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+                    ctx.stroke();
+                }
+
+                if (this.mass > 10) {
+                    ctx.fillStyle = '#FFF';
+                    // Simplify font rendering for performance
+                    const fontSize = Math.max(10, this.radius * 0.4);
+                    if(fontSize > 5) { // Culling text if too small
+                        ctx.font = `bold ${fontSize}px Ubuntu`;
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.strokeStyle = 'black';
+                        ctx.lineWidth = fontSize * 0.1;
+                        ctx.strokeText(this.name, this.x, this.y);
+                        ctx.fillText(this.name, this.x, this.y);
+                    }
+                }
+            }
+        }
+
+        // --- Core Functions ---
+        function init() {
+            resize();
+            window.addEventListener('resize', resize);
+            loadSaveData(); 
+            updateLanguage('en');
+            requestAnimationFrame(gameLoop);
+        }
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            // Re-center input on resize
+            inputs.x = canvas.width / 2;
+            inputs.y = canvas.height / 2;
+        }
+
+        function startGame(restore = false) {
+            frameID = 0; 
+            if (!restore) {
+                playerStats.name = document.getElementById('playerNameInput').value || "Player";
+                entities.player = [new Cell(
+                    Math.random() * CONFIG.MAP_W, Math.random() * CONFIG.MAP_H, 
+                    CONFIG.INIT_MASS, '#4F46E5', playerStats.name
+                )];
+                entities.bots = [];
+                entities.foods = [];
+                entities.viruses = [];
+                for(let i=0; i<CONFIG.MAX_BOTS; i++) spawnBot();
+                for(let i=0; i<CONFIG.MAX_FOOD; i++) spawnFood();
+                for(let i=0; i<20; i++) spawnVirus();
+            }
+            
+            gameState = 'PLAYING';
+            document.getElementById('menu-overlay').style.display = 'none';
+            document.getElementById('pause-overlay').style.display = 'none';
+            document.getElementById('gameover-overlay').style.display = 'none';
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function spawnFood() {
+            entities.foods.push(new Entity(
+                Math.random() * CONFIG.MAP_W, Math.random() * CONFIG.MAP_H, 
+                Math.random() * 3 + 2, `hsl(${Math.random()*360}, 75%, 60%)`
+            ));
+        }
+
+        function spawnBot() {
+            const names = ["Doge", "NASA", "Mars", "Moon", "China", "USA", "Pro", "Noob", "Guest", "Bot", "Wojak", "Pepe", "Sanic", "Earth", "Pluto"];
+            const name = names[Math.floor(Math.random()*names.length)];
+            const b = new Cell(
+                Math.random()*CONFIG.MAP_W, Math.random()*CONFIG.MAP_H, 
+                Math.random()*50 + 20, `hsl(${Math.random()*360}, 60%, 50%)`, name, true
+            );
+            b.botTimer = Math.random() * 100;
+            entities.bots.push(b);
+        }
+        
+        function spawnVirus() {
+            entities.viruses.push(new Entity(
+                Math.random()*(CONFIG.MAP_W-200)+100, Math.random()*(CONFIG.MAP_H-200)+100, 
+                100, '#33FF33'
+            ));
+        }
+
+        // --- Logic Update ---
+        function update(dt) {
+            // Speed Control (apply global speed to time delta)
+            // Note: We use gameSpeed in Cell.move(), so dt here is just real time
+            // To make simulation faster, we can scale dt, but modifying speed in .move is safer for physics stability
+            
+            // 1. Rebuild Spatial Grid (Performance Critical)
+            grid.clear();
+            entities.foods.forEach(f => grid.add(f));
+            entities.viruses.forEach(v => grid.add(v));
+            entities.bots.forEach(b => grid.add(b));
+            entities.player.forEach(p => grid.add(p));
+
+            // Camera
+            if (entities.player.length > 0) {
+                let cx = 0, cy = 0, totalMass = 0;
+                entities.player.forEach(p => { cx += p.x; cy += p.y; totalMass += p.mass; });
+                cx /= entities.player.length;
+                cy /= entities.player.length;
+                
+                cam.x += (cx - cam.x) * 0.1;
+                cam.y += (cy - cam.y) * 0.1;
+                
+                const idealScale = Math.max(0.1, 1 / Math.pow(totalMass / 50, 0.4));
+                cam.scale += (idealScale - cam.scale) * 0.05;
+                
+                playerStats.score = Math.floor(totalMass);
+            }
+
+            // Calc Viewport Bounds for Culling
+            const viewW = canvas.width / cam.scale;
+            const viewH = canvas.height / cam.scale;
+            cam.left = cam.x - viewW/2 - 100; // buffer
+            cam.right = cam.x + viewW/2 + 100;
+            cam.top = cam.y - viewH/2 - 100;
+            cam.bottom = cam.y + viewH/2 + 100;
+
+            // Mouse World Pos
+            const mx = (inputs.x - canvas.width/2) / cam.scale + cam.x;
+            const my = (inputs.y - canvas.height/2) / cam.scale + cam.y;
+
+            // Player Logic
+            entities.player.forEach(p => {
+                p.move(mx, my, dt);
+                p.updateRadius();
+                if(p.mergeTimer > 0) p.mergeTimer--;
+                checkCollisions(p); // Check vs Grid
+            });
+
+            // Bot Logic
+            entities.bots.forEach(b => {
+                b.botTimer--;
+                
+                // Grid Query for AI (Performance Optimization)
+                const nearby = grid.query(b);
+                let threat = null;
+                let prey = null;
+                let minDistPrey = Infinity;
+
+                // AI only looks at nearby entities now
+                for (let other of nearby) {
+                    // Check if it's a Cell (player or bot)
+                    if (!(other instanceof Cell)) continue;
+                    
+                    const d = Math.hypot(other.x - b.x, other.y - b.y);
+                    if (other.mass > b.mass * 1.15) {
+                        if (!threat || d < Math.hypot(threat.x - b.x, threat.y - b.y)) threat = other;
+                    } else if (b.mass > other.mass * 1.15) {
+                        if (d < minDistPrey) { minDistPrey = d; prey = other; }
+                    }
+                }
+
+                if (threat) {
+                    const dx = b.x - threat.x; const dy = b.y - threat.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    b.targetX = b.x + (dx/dist) * 200;
+                    b.targetY = b.y + (dy/dist) * 200;
+                } else if (prey) {
+                    b.targetX = prey.x; b.targetY = prey.y;
+                } else {
+                    if (b.botTimer <= 0) {
+                        // Find nearest food in grid
+                        let bestFood = null; let minD = Infinity;
+                        for(let obj of nearby) {
+                             if(obj instanceof Cell) continue; // Skip cells, look for food
+                             if(obj.mass > 50) continue; // Skip viruses roughly
+                             const d = Math.hypot(obj.x - b.x, obj.y - b.y);
+                             if (d < minD) { minD = d; bestFood = obj; }
+                        }
+
+                        if (bestFood && minD < 300) {
+                            b.targetX = bestFood.x; b.targetY = bestFood.y; b.botTimer = 20;
+                        } else {
+                            b.targetX = Math.random() * CONFIG.MAP_W;
+                            b.targetY = Math.random() * CONFIG.MAP_H;
+                            b.botTimer = 60 + Math.random() * 60;
+                        }
+                    }
+                }
+                
+                b.move(b.targetX, b.targetY, dt);
+                b.updateRadius();
+                if (frameID % 120 === 0 && b.mass < 500) b.mass += 1;
+                
+                checkCollisions(b); // Check vs Grid
+            });
+
+            // Spawning
+            while(entities.foods.length < CONFIG.MAX_FOOD) spawnFood();
+            if(Math.random() < 0.05 && entities.bots.length < CONFIG.MAX_BOTS) spawnBot();
+
+            // Particles
+            for(let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update(dt);
+                if(particles[i].life <= 0) particles.splice(i, 1);
+            }
+            
+            // Auto Save
+            saveTimer++;
+            if (saveTimer > 300) { saveGame(); saveTimer = 0; }
+        }
+
+        function checkCollisions(cell) {
+            const nearby = grid.query(cell);
+            
+            for(let other of nearby) {
+                // Safety check: ensure 'other' is still in the main arrays (hasn't been eaten this frame by someone else)
+                // This is slightly expensive but necessary, or we check flags
+                // Optimization: Just check distance first
+                
+                const d = Math.hypot(cell.x - other.x, cell.y - other.y);
+                
+                // Eat Food
+                if (!(other instanceof Cell) && other.mass < 10) { // Food check
+                     if(d < cell.radius) {
+                         cell.mass += CONFIG.FOOD_GAIN;
+                         createParticles(other.x, other.y, other.color, 2);
+                         Sounds.eat();
+                         // Remove from main array
+                         const idx = entities.foods.indexOf(other);
+                         if(idx > -1) entities.foods.splice(idx, 1);
+                     }
+                     continue;
+                }
+
+                // Eat Virus
+                if (!(other instanceof Cell) && other.mass >= 100) { // Virus
+                     if(d < cell.radius * 0.9 && cell.mass > other.mass * 1.2) {
+                         // Explode
+                         cell.mass /= 2;
+                         const idx = entities.viruses.indexOf(other);
+                         if(idx > -1) entities.viruses.splice(idx, 1);
+                         Sounds.die(); // Explosion sound
+                         // Simple scatter effect logic could go here
+                     }
+                     continue;
+                }
+
+                // Eat Other Cell
+                if (other instanceof Cell) {
+                     if (cell.mass > other.mass * 1.15 && d < cell.radius - other.radius * 0.3) {
+                         // FIX: In Infinite mode, bots cannot eat players
+                         // 修复：在无限模式下，如果是电脑尝试吃掉玩家，则强制跳过，实现真正的无敌
+                         if (gameMode === 'INFINITE' && cell.isBot && !other.isBot) {
+                             continue;
+                         }
+
+                         // Cell eats Other
+                         cell.mass += other.mass;
+                         createParticles(other.x, other.y, other.color, 8);
+                         Sounds.eat();
+                         
+                         if(other.isBot) {
+                             const idx = entities.bots.indexOf(other);
+                             if(idx > -1) entities.bots.splice(idx, 1);
+                         } else {
+                             // Player eaten
+                             const idx = entities.player.indexOf(other);
+                             if(idx > -1) entities.player.splice(idx, 1);
+                             
+                             if(entities.player.length === 0 && gameMode !== 'INFINITE') {
+                                 gameState = 'GAMEOVER';
+                                 Sounds.die();
+                                 showGameOver();
+                             }
+                         }
+                     }
+                }
+            }
+
+            // Player Self Merge
+            if (!cell.isBot && entities.player.length > 1) {
+                for(let other of entities.player) {
+                    if(cell === other) continue;
+                    if(cell.mergeTimer > 0 || other.mergeTimer > 0) continue;
+                    const d = Math.hypot(cell.x - other.x, cell.y - other.y);
+                    if (d < cell.radius + other.radius/2) {
+                        if(cell.mass >= other.mass) {
+                            cell.mass += other.mass;
+                            cell.updateRadius();
+                            const idx = entities.player.indexOf(other);
+                            if(idx > -1) entities.player.splice(idx, 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        function createParticles(x, y, color, count) {
+            if(particles.length > 50) return; // Limit particles for performance
+            for(let i=0; i<count; i++) particles.push(new Particle(x, y, color));
+        }
+
+        function splitPlayer() {
+            if (gameState !== 'PLAYING') return;
+            if (entities.player.length >= 8) return; // Lower split limit for performance
+            
+            let added = [];
+            entities.player.forEach(p => {
+                if (p.mass >= 35) {
+                    const splitMass = p.mass / 2;
+                    p.mass = splitMass;
+                    p.updateRadius();
+                    
+                    const n = new Cell(p.x, p.y, splitMass, p.color, p.name);
+                    
+                    // Split towards inputs (Mouse/Touch)
+                    // Need to calculate angle relative to center of screen (where camera is)
+                    const angle = Math.atan2(inputs.y - canvas.height/2, inputs.x - canvas.width/2);
+                    
+                    n.x += Math.cos(angle) * p.radius * 2.5;
+                    n.y += Math.sin(angle) * p.radius * 2.5;
+                    n.mergeTimer = 300; 
+                    added.push(n);
+                    Sounds.split();
+                }
+            });
+            entities.player = entities.player.concat(added);
+        }
+
+        // --- Save System ---
+        function saveGame() {
+            if (gameState !== 'PLAYING' && gameState !== 'PAUSED') return;
+            if (entities.player.length === 0) return;
+            const data = {
+                score: playerStats.score, mass: entities.player.map(p => p.mass),
+                x: entities.player[0].x, y: entities.player[0].y,
+                mode: gameMode, name: playerStats.name, timestamp: Date.now()
+            };
+            localStorage.setItem('agario_save', JSON.stringify(data));
+        }
+
+        function loadSaveData() {
+            const raw = localStorage.getItem('agario_save');
+            if (raw) {
+                try {
+                    const data = JSON.parse(raw);
+                    if (Date.now() - data.timestamp < 86400000) {
+                        document.getElementById('saveInfo').classList.remove('hidden');
+                        document.getElementById('savedScoreVal').innerText = data.score;
+                        window.restoreGame = function() {
+                            gameMode = data.mode; selectMode(gameMode);
+                            playerStats.name = data.name; document.getElementById('playerNameInput').value = data.name;
+                            entities.player = [];
+                            const masses = Array.isArray(data.mass) ? data.mass : [data.mass];
+                            masses.forEach(m => entities.player.push(new Cell(data.x, data.y, m, '#4F46E5', data.name)));
+                            entities.bots = []; entities.foods = []; entities.viruses = [];
+                            for(let i=0; i<CONFIG.MAX_BOTS; i++) spawnBot();
+                            for(let i=0; i<CONFIG.MAX_FOOD; i++) spawnFood();
+                            startGame(true);
+                        }
+                    }
+                } catch(e) {}
+            }
+        }
+
+        // --- Game Over Logic ---
+        function showGameOver() {
+            document.getElementById('finalScoreVal').innerText = Math.floor(playerStats.score);
+            document.getElementById('gameover-overlay').style.display = 'flex';
+            document.getElementById('ui-layer').style.pointerEvents = 'none'; // Disable other UI
+            localStorage.removeItem('agario_save'); // Clear save
+        }
+        
+        document.getElementById('btnReturnMenu').onclick = function() {
+            resetGame();
+            document.getElementById('gameover-overlay').style.display = 'none';
+        };
+
+        // --- Drawing ---
+        function draw() {
+            // Clear Screen
+            ctx.fillStyle = '#111';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            if (gameState === 'MENU') return;
+
+            ctx.save();
+            ctx.translate(canvas.width/2, canvas.height/2);
+            ctx.scale(cam.scale, cam.scale);
+            ctx.translate(-cam.x, -cam.y);
+
+            // Culling: Only draw visible grid lines
+            ctx.beginPath();
+            ctx.strokeStyle = '#222';
+            ctx.lineWidth = 2;
+            const startX = Math.floor(Math.max(0, cam.left) / CONFIG.GRID) * CONFIG.GRID;
+            const endX = Math.min(CONFIG.MAP_W, cam.right);
+            const startY = Math.floor(Math.max(0, cam.top) / CONFIG.GRID) * CONFIG.GRID;
+            const endY = Math.min(CONFIG.MAP_H, cam.bottom);
+
+            for(let x=startX; x<=endX; x+=CONFIG.GRID) { ctx.moveTo(x, Math.max(0, cam.top)); ctx.lineTo(x, Math.min(CONFIG.MAP_H, cam.bottom)); }
+            for(let y=startY; y<=endY; y+=CONFIG.GRID) { ctx.moveTo(Math.max(0, cam.left), y); ctx.lineTo(Math.min(CONFIG.MAP_W, cam.right), y); }
+            ctx.stroke();
+
+            // Borders
+            ctx.strokeStyle = gameMode === 'INFINITE' ? '#F59E0B' : '#444'; 
+            ctx.lineWidth = 10;
+            ctx.strokeRect(0, 0, CONFIG.MAP_W, CONFIG.MAP_H);
+
+            // Draw Entities (With Culling)
+            // Food
+            entities.foods.forEach(f => {
+                if(f.x > cam.left && f.x < cam.right && f.y > cam.top && f.y < cam.bottom) {
+                    ctx.fillStyle = f.color;
+                    ctx.beginPath(); ctx.arc(f.x, f.y, f.radius, 0, Math.PI*2); ctx.fill();
+                }
+            });
+
+            particles.forEach(p => p.draw(ctx));
+
+            // Viruses
+            entities.viruses.forEach(v => {
+                if(v.x > cam.left && v.x < cam.right && v.y > cam.top && v.y < cam.bottom) {
+                    ctx.fillStyle = v.color;
+                    ctx.strokeStyle = '#22aa22';
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    const spikes = 16;
+                    for(let i=0; i<spikes*2; i++) {
+                        const r = i%2===0 ? v.radius : v.radius*0.9;
+                        const a = (Math.PI*2*i)/(spikes*2);
+                        ctx.lineTo(v.x + Math.cos(a)*r, v.y + Math.sin(a)*r);
+                    }
+                    ctx.closePath(); ctx.fill(); ctx.stroke();
+                }
+            });
+
+            const dynamic = [...entities.bots, ...entities.player];
+            dynamic.sort((a,b) => a.mass - b.mass);
+            dynamic.forEach(e => {
+                // Approximate culling for big cells
+                if(e.x + e.radius > cam.left && e.x - e.radius < cam.right && 
+                   e.y + e.radius > cam.top && e.y - e.radius < cam.bottom) {
+                    e.draw(ctx);
+                }
+            });
+
+            ctx.restore();
+        }
+
+        function gameLoop() {
+            const now = performance.now();
+            const dt = Math.min((now - lastTime) / 16.67, 3); // Delta time normalized to ~60fps, cap at 3x
+            lastTime = now;
+
+            frameID++;
+            if (gameState === 'PLAYING') {
+                update(dt);
+                if(frameID % 10 === 0) document.getElementById('scoreDisplay').innerText = playerStats.score; // Throttled UI update
+                if(frameID % 30 === 0) {
+                    document.getElementById('fpsDisplay').innerText = Math.round(1000 / ((now - (lastTime - 16))/1 + 16)); // Rough FPS
+                    updateLeaderboard();
+                }
+            }
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function updateLeaderboard() {
+            const list = [...entities.bots];
+            const pMass = entities.player.reduce((s,c) => s+c.mass, 0);
+            if (pMass > 0) list.push({name: playerStats.name, mass: pMass, isP: true});
+            list.sort((a,b) => b.mass - a.mass);
+            
+            const html = list.slice(0, 5).map((e, i) => 
+                `<li class="flex justify-between ${e.isP ? 'text-yellow-400 font-bold' : 'text-gray-400'}">
+                    <span>${i+1}. ${e.name.substring(0,8)}</span>
+                    <span>${Math.floor(e.mass)}</span>
+                 </li>`
+            ).join('');
+            document.getElementById('leaderboard').innerHTML = html;
+        }
+
+        function resetGame() {
+            gameState = 'MENU';
+            document.getElementById('menu-overlay').style.display = 'flex';
+            document.getElementById('ui-layer').style.pointerEvents = 'none';
+            // Save cleaned in showGameOver
+        }
+
+        // --- Inputs & UI Handling ---
+
+        // Input logic optimized for Mobile
+        window.addEventListener('mousemove', e => {
+            inputs.x = e.clientX; 
+            inputs.y = e.clientY;
+        });
+
+        // Touch logic
+        let touchID = null;
+        canvas.addEventListener('touchstart', e => {
+            e.preventDefault();
+            if(touchID === null) {
+                const t = e.changedTouches[0];
+                touchID = t.identifier;
+                inputs.x = t.clientX;
+                inputs.y = t.clientY;
+            }
+        }, {passive: false});
+
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            for(let i=0; i<e.changedTouches.length; i++) {
+                if(e.changedTouches[i].identifier === touchID) {
+                    inputs.x = e.changedTouches[i].clientX;
+                    inputs.y = e.changedTouches[i].clientY;
+                    break;
+                }
+            }
+        }, {passive: false});
+        
+        canvas.addEventListener('touchend', e => {
+            for(let i=0; i<e.changedTouches.length; i++) {
+                if(e.changedTouches[i].identifier === touchID) {
+                    touchID = null;
+                    break;
+                }
+            }
+        });
+        
+        window.addEventListener('keydown', e => {
+            if (e.code === 'Space') splitPlayer();
+            if (e.code === 'Escape') togglePause();
+        });
+
+        document.getElementById('startBtn').addEventListener('click', () => {
+            if (window.restoreGame && document.getElementById('saveInfo').contains(event.target)) {
+            } else {
+                startGame();
+            }
+        });
+
+        document.getElementById('saveInfo').addEventListener('click', () => {
+            if(window.restoreGame) window.restoreGame();
+        });
+
+        function togglePause() {
+            if (gameState === 'MENU' || gameState === 'GAMEOVER') return;
+            gameState = gameState === 'PLAYING' ? 'PAUSED' : 'PLAYING';
+            document.getElementById('pause-overlay').style.display = gameState === 'PAUSED' ? 'flex' : 'none';
+            document.getElementById('lblPause').innerText = gameState === 'PAUSED' ? TEXTS[currentLang].lblResume : TEXTS[currentLang].lblPause;
+            if(gameState === 'PAUSED') saveGame();
+        }
+
+        document.getElementById('pauseBtn').onclick = togglePause;
+        document.getElementById('resumeBtn').onclick = togglePause;
+        document.getElementById('saveQuitBtn').onclick = () => {
+            saveGame(); gameState = 'MENU';
+            document.getElementById('pause-overlay').style.display = 'none';
+            document.getElementById('menu-overlay').style.display = 'flex';
+            loadSaveData(); 
+        };
+        
+        // Speed Slider
+        const speedSlider = document.getElementById('speedSlider');
+        const speedVal = document.getElementById('speedVal');
+        speedSlider.addEventListener('input', (e) => {
+            gameSpeed = parseFloat(e.target.value);
+            speedVal.innerText = gameSpeed.toFixed(1) + 'x';
+        });
+
+        // Mobile Controls
+        document.getElementById('btnMobileSplit').addEventListener('touchstart', (e) => {
+            e.preventDefault(); e.stopPropagation();
+            splitPlayer();
+        });
+
+        window.selectMode = function(mode) {
+            gameMode = mode;
+            document.querySelectorAll('.mode-select-btn').forEach(b => {
+                b.classList.remove('active', 'border-indigo-500', 'text-indigo-500');
+                if(b.dataset.mode === mode) b.classList.add('active', 'border-indigo-500', 'text-indigo-500');
+            });
+            updateModeDescription();
+        }
+
+        function updateModeDescription() {
+            const descEl = document.getElementById('modeDescription');
+            if (gameMode === 'FFA') descEl.innerText = TEXTS[currentLang].descStandard;
+            else descEl.innerText = TEXTS[currentLang].descInfinite;
+        }
+
+        document.getElementById('langSelect').onchange = (e) => updateLanguage(e.target.value);
+
+        init();
+    </script>
+</body>
+</html>

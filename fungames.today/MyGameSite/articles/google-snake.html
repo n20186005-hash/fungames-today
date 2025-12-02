@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Details - Fun Games Today</title>
+    <style>
+        /* --- 1. 全局与侧边栏样式 (保持一致) --- */
+        :root { --bg-color: #1a1a1a; --sidebar-bg: #2d2d2d; --text-color: #ffffff; --text-muted: #aaaaaa; --accent-color: #00d2ff; --card-bg: #333333; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; }
+        
+        /* 侧边栏 */
+        .sidebar { width: 240px; background-color: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100%; left: 0; top: 0; overflow-y: auto; z-index: 100; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
+        .logo { font-size: 24px; font-weight: bold; color: var(--accent-color); margin-bottom: 30px; text-decoration: none; display: block; }
+        .menu-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #444; }
+        .menu-group:last-child { border-bottom: none; }
+        .menu-title { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; }
+        .menu-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); text-decoration: none; padding: 10px 12px; margin-bottom: 5px; border-radius: 8px; transition: 0.2s; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(0, 210, 255, 0.1); color: var(--accent-color); }
+        .lang-select { margin-top: auto; padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 5px; width: 100%; cursor: pointer; }
+        
+        /* --- 2. 文章详情页专用样式 --- */
+        .main-content { margin-left: 240px; padding: 60px 80px; width: 100%; max-width: 800px; }
+        
+        /* 返回按钮 */
+        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--accent-color); text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid var(--accent-color); padding: 8px 15px; border-radius: 5px; transition: 0.2s; }
+        .back-btn:hover { background: var(--accent-color); color: #000; }
+
+        /* 文章主体 */
+        .article-container { background: var(--card-bg); padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        
+        .article-meta { display: flex; gap: 15px; margin-bottom: 20px; font-size: 13px; color: #888; border-bottom: 1px solid #444; padding-bottom: 15px; }
+        .article-tag { color: var(--accent-color); font-weight: bold; text-transform: uppercase; }
+        
+        h1 { margin: 0 0 20px 0; color: #fff; font-size: 28px; line-height: 1.4; }
+        
+        .article-body { color: #ccc; line-height: 1.8; font-size: 16px; }
+        .article-body p { margin-bottom: 20px; }
+        .article-body strong { color: #fff; }
+        
+        /* 手机适配 */
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; padding: 20px; } .article-container { padding: 20px; } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="../index.html" class="logo">🎮 FunGames</a>
+        <div class="menu-group">
+            <div class="menu-title">Explore</div>
+            <a href="../index.html" class="menu-item">🏠 Home</a>
+            <a href="#" class="menu-item">🆕 New Games</a>
+            <a href="#" class="menu-item">🔥 Hot Games</a>
+        </div>
+        <div class="menu-group">
+            <div class="menu-title">About</div>
+            <a href="../news.html" class="menu-item active">📰 Game News</a>
+            <a href="../privacy.html" class="menu-item">🔒 Privacy Policy</a>
+            <a href="../cookies.html" class="menu-item">🍪 Cookie Policy</a>
+            <a href="../terms.html" class="menu-item">📜 Terms of Use</a>
+            <a href="../contact.html" class="menu-item">📩 Contact Us</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <a href="../index.html" class="back-btn">← Back to News List</a>
+        <a href="../Google-Snake-Remastered/index.html" class="back-btn">← Back to Game</a>
+
+        <div class="article-container">
+            <h1>Google Snake Remastered: More Than Nostalgia, A Modern Evolution</h1>
+            
+            <div class="article-meta">
+                <span class="article-date">Dec 01, 2025</span>
+                <span class="article-tag">Casual / Arcade</span>
+                <span>Source: Fun Games Today</span>
+            </div>
+
+            <div class="article-body">
+                <p>When it comes to "Snake," do you still picture the black-and-white pixels from the Nokia era? <strong>Google Snake Remastered</strong> is a complete revolution. It preserves the purity of the core gameplay while making stunning upgrades to accessibility.</p>
+
+                <h3>What makes it stand out?</h3>
+                
+                <p><strong>1. From "Brutal Punishment" to "Endless Relaxation"</strong><br>
+                The biggest pain point of traditional Snake was that one mistake reset everything. This remaster introduces <strong>Infinite/Invincible Mode</strong>. Here, hitting a wall isn't the end—the snake bounces back, letting you enjoy the satisfaction of filling the screen without anxiety.</p>
+
+                <p><strong>2. User-Friendly Save System & Rhythm Control</strong><br>
+                With auto-save, your high scores are safe even if you close the browser. Plus, speed adjustment lets new players practice slowly while pros challenge their limits.</p>
+
+                <p><strong>3. Audio-Visual Upgrade</strong><br>
+                Gone are silent pixels. The remaster introduces crisp audio feedback for eating fruits, smoother movement, and a vibrant UI.</p>
+
+                <h3>Why is it worth recommending?</h3>
+                <ul>
+                    <li><strong>All-Age Appeal:</strong> Adjustable difficulty makes it a pastime for everyone, not just a reflex test.</li>
+                    <li><strong>Perfect for Spare Moments:</strong> With pause-anytime and auto-save, play for 30 seconds without worry.</li>
+                    <li><strong>Cross-Device Adaptation:</strong> Smooth, lag-free experience on both desktop and mobile.</li>
+                </ul>
+
+                <p>Google Snake Remastered proves that classics never go out of style. It transforms a retro game into a modern stress-relief masterpiece.</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

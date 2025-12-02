@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Fun Games Today</title>
+    <style>
+        /* 保持一致的 CSS */
+        :root { --bg-color: #1a1a1a; --sidebar-bg: #2d2d2d; --text-color: #ffffff; --text-muted: #aaaaaa; --accent-color: #00d2ff; --card-bg: #333333; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; }
+        .sidebar { width: 240px; background-color: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100%; left: 0; top: 0; overflow-y: auto; z-index: 100; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
+        .logo { font-size: 24px; font-weight: bold; color: var(--accent-color); margin-bottom: 30px; text-decoration: none; display: block; }
+        .menu-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #444; }
+        .menu-group:last-child { border-bottom: none; }
+        .menu-title { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; }
+        .menu-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); text-decoration: none; padding: 10px 12px; margin-bottom: 5px; border-radius: 8px; transition: 0.2s; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(0, 210, 255, 0.1); color: var(--accent-color); }
+        .lang-select { margin-top: auto; padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 5px; width: 100%; cursor: pointer; }
+        .main-content { margin-left: 240px; padding: 60px 80px; width: 100%; max-width: 800px; }
+        .back-btn { display: inline-block; margin-bottom: 30px; color: #888; text-decoration: none; font-size: 14px; }
+        .back-btn:hover { color: var(--accent-color); }
+        h1 { color: var(--accent-color); border-bottom: 2px solid #444; padding-bottom: 20px; margin-bottom: 30px; }
+        h2 { margin-top: 40px; color: #fff; font-size: 20px; border-left: 4px solid var(--accent-color); padding-left: 10px; }
+        h3 { color: #ddd; font-size: 18px; margin-top: 25px; }
+        p { line-height: 1.8; color: #ccc; margin-bottom: 15px; text-align: justify; }
+        a { color: var(--accent-color); text-decoration: none; }
+        .lang-content { display: none; }
+        .lang-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; padding: 30px; } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="/" class="logo">🎮 FunGames</a>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_explore">Explore</div>
+            <a href="/" class="menu-item" data-i18n="nav_home">🏠 Home</a>
+            <a href="#" class="menu-item" data-i18n="nav_new">🆕 New Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_hot">🔥 Hot Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_recent">🕹️ Recently Played</a>
+            <a href="#" class="menu-item" data-i18n="nav_rec">👍 Recommended</a>
+        </div>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_about">About</div>
+            <a href="news.html" class="menu-item" data-i18n="link_news">📰 Game News</a>
+            <a href="privacy.html" class="menu-item active" data-i18n="link_privacy">🔒 Privacy Policy</a>
+            <a href="cookies.html" class="menu-item" data-i18n="link_cookies">🍪 Cookie Policy</a>
+            <a href="terms.html" class="menu-item" data-i18n="link_terms">📜 Terms of Use</a>
+            <a href="contact.html" class="menu-item" data-i18n="link_contact">📩 Contact Us</a>
+        </div>
+        <div style="margin-top: auto;">
+            <div class="menu-title" data-i18n="label_lang">Language</div>
+            <select class="lang-select" id="langSelector" onchange="switchLanguage(this.value)">
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 简体中文</option>
+                <option value="jp">🇯🇵 日本語</option>
+                <option value="kr">🇰🇷 한국어</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <a href="/" class="back-btn" data-i18n="btn_back">← Back Home</a>
+
+        <div class="lang-content en active">
+            <h1>Privacy Policy</h1>
+            <p><strong>Effective Date: June 05, 2018</strong></p>
+            <p>This Privacy Policy ("Policy"), together with our Terms of Service ("Terms"), discloses the privacy practices of Web Entertainment Limited ("WEL") regarding any personal data you provide to us or that we receive from you.</p>
+            <p>Please read this Policy carefully. By accessing or using our Site, you indicate that you have read, understood, and agreed to be bound by the terms of this Policy. If you do not agree to this Policy, please do not use our Site.</p>
+
+            <h2>1. Definitions</h2>
+            <p>"Personal Data" and "Personal Information" refer to any data or information relating directly or indirectly to an individual, from which it is practicable for the identity of the individual to be directly or indirectly ascertained.</p>
+            <p>"User ID" refers to the username you use to identify your fungames account.</p>
+            <p>"Site" refers to all game and video websites owned, published, or maintained by us, including but not limited to fungames.today, pog.com, gamepost.com, etc.</p>
+
+            <h2>2. Information We Receive and Its Use</h2>
+            <h3>(a) Information we receive about you</h3>
+            <p><strong>Your Information:</strong> This includes information you enter when registering on our Site (e.g., your name, email address, birthday, gender).</p>
+            <p><strong>Information we receive about you:</strong> Includes non-personal information (site usage data, games played, scores) and technical information (IP address, browser, operating system).</p>
+            <h3>(b) How we use the received information</h3>
+            <p>We use your information to better provide services to you, improve our Site's design and content, personalize visitor experience, and ensure user compliance with our Terms.</p>
+            <h3>(c) Information we share</h3>
+            <p>We will not share your fungames account information with companies, organizations, and individuals outside the company unless: (i) we have your consent; (ii) for external processing by trusted affiliates; or (iii) for legal reasons.</p>
+            <h3>(d) Location of your information</h3>
+            <p>Our company is incorporated and headquartered in Hong Kong. However, our login system is hosted on servers in the Netherlands. By providing us with your information, you consent to such transfer.</p>
+
+            <h2>3. Our Site and Other Sites</h2>
+            <p>Our Site uses a single sign-on system allowing you to connect easily across various websites. Please note that links contained in our Site may direct you to third-party websites. We are not responsible for the privacy policies of third-party websites.</p>
+
+            <h2>4. Cookies and Other Technologies</h2>
+            <p>Our websites and services may use Cookies and other technologies to collect data for statistical analysis. We treat information collected by cookies as non-personal information.</p>
+
+            <h2>5. Protection of Personal Information</h2>
+            <p>We take the security of your personal information seriously. We use SSL encryption for many services and restrict access to personal information to employees who need to know that information.</p>
+
+            <h2>6. Accessing and Changing Your Personal Information</h2>
+            <p>You can access and change any personal information you provided during registration through your fungames account page. You may request a copy of the personal information we hold about you.</p>
+
+            <h2>7. Children and Minors</h2>
+            <p>Children under the age of 13 may not create their own fungames account unless verifiable consent is provided by their parent or legal guardian.</p>
+
+            <h2>8. Your Rights Regarding Personal Information</h2>
+            <p>Under the Personal Data (Privacy) Ordinance (Cap. 486) of Hong Kong, you have rights to access, change, and delete data you provide to us. For EU users, our privacy policy complies with the GDPR.</p>
+
+            <h2>9. Contact Us</h2>
+            <p>If you have any questions, comments, or requests, please feel free to contact us via email at: <a href="mailto:n20186005@gmail.com">n20186005@gmail.com</a>.</p>
+        </div>
+
+        <div class="lang-content zh">
+            <h1>隐私政策</h1>
+            <p><strong>自2018年06月05日起生效</strong></p>
+            
+            <p>本隐私政策（“政策”）连同我们的服务条款（“条款”），披露了 Web Entertainment Limited（“WEL”）关于您提供给我们或我们收到的任何个人数据，或我们从您处收到或我们以其他方式知道的任何个人数据的隐私惯例。</p>
+            <p>请仔细阅读本政策。访问或使用我们的网站即表示您已阅读、理解并同意受本政策条款的约束。</p>
+
+            <h2>一、定义</h2>
+            <p>“个人数据”和“个人信息”是指与个人直接或间接相关的任何数据或信息，通过这些数据或信息可以直接或间接地确定该个人的身份。</p>
+            <p>“用户 ID”是指您用于识别您的 fungames 帐户的用户名。</p>
+            <p>“网站”一词用于指代我们、我们的关联公司或商业伙伴拥有、发布或维护的所有游戏和视频网站，包括但不限于 fungames Account ( account.fungames.today )、fungames ( fungames.today )、Pog ( pog.com ) 等。</p>
+
+            <h2>二、我们接收的信息及其用途</h2>
+            <h3>（a）我们收到的关于您的信息</h3>
+            <p>我们收到的信息包括以下几类信息：您的信息（如姓名、电子邮件）和我们收到的关于您的信息（如非个人信息和技术信息）。</p>
+            <h3>（b）我们如何使用收到的信息</h3>
+            <p>我们收集的任何关于您的信息都是为​​了更好地为您提供服务。我们可能会使用非个人信息和技术信息来改进我们网站的设计和内容。</p>
+            <h3>（c）我们共享的信息</h3>
+            <p>除非经您同意、用于外部处理或出于法律原因，否则我们不会与公司以外的公司、组织和个人共享您的 fungames 帐户信息。</p>
+            <h3>（d）您的信息存放位置</h3>
+            <p>我们公司注册成立并总部位于香港。但是，我们的登录系统托管于荷兰的服务器上。</p>
+
+            <h2>三、我们的网站和其他网站</h2>
+            <p>我们的网站采用单一登录系统，让您可以在各个网站之间轻松连接。请注意，我们网站和服务中包含的链接可能会将您引导至第三方网站，这些网站由其他企业和开发者创建和维护。</p>
+
+            <h2>四、Cookie 和其他技术</h2>
+            <p>我们的网站和服务可能会使用 Cookie 和其他技术。我们会收集这些数据，用于对我们网站进行统计分析。</p>
+
+            <h2>五、个人信息保护</h2>
+            <p>我们非常重视您的个人信息安全。我们致力于保护网站和用户免受未经授权的访问、更改、披露或销毁我们控制范围内的信息。</p>
+
+            <h2>六、访问和更改您的个人信息</h2>
+            <p>您可以通过 fungames 账户页面访问并更改您在注册时提供的任何个人信息。</p>
+
+            <h2>七、儿童和未成年人</h2>
+            <p>我们深知采取额外预防措施保护使用我们网站和服务的儿童的隐私和安全至关重要。未满 13 周岁的儿童不得创建自己的 fungames 帐户，除非其父母或法定监护人提供可验证的同意。</p>
+
+            <h2>八、您对个人信息的权利</h2>
+            <p>对于所有用户，由于我们采用香港法律，根据《个人资料（私隐）条例》（第486章），您享有关于个人信息的某些权利。对于欧盟用户，本隐私政策符合通用数据保护条例（GDPR）。</p>
+
+            <h2>九、联系我们</h2>
+            <p>如果您有任何问题、疑问、意见或要求，我们非常乐意接收并解答。请随时发送电子邮件至 <a href="mailto:n20186005@gmail.com">n20186005@gmail.com</a> 与我们联系。</p>
+        </div>
+
+        <div class="lang-content jp">
+            <h1>プライバシーポリシー</h1>
+            <p>（翻訳中... English content displayed）</p>
+        </div>
+        <div class="lang-content kr">
+            <h1>개인정보 처리방침</h1>
+            <p>（번역 중... English content displayed）</p>
+        </div>
+    </div>
+
+    <script>
+        const uiTranslations = {
+            zh: { group_explore: "探索", nav_home: "🏠 主页", nav_new: "🆕 新游戏", nav_hot: "🔥 热门游戏", nav_recent: "🕹️ 最近玩过", nav_rec: "👍 推荐游戏", group_about: "关于", link_news: "📰 游戏资讯", link_privacy: "🔒 隐私政策", link_cookies: "🍪 Cookie 政策", link_terms: "📜 使用条款", link_contact: "📩 联系我们", label_lang: "语言 / Language", btn_back: "← 返回首页" },
+            en: { group_explore: "Explore", nav_home: "🏠 Home", nav_new: "🆕 New Games", nav_hot: "🔥 Hot Games", nav_recent: "🕹️ Recently Played", nav_rec: "👍 Recommended", group_about: "About", link_news: "📰 News", link_privacy: "🔒 Privacy", link_cookies: "🍪 Cookies", link_terms: "📜 Terms", link_contact: "📩 Contact", label_lang: "Language", btn_back: "← Back Home" },
+            jp: { group_explore: "探索", nav_home: "🏠 ホーム", nav_new: "🆕 新作", nav_hot: "🔥 人気", nav_recent: "🕹️ 履歴", nav_rec: "👍 おすすめ", group_about: "情報", link_news: "📰 ニュース", link_privacy: "🔒 プライバシー", link_cookies: "🍪 Cookie", link_terms: "📜 規約", link_contact: "📩 連絡先", label_lang: "言語", btn_back: "← ホームに戻る" },
+            kr: { group_explore: "탐구", nav_home: "🏠 홈", nav_new: "🆕 신규", nav_hot: "🔥 인기", nav_recent: "🕹️ 최근", nav_rec: "👍 추천", group_about: "정보", link_news: "📰 뉴스", link_privacy: "🔒 개인정보", link_cookies: "🍪 쿠키", link_terms: "📜 약관", link_contact: "📩 문의", label_lang: "언어", btn_back: "← 홈으로 돌아가기" }
+        };
+
+        function switchLanguage(lang) {
+            localStorage.setItem('preferred_lang', lang);
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (uiTranslations[lang] && uiTranslations[lang][key]) el.innerText = uiTranslations[lang][key];
+            });
+            document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+            const target = document.querySelector(`.lang-content.${lang}`);
+            if(target) target.classList.add('active'); 
+            else document.querySelector('.lang-content.en').classList.add('active');
+            document.getElementById('langSelector').value = lang;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferred_lang') || 'en';
+            switchLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>
