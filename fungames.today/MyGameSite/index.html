@@ -375,7 +375,7 @@
                 .catch(err => console.log('暂无通知数据或加载失败'));
         }
 
-        // 加载自动抓取的新游戏
+// 加载自动抓取的新游戏
         function loadAutoGames() {
             fetch('data/games.json')
                 .then(response => response.json())
@@ -388,10 +388,9 @@
                     section.style.display = 'block';
 
                     games.forEach(game => {
-                        // --- 核心修改在这里 ---
-                        // 我们把链接改成 play.html，并把游戏真实地址作为参数传过去
-                        // encodeURIComponent 是为了防止网址里的符号出错
-                        const playLink = `play.html?url=${encodeURIComponent(game.url)}&title=${encodeURIComponent(game.title)}`;
+                        // --- 修改了这里：增加了 &desc=... 把描述传过去 ---
+                        // 我们使用 encodeURIComponent 来处理文字，防止特殊符号导致网址出错
+                        const playLink = `play.html?url=${encodeURIComponent(game.url)}&title=${encodeURIComponent(game.title)}&desc=${encodeURIComponent(game.description)}`;
                         
                         const gameCard = `
                             <a href="${playLink}" class="game-card">
@@ -619,4 +618,5 @@
 
 </body>
 </html>
+
 
