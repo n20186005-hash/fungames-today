@@ -116,8 +116,6 @@
 
         h2 { border-left: 5px solid var(--accent-color); padding-left: 15px; margin-bottom: 20px; margin-top: 0; }
 
-        /* 此处删除了错误的 div 代码 */
-
         .game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -133,6 +131,7 @@
             color: white;
             transition: transform 0.2s, box-shadow 0.2s;
             display: block;
+            position: relative; /* 为了放NEW标签 */
         }
 
         .game-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
@@ -147,6 +146,19 @@
         .game-info { padding: 15px; }
         .game-title { font-size: 16px; font-weight: bold; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .game-tag { font-size: 12px; color: #888; margin-top: 5px; }
+
+        /* 新游戏标签样式 */
+        .new-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4757;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
 
         .site-footer-section {
             margin-top: auto;
@@ -172,6 +184,11 @@
         .stars span { transition: color 0.2s; }
         .stars span:hover, .stars span.active { color: #FFD700; }
 
+        /* 顶部通知栏隐藏样式 */
+        #top-notification-bar {
+            display: none; /* 默认隐藏，有数据时才显示 */
+        }
+
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .main-content { margin-left: 0; padding: 20px; }
@@ -187,7 +204,7 @@
         <div class="menu-group">
             <div class="menu-title" data-i18n="group_explore">探索</div>
             <a href="/" class="menu-item active" data-i18n="nav_home">🏠 主页</a>
-            <a href="#game-list" class="menu-item" data-i18n="nav_new">🆕 新游戏</a>
+            <a href="#new-updates" class="menu-item" data-i18n="nav_new">🆕 新游戏</a>
             <a href="#game-list" class="menu-item" data-i18n="nav_hot">🔥 热门游戏</a>
             <a href="#game-list" class="menu-item" data-i18n="nav_recent">🕹️ 最近玩过</a>
             <a href="#game-list" class="menu-item" data-i18n="nav_rec">👍 推荐游戏</a>
@@ -215,12 +232,18 @@
 
     <div class="main-content">
         
-        <div style="background: linear-gradient(90deg, #333, #222); padding: 15px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #00d2ff; display: flex; align-items: center; justify-content: space-between;">
+        <div id="top-notification-bar" style="background: linear-gradient(90deg, #333, #222); padding: 15px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #00d2ff; display: flex; align-items: center; justify-content: space-between;">
             <div>
-                <span style="background: #00d2ff; color: black; font-weight: bold; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-right: 10px;">NEWS</span>
-                <span style="color: #ddd; font-size: 14px;">Dec 2: Server maintenance complete & New game added!</span>
+                <span style="background: #00d2ff; color: black; font-weight: bold; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-right: 10px;">UPDATE</span>
+                <span id="notification-text" style="color: #ddd; font-size: 14px;">Loading updates...</span>
             </div>
-            <a href="news.html" style="color: #00d2ff; text-decoration: none; font-size: 14px; font-weight: bold;">Read More →</a>
+            <a href="#new-updates" style="color: #00d2ff; text-decoration: none; font-size: 14px; font-weight: bold;">Check Now →</a>
+        </div>
+
+        <div id="new-updates-section" style="display: none;">
+            <h2 id="new-updates">🆕 今日更新 (New Arrival)</h2>
+            <div id="dynamic-game-list" class="game-grid">
+                </div>
         </div>
 
         <h2 id="game-list" data-i18n="section_hot">🔥 本周热门</h2>
@@ -283,7 +306,7 @@
                 <div class="game-info">
                     <div class="game-title" data-i18n="game_Paper_io_360">Paper_io_360</div>
                     <div class="game-tag" data-i18n="tag_puzzle">休闲益智</div>
-                </div>                  
+                </div>                   
             </a>
 
              <a href="/Gulper-io/" class="game-card">
@@ -328,7 +351,64 @@
     </div>
 
     <script>
-        // --- 多语言配置 (已修正拼写和重复项) ---
+        // --- 1. 自动加载功能 (新增) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMetaData();
+            loadAutoGames();
+        });
+
+        // 加载顶部通知
+        function loadMetaData() {
+            fetch('data/meta.json')
+                .then(response => response.json())
+                .then(data => {
+                    const today = new Date().toISOString().split('T')[0];
+                    // 如果日期是今天，或者刚刚更新
+                    if (data.new_count > 0) {
+                        const notifBar = document.getElementById('top-notification-bar');
+                        const notifText = document.getElementById('notification-text');
+                        
+                        notifBar.style.display = 'flex'; // 显示通知栏
+                        notifText.innerText = `📅 ${data.last_update}: ${data.notification}`;
+                    }
+                })
+                .catch(err => console.log('暂无通知数据或加载失败'));
+        }
+
+        // 加载自动抓取的新游戏
+        function loadAutoGames() {
+            fetch('data/games.json')
+                .then(response => response.json())
+                .then(games => {
+                    if (!games || games.length === 0) return;
+
+                    const container = document.getElementById('dynamic-game-list');
+                    const section = document.getElementById('new-updates-section');
+                    
+                    // 显示新游戏板块
+                    section.style.display = 'block';
+
+                    // 循环生成游戏卡片
+                    games.forEach(game => {
+                        // 使用模板字符串生成HTML
+                        const gameCard = `
+                            <a href="${game.url}" target="_blank" class="game-card">
+                                <span class="new-badge">NEW</span>
+                                <img src="${game.thumbnail || game.thumb}" class="game-thumb" alt="${game.title}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                                <div class="game-info">
+                                    <div class="game-title">${game.title}</div>
+                                    <div class="game-tag">${game.category || 'Casual'}</div>
+                                </div>
+                            </a>
+                        `;
+                        container.innerHTML += gameCard;
+                    });
+                })
+                .catch(err => console.log('暂无新游戏数据'));
+        }
+
+
+        // --- 2. 多语言配置 ---
         const translations = {
             zh: {
                 group_explore: "探索",
