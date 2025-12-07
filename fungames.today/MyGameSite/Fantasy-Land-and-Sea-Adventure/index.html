@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy Ocean Adventure - 奇幻海陆大冒险</title>
+    <style>
+        /* ====================
+           1. Global & Sidebar Styles
+           ==================== */
+        :root { 
+            --bg-color: #050510; 
+            --sidebar-bg: #0a0a15; 
+            --text-color: #ffffff; 
+            --text-muted: #aaaaaa; 
+            /* Updated colors to match the Submarine/Ocean theme */
+            --accent-color: #FF8C00; /* Dark Orange (Submarine) */
+            --accent-secondary: #00BFFF; /* Deep Sky Blue (Water) */
+            --card-bg: #121220; 
+        }
+        
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 240px; background-color: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100%; left: 0; top: 0; overflow-y: auto; z-index: 1000; box-shadow: 2px 0 10px rgba(0,0,0,0.5); border-right: 1px solid #222; }
+        .logo { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 30px; text-decoration: none; display: block; letter-spacing: 1px; line-height: 1.4; }
+        .logo span { color: var(--accent-color); }
+        
+        .menu-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #222; }
+        .menu-group:last-child { border-bottom: none; }
+        .menu-title { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; font-weight: bold; }
+        .menu-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); text-decoration: none; padding: 10px 12px; margin-bottom: 5px; border-radius: 8px; transition: 0.2s; font-weight: 500; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(255, 140, 0, 0.1); color: var(--accent-color); }
+        .menu-item.active { border-left: 3px solid var(--accent-color); }
+        .lang-select { margin-top: auto; padding: 10px; background: #000; color: white; border: 1px solid #333; border-radius: 4px; width: 100%; cursor: pointer; font-family: inherit; }
+
+        /* ====================
+           2. Game Page Styles
+           ==================== */
+        .main-content { margin-left: 240px; padding: 30px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        
+        /* Game Container */
+        .game-wrapper {
+            width: 100%;
+            max-width: 1080px;
+            background: #87CEEB; /* Match game bg color for smooth load */
+            border: 1px solid #333;
+            box-shadow: 0 0 50px rgba(0, 191, 255, 0.15);
+            margin-bottom: 20px;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        iframe { width: 100%; height: 600px; border: none; display: block; }
+
+        /* Toolbar */
+        .game-toolbar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #0a0a15; padding: 10px 20px; border-top: 1px solid #222;
+        }
+        .btn-fullscreen {
+            background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color); padding: 6px 16px; cursor: pointer; transition: 0.2s; font-family: inherit; font-weight: bold; text-transform: uppercase; border-radius: 20px; font-size: 12px;
+        }
+        .btn-fullscreen:hover { background: var(--accent-color); color: #fff; box-shadow: 0 0 15px var(--accent-color); }
+
+        /* Layout Grid */
+        .info-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px; 
+            gap: 30px;
+            width: 100%;
+            max-width: 1080px;
+        }
+        
+        .game-details { background: var(--card-bg); padding: 30px; border: 1px solid #222; border-radius: 8px; }
+        .news-banner { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .news-badge { background: var(--accent-secondary); color: #000; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .news-link { color: #fff; text-decoration: none; font-size: 13px; font-weight: 500; }
+        .news-link:hover { text-decoration: underline; }
+
+        .ad-sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .ad-box { background: #000; border: 1px dashed #333; color: #444; display: flex; align-items: center; justify-content: center; font-size: 14px; border-radius: 4px; }
+        .ad-300x250 { width: 300px; height: 250px; }
+        .ad-300x600 { width: 300px; height: 600px; }
+
+        h1 { margin-top: 0; color: #fff; text-transform: uppercase; letter-spacing: 1px; font-size: 28px; }
+        h1 span { color: var(--accent-color); }
+        h3 { color: #fff; border-left: 4px solid var(--accent-color); padding-left: 12px; margin-top: 30px; text-transform: uppercase; font-size: 18px; letter-spacing: 0.5px; }
+        h4 { color: var(--accent-secondary); margin-bottom: 10px; margin-top: 20px; font-size: 16px; }
+        p, li { line-height: 1.7; color: #ccc; font-size: 15px; }
+        strong { color: #fff; }
+        .feature-list { list-style: none; padding: 0; }
+        .feature-list li { margin-bottom: 12px; padding-left: 24px; position: relative; }
+        .feature-list li::before { content: '🐠'; position: absolute; left: 0; top: 1px; font-size: 14px; }
+
+        /* Controls Grid */
+        .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
+        .control-box { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border: 1px solid #333; }
+        .control-title { color: var(--accent-color); font-weight: bold; margin-bottom: 8px; display: block; font-size: 14px; text-transform: uppercase; }
+
+        /* ====================
+           3. Interaction Section
+           ==================== */
+        .interaction-section {
+            background: var(--card-bg);
+            padding: 25px;
+            border: 1px solid #222;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        .rating-area { border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .stars { font-size: 28px; cursor: pointer; color: #333; }
+        .stars span { transition: color 0.2s; }
+        .stars span:hover, .stars span.active { color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        
+        .comment-form textarea {
+            width: 100%; background: #080810; border: 1px solid #333; color: #fff; padding: 15px; resize: vertical; min-height: 80px; font-family: inherit; box-sizing: border-box; border-radius: 4px;
+        }
+        .comment-form textarea:focus { outline: none; border-color: var(--accent-color); }
+        .btn-submit {
+            background-color: var(--accent-color); color: #fff; border: none; padding: 10px 25px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; text-transform: uppercase; font-family: inherit; border-radius: 4px;
+        }
+        .btn-submit:hover { background-color: #FF4500; box-shadow: 0 0 15px var(--accent-color); }
+        
+        .comment-list { margin-top: 30px; max-height: 800px; overflow-y: auto; padding-right: 10px; }
+        .comment-list::-webkit-scrollbar { width: 6px; }
+        .comment-list::-webkit-scrollbar-track { background: #111; }
+        .comment-list::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        
+        .comment-item { border-bottom: 1px solid #222; padding: 15px 0; display: flex; gap: 15px; }
+        .avatar { width: 40px; height: 40px; background: #0a0a15; border: 1px solid #333; display: flex; align-items: center; justify-content: center; font-size: 20px; min-width: 40px; border-radius: 50%; }
+        .comment-content h4 { margin: 0 0 5px 0; color: #eee; font-size: 14px; font-weight: bold; }
+        .comment-content p { margin: 0; color: #999; font-size: 14px; }
+        .comment-date { font-size: 12px; color: #555; margin-left: 10px; font-weight: normal; }
+        .tag-feature { font-size: 10px; background: #222; padding: 2px 6px; border-radius: 4px; margin-left: 8px; color: var(--accent-secondary); border: 1px solid rgba(0, 191, 255, 0.2); }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 15px; }
+            .info-layout { grid-template-columns: 1fr; }
+            .ad-sidebar { align-items: center; }
+            iframe { height: 400px; }
+            .controls-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="/" class="logo">Fantasy<br><span>Ocean</span></a>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_explore">Explore</div>
+            <a href="/" class="menu-item active" data-i18n="nav_home">🏠 Home</a>
+            <a href="#" class="menu-item" data-i18n="nav_new">🆕 New Games</a>
+            <a href="#" class="menu-item" data-i18n="nav_hot">🔥 Hot Games</a>
+        </div>
+        <div class="menu-group">
+            <div class="menu-title" data-i18n="group_about">About</div>
+            <a href="#" class="menu-item" data-i18n="link_dev">👨‍💻 Developer</a>
+            <a href="#" class="menu-item" data-i18n="link_contact">📩 Contact</a>
+        </div>
+        <div style="margin-top: auto;">
+            <div class="menu-title" data-i18n="label_lang">Language</div>
+            <select class="lang-select" id="langSelector" onchange="switchLanguage(this.value)">
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 简体中文</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="game-wrapper">
+            <iframe src="game.html" id="gameFrame" allowfullscreen></iframe>
+            <div class="game-toolbar">
+                <span style="color: #666; font-size: 12px; letter-spacing: 1px;">WEBGL EDITION v1.0</span>
+                <button class="btn-fullscreen" onclick="toggleFullScreen()" data-i18n="btn_fullscreen">⛶ Fullscreen</button>
+            </div>
+        </div>
+
+        <div class="info-layout">
+            
+            <div class="left-column">
+                
+                <div class="game-details">
+                    <h1 data-i18n="game_title">Fantasy Ocean Adventure</h1>
+                    
+                    <div class="news-banner">
+                        <span class="news-badge" data-i18n="tag_dev">Indie Dev</span>
+                        <a href="#" class="news-link" data-i18n="link_article_title">
+                          Designed & Developed by wu shu cheng - Inspired by hand-drawn art.
+                        </a>
+                    </div>  
+                    
+                    <h3 data-i18n="label_desc">Game Overview</h3>
+                    
+                    <div class="lang-text en active">
+                        <p>Welcome to <strong>Fantasy Ocean Adventure</strong>! This is a relaxing and healing deep-sea exploration game. In this wonderful world made of crayon touches, the sky is bright blue, and mysterious bubble cities sit on the seabed.</p>
+                        <p>You play as a submarine pilot, driving the iconic yellow submarine to shuttle between the sparkling sea surface and the deep sea.</p>
+
+                        <h4>✨ Key Features</h4>
+                        <ul class="feature-list">
+                            <li><strong>Hand-Drawn Style:</strong> Perfectly restores the mushroom houses, dolphins, UFOs, and bubble cities from the original artwork.</li>
+                            <li><strong>Dynamic Environment:</strong> Watch waves undulate, bubbles rise, dolphins jump, and UFOs hover in the sky.</li>
+                            <li><strong>Immersive Audio:</strong> Enjoy the crisp sound of collecting fish and the bubbling noise when surfacing.</li>
+                            <li><strong>Resource Management:</strong> Keep an eye on your Oxygen! Surface to refill or risk mission failure.</li>
+                        </ul>
+
+                        <h3 data-i18n="label_controls">Controls</h3>
+                        <div class="controls-grid">
+                            <div class="control-box">
+                                <span class="control-title">🖥️ Desktop (PC/Mac)</span>
+                                <ul style="margin:0; padding-left:20px; font-size:14px; color:#ccc;">
+                                    <li><strong>Move Up:</strong> Arrow Up / W</li>
+                                    <li><strong>Move Down:</strong> Arrow Down / S</li>
+                                    <li><strong>Move Left/Right:</strong> Arrow Left/Right / A/D</li>
+                                    <li><strong>Speed Boost:</strong> Spacebar</li>
+                                </ul>
+                            </div>
+                            <div class="control-box">
+                                <span class="control-title">📱 Mobile / Tablet</span>
+                                <ul style="margin:0; padding-left:20px; font-size:14px; color:#ccc;">
+                                    <li><strong>Move:</strong> Virtual Joystick (Left)</li>
+                                    <li><strong>Boost:</strong> Action Button (Right)</li>
+                                    <li><strong>Note:</strong> Auto-detected on touch devices.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h4>❓ FAQ</h4>
+                        <p style="font-size:14px; color:#aaa;">
+                            <strong>Q: What happens if oxygen runs out?</strong><br>
+                            A: Mission failed! Make sure to surface regularly.<br><br>
+                            <strong>Q: Do dolphins hurt me?</strong><br>
+                            A: No, dolphins are your friends cheering you on!
+                        </p>
+                    </div>
+
+                    <div class="lang-text zh" style="display:none;">
+                        <p>欢迎来到<strong>《奇幻海陆大冒险》</strong>！这是一款轻松治愈的深海探索游戏。在这个由蜡笔触感构成的奇妙世界里，天空是明亮的蓝色，海底坐落着神秘的气泡城市。</p>
+                        <p>你将扮演一名潜水艇驾驶员，驾驶着那艘标志性的黄色潜水艇，在波光粼粼的海面与深邃的海底之间穿梭。</p>
+
+                        <h4>✨ 游戏特色</h4>
+                        <ul class="feature-list">
+                            <li><strong>手绘风格还原：</strong> 游戏完美复刻了原画中的蘑菇屋、海豚、UFO 和海底气泡城，仿佛置身于画中。</li>
+                            <li><strong>动态环境：</strong> 海面会有波浪起伏，海底会有气泡上升，海豚偶尔会跃出水面。</li>
+                            <li><strong>沉浸音效：</strong> 不管是吃到小鱼的清脆声，还是浮出水面的气泡声，都增加了游戏的沉浸感。</li>
+                            <li><strong>资源管理：</strong> 潜水艇的氧气是有限的！你需要时刻留意氧气表，及时浮出水面。</li>
+                        </ul>
+
+                        <h3 data-i18n="label_controls">操作说明</h3>
+                        <div class="controls-grid">
+                            <div class="control-box">
+                                <span class="control-title">🖥️ 电脑端 (键盘)</span>
+                                <ul style="margin:0; padding-left:20px; font-size:14px; color:#ccc;">
+                                    <li><strong>向上浮起：</strong> ↑ (上箭头) 或 W</li>
+                                    <li><strong>向下潜行：</strong> ↓ (下箭头) 或 S</li>
+                                    <li><strong>左右移动：</strong> ← → 或 A/D</li>
+                                    <li><strong>极速冲刺：</strong> 空格键 (Space)</li>
+                                </ul>
+                            </div>
+                            <div class="control-box">
+                                <span class="control-title">📱 手机 / 平板</span>
+                                <ul style="margin:0; padding-left:20px; font-size:14px; color:#ccc;">
+                                    <li><strong>移动：</strong> 左下角虚拟圆盘</li>
+                                    <li><strong>冲刺：</strong> 右下角加速按钮</li>
+                                    <li><strong>提示：</strong> 触摸设备会自动显示按键。</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h4>❓ 常见问题 (FAQ)</h4>
+                        <p style="font-size:14px; color:#aaa;">
+                            <strong>Q: 氧气用完了会怎样？</strong><br>
+                            A: 氧气耗尽会导致任务失败，请务必及时上浮！<br><br>
+                            <strong>Q: 撞到海豚会扣血吗？</strong><br>
+                            A: 不会，海豚是你的朋友，它们只是在背景中为你加油。
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="interaction-section">
+                    <h3 data-i18n="label_rate">Rate this game</h3>
+                    <div class="rating-area">
+                        <div class="stars" id="gameStars">
+                            <span data-value="1">★</span>
+                            <span data-value="2">★</span>
+                            <span data-value="3">★</span>
+                            <span data-value="4">★</span>
+                            <span data-value="5">★</span>
+                        </div>
+                        <span id="gameRatingText" style="color: var(--accent-secondary); font-size: 14px; font-weight:bold;">3.5 / 5.0 (Global Rating)</span>
+                    </div>
+
+                    <h3 data-i18n="label_comment">Comments</h3>
+                    <div class="comment-form">
+                        <textarea id="commentInput" placeholder="Join the discussion..."></textarea>
+                        <button class="btn-submit" onclick="submitComment()" data-i18n="btn_submit">Post Comment</button>
+                    </div>
+
+                    <div class="comment-list" id="commentList">
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#FFD700">🎨</div>
+                            <div class="comment-content">
+                                <h4>ArtLover_99 <span class="tag-feature">Hand-Drawn</span> <span class="comment-date">5 mins ago</span></h4>
+                                <p>The crayon art style is so incredibly <strong>healing</strong>! It reminds me of the drawings I made as a kid. Much more relaxing than those intense shooting games.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#00BFFF">🌊</div>
+                            <div class="comment-content">
+                                <h4>DeepDiver <span class="tag-feature">Oxygen Mechanic</span> <span class="comment-date">20 mins ago</span></h4>
+                                <p>Don't be fooled by the cute looks! The oxygen management actually adds a nice layer of difficulty. You can't just stay underwater forever like in other games.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#FF4500">🇨🇳</div>
+                            <div class="comment-content">
+                                <h4>潜水员小王 <span class="tag-feature">治愈系</span> <span class="comment-date">45 mins ago</span></h4>
+                                <p>非常解压的小游戏！特别是浮出水面那一刻的音效，感觉整个人都放松了。强烈推荐给工作压力大的人玩。</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#32CD32">📱</div>
+                            <div class="comment-content">
+                                <h4>MobileGamer <span class="tag-feature">Controls</span> <span class="comment-date">1 hour ago</span></h4>
+                                <p>Finally, a web game where the mobile controls aren't garbage. The D-pad appears automatically and is actually responsive. Good job dev.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#FF69B4">🇯🇵</div>
+                            <div class="comment-content">
+                                <h4>Sakura_Fish <span class="comment-date">2 hours ago</span></h4>
+                                <p>とてもかわいいです！イルカがジャンプするのが大好き。(It's so cute! I love when the dolphins jump.)</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#8A2BE2">🛸</div>
+                            <div class="comment-content">
+                                <h4>UFO_Hunter <span class="comment-date">3 hours ago</span></h4>
+                                <p>Did anyone else notice the UFO in the sky? Such a weird but cool detail for an ocean game. Love the random mushrooms too.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#F5DEB3">👵</div>
+                            <div class="comment-content">
+                                <h4>RetroMom <span class="tag-feature">Family Friendly</span> <span class="comment-date">5 hours ago</span></h4>
+                                <p>Played this with my 5-year-old. It's simple enough for him to understand (eat fish), but the graphics keep him entertained. Safe for kids!</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#FF8C00">🇪🇸</div>
+                            <div class="comment-content">
+                                <h4>Carlos_Sub <span class="comment-date">6 hours ago</span></h4>
+                                <p>¡Gracias por incluir el idioma español! El juego es muy relajante. (Thanks for including Spanish! The game is very relaxing.)</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#fff">⌨️</div>
+                            <div class="comment-content">
+                                <h4>WASD_Master <span class="comment-date">8 hours ago</span></h4>
+                                <p>Keyboard controls are tight. The inertia on the submarine feels "floaty" in a good way, like actual water physics, unlike generic platformers.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#ff0000">⚠️</div>
+                            <div class="comment-content">
+                                <h4>CoralHater <span class="tag-feature">Tip</span> <span class="comment-date">10 hours ago</span></h4>
+                                <p>Watch out for the red corals at the bottom! I lost my last heart thinking they were background decoration. Learning the hard way...</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#00CED1">🇨🇳</div>
+                            <div class="comment-content">
+                                <h4>深海恐惧症患者 <span class="comment-date">12 hours ago</span></h4>
+                                <p>虽然我有深海恐惧症，但这游戏的画风太可爱了，一点也不害怕。反而觉得海底的气泡城市很温馨。</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#9370DB">🎵</div>
+                            <div class="comment-content">
+                                <h4>AudioPhile <span class="comment-date">1 day ago</span></h4>
+                                <p>The sound effects are simple (synthesized?) but effective. The 'win' jingle is surprisingly satisfying to hear after collecting all 10 fish.</p>
+                            </div>
+                        </div>
+
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#778899">🦈</div>
+                            <div class="comment-content">
+                                <h4>FishCollector <span class="comment-date">1 day ago</span></h4>
+                                <p>I wish there were more levels! 10 fish is too easy for me now. Developer, please add a "Hard Mode" with sharks!</p>
+                            </div>
+                        </div>
+                         
+                        <div class="comment-item">
+                            <div class="avatar" style="color:#1E90FF">💻</div>
+                            <div class="comment-content">
+                                <h4>WuFan <span class="tag-feature">Dev Support</span> <span class="comment-date">2 days ago</span></h4>
+                                <p>Supporting indie devs! Wu Shu Cheng did a great job translating the hand-drawn art into a playable browser game.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ad-sidebar">
+                <div class="ad-box ad-300x250">ADVERTISEMENT (300x250)</div>
+                <div class="ad-box ad-300x600">ADVERTISEMENT (300x600)</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ========================
+        // Game Portal Logic
+        // ========================
+
+        // 1. Fullscreen Toggle
+        function toggleFullScreen() {
+            var iframe = document.getElementById("gameFrame");
+            if (iframe.requestFullscreen) iframe.requestFullscreen();
+            else if (iframe.mozRequestFullScreen) iframe.mozRequestFullScreen();
+            else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+            else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+        }
+
+        // 2. Rating Logic
+        const stars = document.querySelectorAll('#gameStars span');
+        const ratingText = document.getElementById('gameRatingText');
+        let hasRated = false;
+
+        // Init: Set default rating to 3.5
+        // Visualizing 3.5 with 5 stars is tricky without half-star assets.
+        // We will highlight 3 stars and use text to indicate 3.5.
+        function initRating() {
+            if(!hasRated) {
+                highlightStars(3); 
+                ratingText.innerText = "3.5 / 5.0 (Global Rating)";
+                ratingText.style.color = "var(--accent-secondary)";
+            }
+        }
+        initRating();
+        
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function() { 
+                if(!hasRated) highlightStars(this.dataset.value); 
+            });
+            star.addEventListener('mouseout', function() { 
+                if(!hasRated) initRating(); // Return to default
+            });
+            star.addEventListener('click', function() {
+                const val = this.dataset.value;
+                hasRated = true;
+                highlightStars(val);
+                stars.forEach(s => s.style.pointerEvents = 'none'); // Lock
+                
+                const lang = localStorage.getItem('preferred_lang') || 'en';
+                const thanks = translations[lang]['msg_thanks'] || "Thanks for rating!";
+                ratingText.innerText = `You rated: ${val}/5`;
+                ratingText.style.color = "#FFD700";
+            });
+        });
+
+        function highlightStars(value) {
+            stars.forEach(s => {
+                if (s.dataset.value <= value) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        }
+
+        // 3. Comment Logic
+        function submitComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            const list = document.getElementById('commentList');
+            const lang = localStorage.getItem('preferred_lang') || 'en';
+            
+            if (text === "") {
+                alert(lang === 'zh' ? "输入无效！" : "Input Invalid!");
+                return;
+            }
+
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <div class="avatar" style="border-color:#10B981; color:#10B981">👤</div>
+                <div class="comment-content">
+                    <h4>You <span class="comment-date">Just now</span></h4>
+                    <p>${text}</p>
+                </div>
+            `;
+            list.prepend(newComment);
+            input.value = "";
+        }
+
+        // 4. Translations
+        const translations = {
+            en: {
+                group_explore: "Explore", nav_home: "🏠 Home", nav_new: "🆕 New", nav_hot: "🔥 Hot", 
+                group_about: "About", link_dev: "👨‍💻 Developer", link_contact: "📩 Contact", label_lang: "Language", 
+                btn_fullscreen: "⛶ Fullscreen",
+                game_title: "Fantasy Ocean Adventure",
+                tag_dev: "Indie Dev",
+                link_article_title: "Designed & Developed by wu shu cheng - Inspired by hand-drawn art.",
+                label_desc: "Game Overview",
+                label_controls: "Controls",
+                label_rate: "Rate this game",
+                label_comment: "Comments",
+                btn_submit: "Post Comment",
+                msg_thanks: "Thanks for rating!"
+            },
+            zh: {
+                group_explore: "探索", nav_home: "🏠 主页", nav_new: "🆕 新品", nav_hot: "🔥 热门", 
+                group_about: "关于", link_dev: "👨‍💻 开发者", link_contact: "📩 联系", label_lang: "语言 / Language", 
+                btn_fullscreen: "⛶ 全屏模式",
+                game_title: "奇幻海陆大冒险",
+                tag_dev: "独立游戏",
+                link_article_title: "由 wu shu cheng 设计与开发 - 灵感来源于手绘画作。",
+                label_desc: "游戏介绍",
+                label_controls: "操作说明",
+                label_rate: "游戏评分",
+                label_comment: "玩家评论",
+                btn_submit: "发表评论",
+                msg_thanks: "感谢评分！"
+            }
+        };
+
+        function switchLanguage(lang) {
+            localStorage.setItem('preferred_lang', lang);
+            
+            // Text replacement
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const dict = translations[lang] || translations['en'];
+                if (dict[key]) el.innerText = dict[key];
+            });
+
+            // Block replacement (Desc/Controls)
+            document.querySelectorAll('.lang-text').forEach(el => el.style.display = 'none');
+            const targets = document.querySelectorAll(`.lang-text.${lang}`);
+            if(targets.length > 0) targets.forEach(el => el.style.display = 'block');
+            else document.querySelectorAll(`.lang-text.en`).forEach(el => el.style.display = 'block');
+
+            document.getElementById('langSelector').value = lang;
+            
+            // Input placeholder
+            const commentInput = document.getElementById('commentInput');
+            if(lang === 'zh') commentInput.placeholder = "参与讨论...";
+            else commentInput.placeholder = "Join the discussion...";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferred_lang') || 'en';
+            switchLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

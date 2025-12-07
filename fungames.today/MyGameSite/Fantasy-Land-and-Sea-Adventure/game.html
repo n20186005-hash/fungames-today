@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fantasy Ocean Adventure</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #87CEEB; /* Sky Blue */
+            font-family: "Segoe UI", "Microsoft JhengHei", Arial, sans-serif;
+            touch-action: none; /* Prevent scroll on mobile */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #gameCanvas {
+            display: block;
+            outline: none; /* Remove focus outline */
+        }
+        /* UI Layer */
+        #ui-layer {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        /* Settings (Top Right) */
+        #settings-layer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #FF8C00;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        .icon-btn:active { transform: scale(0.9); }
+        
+        select#lang-select {
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: 2px solid #FF8C00;
+            background: rgba(255, 255, 255, 0.9);
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* Message Box (Start/Game Over) */
+        #message-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 50px;
+            border-radius: 20px;
+            border: 5px solid #FF8C00;
+            text-align: center;
+            display: none; /* Controlled by JS */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            z-index: 30;
+            min-width: 280px;
+        }
+        h1 { margin: 0 0 15px 0; color: #333; font-size: 28px; }
+        p { color: #555; margin-bottom: 25px; line-height: 1.5; font-size: 16px; }
+        
+        button.action-btn {
+            background: linear-gradient(to bottom, #FF8C00, #FF4500);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #B22222;
+            transition: transform 0.1s, box-shadow 0.1s;
+            font-weight: bold;
+        }
+        button.action-btn:active { 
+            transform: translateY(4px); 
+            box-shadow: 0 0 0 #B22222; 
+        }
+        
+        /* Mobile Controls (D-Pad) */
+        #controls {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            display: none; /* Show only on touch devices */
+            z-index: 20;
+            opacity: 0.7;
+        }
+        .d-pad {
+            width: 140px;
+            height: 140px;
+            position: relative;
+        }
+        .d-btn {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.8);
+            backdrop-filter: blur(4px);
+            touch-action: none;
+        }
+        .d-btn:active { background: rgba(255, 255, 255, 0.6); }
+        .up { top: 0; left: 47.5px; }
+        .down { bottom: 0; left: 47.5px; }
+        .left { top: 47.5px; left: 0; }
+        .right { top: 47.5px; right: 0; }
+
+        /* Jump/Action Button for Mobile (Right side) */
+        #action-btn-mobile {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 140, 0, 0.6);
+            border: 3px solid white;
+            border-radius: 50%;
+            display: none;
+            z-index: 20;
+            touch-action: none;
+        }
+        #action-btn-mobile:active { background: rgba(255, 140, 0, 0.9); }
+        
+    </style>
+</head>
+<body>
+
+    <div id="ui-layer">
+        <div><span id="ui-fish">🐟 Fish</span>: <span id="score">0</span> / 10</div>
+        <div><span id="ui-life">❤️ Life</span>: <span id="health">3</span></div>
+        <div><span id="ui-oxy">🫧 Oxygen</span>: <span id="oxygen">100</span>%</div>
+    </div>
+
+    <div id="settings-layer">
+        <select id="lang-select" onchange="changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="zh">繁體中文</option>
+            <option value="jp">日本語</option>
+            <option value="es">Español</option>
+        </select>
+        <button class="icon-btn" id="mute-btn" onclick="toggleMute()">🔊</button>
+    </div>
+
+    <div id="message-box">
+        <h1 id="msg-title">Ready?</h1>
+        <p id="msg-desc">Pilot the yellow submarine and collect deep-sea fish!<br>Move to explore, surface to refill oxygen.</p>
+        <button class="action-btn" id="start-btn" onclick="startGame()">Start Adventure</button>
+    </div>
+
+    <!-- Mobile Controls -->
+    <div id="controls">
+        <div class="d-pad">
+            <div class="d-btn up" data-key="ArrowUp"></div>
+            <div class="d-btn down" data-key="ArrowDown"></div>
+            <div class="d-btn left" data-key="ArrowLeft"></div>
+            <div class="d-btn right" data-key="ArrowRight"></div>
+        </div>
+    </div>
+    <div id="action-btn-mobile" data-key="Space"></div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+        // --- 1. Localization System ---
+        const i18n = {
+            en: {
+                title: "Ready?",
+                desc: "Pilot the yellow submarine and collect deep-sea fish!<br>Use Arrow Keys to move. Surface to refill oxygen.",
+                start: "Start Adventure",
+                winTitle: "🎉 Mission Complete!",
+                winDesc: "You collected all the fish! Amazing!",
+                loseTitle: "💔 Mission Failed",
+                loseDesc: "Submarine needs repair or oxygen ran out...",
+                fish: "🐟 Fish",
+                life: "❤️ Life",
+                oxy: "🫧 Oxygen"
+            },
+            zh: {
+                title: "準備好了嗎？",
+                desc: "駕駛黃色潛水艇，收集深海的小魚！<br>使用方向鍵移動，浮出水面可補充氧氣。",
+                start: "開始冒險",
+                winTitle: "🎉 任務完成！",
+                winDesc: "你收集了所有的小魚，真是太棒了！",
+                loseTitle: "💔 任務失敗",
+                loseDesc: "潛水艇需要維修或氧氣耗盡了...",
+                fish: "🐟 小魚",
+                life: "❤️ 生命",
+                oxy: "🫧 氧氣"
+            },
+            jp: {
+                title: "準備はいい？",
+                desc: "潜水艦を操縦して深海の魚を集めよう！<br>矢印キーで移動、水面に出ると酸素補給。",
+                start: "冒険を始める",
+                winTitle: "🎉 ミッション完了！",
+                winDesc: "全ての魚を集めました！素晴らしい！",
+                loseTitle: "💔 ミッション失敗",
+                loseDesc: "潜水艦が故障したか、酸素が切れました...",
+                fish: "🐟 魚",
+                life: "❤️ ライフ",
+                oxy: "🫧 酸素"
+            },
+            es: {
+                title: "¿Listo?",
+                desc: "¡Pilota el submarino y recoge peces!<br>Usa las flechas para moverte. Sube para oxígeno.",
+                start: "Empezar",
+                winTitle: "🎉 ¡Misión Cumplida!",
+                winDesc: "¡Has recogido todos los peces! ¡Increíble!",
+                loseTitle: "💔 Misión Fallida",
+                loseDesc: "El submarino necesita reparación o sin aire...",
+                fish: "🐟 Peces",
+                life: "❤️ Vida",
+                oxy: "🫧 Oxígeno"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            updateUIText();
+            // --- FIX: Remove focus from select element ---
+            // This prevents arrow keys from changing language after selection
+            const selectEl = document.getElementById('lang-select');
+            selectEl.blur(); 
+            // Return focus to game
+            window.focus();
+        }
+
+        function updateUIText() {
+            const t = i18n[currentLang];
+            document.getElementById('ui-fish').innerText = t.fish;
+            document.getElementById('ui-life').innerText = t.life;
+            document.getElementById('ui-oxy').innerText = t.oxy;
+            document.getElementById('start-btn').innerText = t.start;
+            
+            // Only update message box if game is not running (Start or End screen)
+            if (gameState !== 'PLAYING') {
+                if (gameState === 'WIN') {
+                    document.getElementById('msg-title').innerText = t.winTitle;
+                    document.getElementById('msg-desc').innerText = t.winDesc;
+                } else if (gameState === 'GAMEOVER') {
+                    document.getElementById('msg-title').innerText = t.loseTitle;
+                    document.getElementById('msg-desc').innerText = t.loseDesc;
+                } else {
+                    document.getElementById('msg-title').innerText = t.title;
+                    document.getElementById('msg-desc').innerHTML = t.desc;
+                }
+            }
+        }
+
+        // --- 2. Audio System (Synthesized) ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+        let isMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new AudioContext();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            document.getElementById('mute-btn').innerText = isMuted ? '🔇' : '🔊';
+            // Also blur the mute button so it doesn't keep focus
+            document.getElementById('mute-btn').blur();
+        }
+
+        function playSound(type) {
+            if (isMuted || !audioCtx) return;
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'coin') {
+                // High pitch ding
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'bubble') {
+                // Low bloop
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.linearRampToValueAtTime(100, now + 0.1);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.linearRampToValueAtTime(0.01, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            } else if (type === 'hit') {
+                // Noise-ish low pitch
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.3);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'win') {
+                // Simple arpeggio
+                playNote(523.25, 0, 0.2); // C5
+                playNote(659.25, 0.2, 0.2); // E5
+                playNote(783.99, 0.4, 0.4); // G5
+            } else if (type === 'lose') {
+                playNote(300, 0, 0.3);
+                playNote(200, 0.3, 0.5);
+            }
+        }
+
+        function playNote(freq, delay, duration) {
+             const osc = audioCtx.createOscillator();
+             const gain = audioCtx.createGain();
+             osc.connect(gain);
+             gain.connect(audioCtx.destination);
+             osc.type = 'square';
+             osc.frequency.value = freq;
+             gain.gain.setValueAtTime(0.05, audioCtx.currentTime + delay);
+             gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + delay + duration);
+             osc.start(audioCtx.currentTime + delay);
+             osc.stop(audioCtx.currentTime + delay + duration);
+        }
+
+        // --- 3. Game Logic ---
+        
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const healthEl = document.getElementById('health');
+        const oxygenEl = document.getElementById('oxygen');
+        const msgBox = document.getElementById('message-box');
+
+        // Game State
+        let gameState = 'START'; 
+        let width, height;
+        let waterLevel;
+        
+        // Assets
+        const gameData = {
+            score: 0,
+            totalFish: 10,
+            health: 3,
+            oxygen: 100,
+            frame: 0
+        };
+
+        const player = {
+            x: 0,
+            y: 0,
+            width: 60,
+            height: 40,
+            speed: 5,
+            vx: 0,
+            vy: 0,
+            facingRight: true,
+            invincible: 0
+        };
+
+        const fishes = [];
+        const bubbles = [];
+        const clouds = [];
+        const ufos = [];
+        const dolphins = [];
+        const mushrooms = [];
+        const corals = []; // Obstacles
+
+        // Resize
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            waterLevel = height * 0.35;
+        }
+        window.addEventListener('resize', resize);
+        
+        // Click canvas to regain focus
+        canvas.addEventListener('mousedown', () => {
+            window.focus();
+            if (document.activeElement) document.activeElement.blur();
+        });
+
+        // Init Game Objects
+        function initGame() {
+            initAudio(); // Initialize audio context on first interaction
+            resize();
+            
+            gameData.score = 0;
+            gameData.health = 3;
+            gameData.oxygen = 100;
+            gameData.frame = 0;
+            player.x = width / 2;
+            player.y = waterLevel - 20; // Start at surface
+            player.vx = 0;
+            player.vy = 0;
+            player.invincible = 0;
+
+            // Generate Fish
+            fishes.length = 0;
+            for(let i=0; i<gameData.totalFish; i++) {
+                fishes.push({
+                    x: random(50, width - 50),
+                    y: random(waterLevel + 100, height - 50),
+                    speed: random(0.5, 2.5) * (Math.random() < 0.5 ? 1 : -1),
+                    color: `hsl(${random(20, 50)}, 100%, 50%)`,
+                    size: random(12, 18),
+                    angle: 0
+                });
+            }
+
+            // Generate Corals (Obstacles)
+            corals.length = 0;
+            for(let i=0; i<6; i++) {
+                corals.push({
+                    x: random(50, width - 50),
+                    y: height,
+                    h: random(60, 120),
+                    w: random(40, 80)
+                });
+            }
+
+            // Decorative Clouds
+            clouds.length = 0;
+            for(let i=0; i<6; i++) {
+                clouds.push({
+                    x: random(0, width),
+                    y: random(20, waterLevel - 80),
+                    speed: random(0.2, 0.6),
+                    size: random(30, 50)
+                });
+            }
+            
+            // UFO
+            ufos.length = 0;
+            ufos.push({ x: width + 100, y: waterLevel - 60, speed: -1.2, t: 0 });
+
+            // Mushrooms
+            mushrooms.length = 0;
+            mushrooms.push({x: width * 0.1, scale: 1});
+            mushrooms.push({x: width * 0.25, scale: 0.7});
+            mushrooms.push({x: width * 0.35, scale: 0.9});
+
+            // Dolphin
+            dolphins.length = 0;
+            dolphins.push({ x: -100, y: waterLevel, timer: 100 });
+
+            gameState = 'PLAYING';
+            msgBox.style.display = 'none';
+            animate();
+            
+            // Initial UI Update
+            updateUIText();
+            scoreEl.innerText = 0;
+            healthEl.innerText = 3;
+            oxygenEl.innerText = 100;
+        }
+
+        function startGame() {
+            initGame();
+        }
+
+        function gameOver(win) {
+            gameState = win ? 'WIN' : 'GAMEOVER';
+            playSound(win ? 'win' : 'lose');
+            
+            const t = i18n[currentLang];
+            document.getElementById('msg-title').innerText = win ? t.winTitle : t.loseTitle;
+            document.getElementById('msg-desc').innerText = win ? t.winDesc : t.loseDesc;
+            document.getElementById('start-btn').innerText = t.start; // "Play Again" logic
+            msgBox.style.display = 'block';
+        }
+
+        function random(min, max) { return Math.random() * (max - min) + min; }
+
+        // --- Controls (Keyboard + Touch D-Pad) ---
+        const keys = {};
+        window.addEventListener('keydown', (e) => {
+            // FIX: If user is interacting with the select box, don't move the player
+            if(e.target.tagName === 'SELECT') return; 
+            keys[e.code] = true;
+        });
+        window.addEventListener('keyup', (e) => keys[e.code] = false);
+
+        // Mobile detection
+        const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (isMobile) {
+            document.getElementById('controls').style.display = 'block';
+            document.getElementById('action-btn-mobile').style.display = 'block';
+        }
+
+        // Virtual D-Pad Logic
+        const dBtns = document.querySelectorAll('.d-btn');
+        dBtns.forEach(btn => {
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                keys[btn.dataset.key] = true;
+            });
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                keys[btn.dataset.key] = false;
+            });
+        });
+        
+        // Mobile Action Button (Speed up)
+        const actionBtn = document.getElementById('action-btn-mobile');
+        actionBtn.addEventListener('touchstart', (e) => { e.preventDefault(); keys['Space'] = true; });
+        actionBtn.addEventListener('touchend', (e) => { e.preventDefault(); keys['Space'] = false; });
+
+        // --- Update Logic ---
+
+        function update() {
+            if (gameState !== 'PLAYING') return;
+            gameData.frame++;
+
+            // Movement
+            let ax = 0; let ay = 0;
+            const accel = 0.5;
+            
+            if (keys['ArrowUp'] || keys['KeyW']) ay -= accel;
+            if (keys['ArrowDown'] || keys['KeyS']) ay += accel;
+            if (keys['ArrowLeft'] || keys['KeyA']) { ax -= accel; player.facingRight = false; }
+            if (keys['ArrowRight'] || keys['KeyD']) { ax += accel; player.facingRight = true; }
+
+            // Apply Velocity
+            player.vx += ax;
+            player.vy += ay;
+            
+            // Friction
+            player.vx *= 0.92;
+            player.vy *= 0.92;
+
+            // Speed Limit
+            const maxSpeed = keys['Space'] ? 8 : 4;
+            const currentSpeed = Math.hypot(player.vx, player.vy);
+            if (currentSpeed > maxSpeed) {
+                const ratio = maxSpeed / currentSpeed;
+                player.vx *= ratio;
+                player.vy *= ratio;
+            }
+
+            player.x += player.vx;
+            player.y += player.vy;
+
+            // Boundaries
+            if (player.x < 30) player.x = 30;
+            if (player.x > width - 30) player.x = width - 30;
+            if (player.y < waterLevel - 30) player.y = waterLevel - 30;
+            if (player.y > height - 20) player.y = height - 20;
+
+            // Oxygen & Buoyancy
+            if (player.y < waterLevel + 15) {
+                // Surface
+                if (gameData.oxygen < 100) {
+                    gameData.oxygen += 0.8;
+                    if(gameData.frame % 10 === 0) playSound('bubble');
+                }
+                if (gameData.oxygen > 100) gameData.oxygen = 100;
+                // Bobbing effect
+                player.vy += Math.sin(gameData.frame * 0.1) * 0.1;
+            } else {
+                // Underwater
+                gameData.oxygen -= 0.04;
+                if (gameData.oxygen <= 0) gameOver(false);
+            }
+
+            // Invincibility
+            if (player.invincible > 0) player.invincible--;
+
+            // Fish Collision
+            for (let i = fishes.length - 1; i >= 0; i--) {
+                let f = fishes[i];
+                // Wiggle movement
+                f.x += f.speed;
+                f.y += Math.sin(gameData.frame * 0.05 + i) * 0.5;
+                if (f.x < 0 || f.x > width) f.speed *= -1;
+                
+                // Flip visual if direction changes
+                if (f.speed > 0) f.angle = 0; else f.angle = Math.PI;
+
+                const dist = Math.hypot(player.x - f.x, player.y - f.y);
+                if (dist < player.width/2 + f.size) {
+                    fishes.splice(i, 1);
+                    gameData.score++;
+                    playSound('coin');
+                    createParticles(f.x, f.y, f.color);
+                    
+                    if (gameData.score >= gameData.totalFish) gameOver(true);
+                }
+            }
+
+            // Coral Collision (Obstacles)
+            if (player.invincible <= 0) {
+                for (let c of corals) {
+                    // Simple Box Collision for coral
+                    if (player.x > c.x - c.w/2 && player.x < c.x + c.w/2 &&
+                        player.y > height - c.h) {
+                        hurtPlayer();
+                    }
+                }
+            }
+
+            // Objects Update
+            updateDecorations();
+
+            // UI Update
+            scoreEl.innerText = gameData.score;
+            oxygenEl.innerText = Math.floor(gameData.oxygen);
+            oxygenEl.style.color = gameData.oxygen < 30 ? '#FF4500' : 'white';
+            healthEl.innerText = gameData.health;
+        }
+
+        function hurtPlayer() {
+            gameData.health--;
+            player.invincible = 60; // 1 second invincibility
+            playSound('hit');
+            healthEl.innerText = gameData.health;
+            // Screen shake or flash could go here
+            if (gameData.health <= 0) gameOver(false);
+        }
+
+        function createParticles(x, y, color) {
+            for(let i=0; i<8; i++) {
+                bubbles.push({
+                    x: x, y: y,
+                    vx: (Math.random()-0.5)*4,
+                    vy: (Math.random()-0.5)*4,
+                    r: random(2, 5),
+                    life: 30,
+                    color: color
+                });
+            }
+        }
+
+        function updateDecorations() {
+            // Bubbles/Particles
+            if (gameData.frame % 30 === 0) {
+                 bubbles.push({x: random(0, width), y: height, vx: 0, vy: -random(1,3), r: random(3, 8), life: 200, color: 'rgba(255,255,255,0.4)'});
+            }
+            
+            for (let i = bubbles.length - 1; i >= 0; i--) {
+                let b = bubbles[i];
+                b.x += b.vx;
+                b.y += b.vy;
+                b.life--;
+                if (b.life <= 0 || b.y < waterLevel) bubbles.splice(i, 1);
+            }
+
+            // Clouds
+            clouds.forEach(c => {
+                c.x += c.speed;
+                if (c.x > width + 60) c.x = -60;
+            });
+
+            // UFO
+            ufos.forEach(u => {
+                u.x += u.speed;
+                u.t += 0.05;
+                if (u.x < -60) u.x = width + 60;
+            });
+            
+            // Dolphin
+            dolphins.forEach(d => {
+                d.timer--;
+                if (d.timer < 0) {
+                    d.x = random(width * 0.2, width * 0.8);
+                    d.timer = 300;
+                    // Jump logic visual only in draw
+                }
+            });
+        }
+
+        // --- Draw Logic ---
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            
+            drawSky();
+            drawLand();
+            drawWater();
+            
+            // Background Elements
+            mushrooms.forEach(m => drawMushroom(m.x, waterLevel - 60, m.scale));
+            clouds.forEach(drawCloud);
+            ufos.forEach(drawUFO);
+            
+            // Underwater Background
+            drawBubbleCity(width * 0.15, height - 60);
+            drawBubbleCity(width * 0.8, height - 90);
+            corals.forEach(drawCoral);
+
+            // Game Objects
+            dolphins.forEach(drawDolphin);
+            fishes.forEach(drawFish);
+            bubbles.forEach(drawBubble);
+
+            // Player
+            if (gameState === 'PLAYING') {
+                if (player.invincible % 10 < 5) drawPlayer(); // Blink when hit
+            }
+            
+            // Oxygen Low Warning
+            if (gameState === 'PLAYING' && gameData.oxygen < 25) {
+                ctx.fillStyle = `rgba(255, 0, 0, ${0.1 + Math.sin(gameData.frame * 0.2)*0.1})`;
+                ctx.fillRect(0, 0, width, height);
+            }
+        }
+
+        function drawSky() {
+            const grad = ctx.createLinearGradient(0, 0, 0, waterLevel);
+            grad.addColorStop(0, '#87CEEB');
+            grad.addColorStop(1, '#E0F7FA');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, width, waterLevel);
+        }
+
+        function drawLand() {
+            ctx.beginPath();
+            ctx.moveTo(0, waterLevel);
+            ctx.quadraticCurveTo(width * 0.3, waterLevel - 120, width * 0.6, waterLevel);
+            ctx.lineTo(0, waterLevel);
+            ctx.fillStyle = '#7CFC00';
+            ctx.fill();
+            ctx.strokeStyle = '#228B22'; ctx.lineWidth = 3; ctx.stroke();
+        }
+
+        function drawWater() {
+            const grad = ctx.createLinearGradient(0, waterLevel, 0, height);
+            grad.addColorStop(0, 'rgba(0, 191, 255, 0.6)');
+            grad.addColorStop(1, 'rgba(0, 0, 139, 0.8)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, waterLevel, width, height - waterLevel);
+            
+            // Waves
+            ctx.beginPath();
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2;
+            ctx.moveTo(0, waterLevel);
+            for(let i=0; i<width; i+=10) {
+                ctx.lineTo(i, waterLevel + Math.sin((i + gameData.frame)/20)*5);
+            }
+            ctx.stroke();
+        }
+        
+        function drawCoral(c) {
+            ctx.fillStyle = '#FF7F50';
+            ctx.beginPath();
+            ctx.moveTo(c.x, height);
+            ctx.quadraticCurveTo(c.x, height - c.h, c.x - c.w/2, height - c.h - 10);
+            ctx.lineTo(c.x, height - c.h + 20);
+            ctx.lineTo(c.x + c.w/2, height - c.h - 20);
+            ctx.quadraticCurveTo(c.x + c.w/2, height - c.h, c.x + c.w, height);
+            ctx.fill();
+            // Detail
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.beginPath(); ctx.arc(c.x, height - c.h + 40, 5, 0, Math.PI*2); ctx.fill();
+        }
+
+        function drawPlayer() {
+            ctx.save();
+            ctx.translate(player.x, player.y);
+            // Tilt based on vertical velocity
+            const tilt = Math.min(Math.max(player.vy * 0.05, -0.2), 0.2);
+            ctx.rotate(tilt);
+            
+            if (!player.facingRight) ctx.scale(-1, 1);
+
+            // Sub Body
+            ctx.fillStyle = '#FFD700'; // Gold
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 30, 20, 0, 0, Math.PI*2);
+            ctx.fill();
+            ctx.lineWidth = 2; ctx.strokeStyle = 'black'; ctx.stroke();
+
+            // Top Hatch
+            ctx.fillStyle = '#FFD700';
+            ctx.fillRect(-10, -28, 16, 10);
+            ctx.strokeRect(-10, -28, 16, 10);
+
+            // Propeller
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(-36, -5, 6, 10);
+            if (Math.abs(player.vx) > 0.1 || Math.abs(player.vy) > 0.1) {
+                ctx.fillStyle = `rgba(220,220,220, ${Math.random()})`;
+                ctx.fillRect(-42, -8, 8, 16);
+            }
+
+            // Windows
+            ctx.fillStyle = '#00BFFF';
+            ctx.beginPath(); ctx.arc(-8, 0, 6, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.arc(10, 0, 6, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function drawFish(f) {
+            ctx.save();
+            ctx.translate(f.x, f.y);
+            if (f.speed < 0) ctx.scale(-1, 1);
+            
+            ctx.fillStyle = f.color;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, f.size, f.size * 0.6, 0, 0, Math.PI*2);
+            ctx.fill();
+            
+            // Tail
+            ctx.beginPath();
+            ctx.moveTo(-f.size, 0);
+            ctx.lineTo(-f.size - 8, -6);
+            ctx.lineTo(-f.size - 8, 6);
+            ctx.fill();
+            
+            // Eye
+            ctx.fillStyle = 'white';
+            ctx.beginPath(); ctx.arc(6, -3, 3, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = 'black';
+            ctx.beginPath(); ctx.arc(7, -3, 1.5, 0, Math.PI*2); ctx.fill();
+            
+            ctx.restore();
+        }
+
+        function drawBubble(b) {
+            ctx.save();
+            ctx.translate(b.x, b.y);
+            ctx.fillStyle = b.color || 'rgba(255,255,255,0.5)';
+            ctx.beginPath();
+            ctx.arc(0, 0, b.r, 0, Math.PI*2);
+            ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.beginPath(); ctx.arc(-b.r/3, -b.r/3, b.r/4, 0, Math.PI*2); ctx.fill();
+            ctx.restore();
+        }
+
+        function drawMushroom(x, y, s) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(s, s);
+            // Stalk
+            ctx.fillStyle = '#FFE4C4'; ctx.fillRect(-15, 0, 30, 40);
+            // Cap
+            ctx.fillStyle = '#FF4500'; 
+            ctx.beginPath(); ctx.arc(0, 0, 40, Math.PI, 0); ctx.fill();
+            // Spots
+            ctx.fillStyle = 'white';
+            ctx.beginPath(); ctx.arc(-20, -15, 6, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(15, -10, 8, 0, Math.PI*2); ctx.fill();
+            ctx.restore();
+        }
+        
+        function drawUFO(u) {
+            ctx.save();
+            ctx.translate(u.x, u.y + Math.sin(u.t)*5);
+            ctx.fillStyle = '#00FFFF';
+            ctx.beginPath(); ctx.arc(0, -8, 12, Math.PI, 0); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#FF00FF';
+            ctx.beginPath(); ctx.ellipse(0, 0, 25, 8, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawBubbleCity(x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(0, 0, 50, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+            
+            // Houses inside
+            ctx.fillStyle = '#FF6347'; ctx.fillRect(-20, 10, 15, 20);
+            ctx.fillStyle = '#FFD700'; ctx.fillRect(5, 0, 15, 30);
+            ctx.restore();
+        }
+        
+        function drawCloud(c) {
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(c.x, c.y, c.size, 0, Math.PI*2);
+            ctx.arc(c.x + c.size*0.7, c.y + c.size*0.2, c.size*0.7, 0, Math.PI*2);
+            ctx.arc(c.x - c.size*0.7, c.y + c.size*0.2, c.size*0.7, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        function drawDolphin(d) {
+            if (d.timer > 200) return; // Hiding
+            
+            ctx.save();
+            // Jump arc calculation
+            let dy = 0;
+            if (d.timer > 100) { // Jumping up/down
+                const progress = (200 - d.timer) / 100;
+                dy = -Math.sin(progress * Math.PI) * 80;
+            }
+            
+            ctx.translate(d.x, waterLevel + dy);
+            ctx.fillStyle = '#778899';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 25, 12, -0.5, 0, Math.PI*2);
+            ctx.fill();
+            // Fin
+            ctx.beginPath(); ctx.moveTo(2, -8); ctx.lineTo(8, -18); ctx.lineTo(12, -6); ctx.fill();
+            ctx.restore();
+        }
+
+        function animate() {
+            update();
+            draw();
+            if (gameState === 'PLAYING') requestAnimationFrame(animate);
+        }
+
+        // Initial Setup
+        resize();
+        updateUIText();
+        draw(); 
+        msgBox.style.display = 'block';
+
+    </script>
+</body>
+</html>
