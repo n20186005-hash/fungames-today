@@ -1,5 +1,157 @@
 [
   {
+    "title": "Riot Games Is Reportedly Going to Give League of Legends a Total Overhaul",
+    "date": "2025-12-19",
+    "desc": "Riot Games is reportedly working on a total makeover of League of Legends....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/riot-games-is-reportedly-going-to-give-league-of-legends-a-total-overhaul"
+  },
+  {
+    "title": "Archie Comics Teases Its Strangest, Most Exciting Reboot Ever",
+    "date": "2025-12-19",
+    "desc": "After 85 years, the Archie franchise is getting its strangest and most exciting reboot ever. Find out what to expect as Archie Comics and Oni Press jo...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/archie-comics-teases-its-strangest-most-exciting-reboot-ever"
+  },
+  {
+    "title": "Tomb Raider Show Adds Jason Isaacs as Amazon Preps for Production in January",
+    "date": "2025-12-19",
+    "desc": "Amazon’s Prime Video Tomb Raider show has reportedly added The White Lotus alum Jason Isaacs to its cast....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/tomb-raider-show-adds-jason-isaacs-as-amazon-preps-for-production-in-january"
+  },
+  {
+    "title": "Naughty Dog Devs Are Reportedly Working Mandatory Overtime for Intergalactic: The Heretic Prophet",
+    "date": "2025-12-19",
+    "desc": "Naughty Dog is allegedly requiring most of its developers working on Intergalactic: The Heretic Prophet to work a minimum of eight extra hours per wee...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/naughty-dog-devs-are-reportedly-working-mandatory-overtime-for-intergalactic-the-heretic-prophet"
+  },
+  {
+    "title": "Avengers: Doomsday Trailer Reaction Divided Over 'Desperate' Decision to Bring Back Chris Evans, as Fans Say Move Is 'Disrespectful' to Anthony Mackie's Sam Wilson",
+    "date": "2025-12-19",
+    "desc": "Marvel's decision to reintroduce Chris Evans' character Steve Rogers in Avengers: Doomsday has prompted backlash online, with many fans criticizing th...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/avengers-doomsday-trailer-reaction-divided-over-desperate-decision-to-bring-back-chris-evans-as-fans-say-move-is-disrespectful-to-anthony-mackies-sam-wilson"
+  },
+  {
+    "title": "With This Week's Leaked Avengers: Doomsday Trailer Now Proven Real, We Now Have a Good Idea What to Expect From The Next Three",
+    "date": "2025-12-19",
+    "desc": "With the theatrical release of our first look at Avengers: Doomsday, previously-leaked details surrounding three more upcoming trailers now appear to ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/with-this-weeks-leaked-avengers-doomsday-trailer-now-proven-real-we-now-have-a-good-idea-what-to-expect-from-the-next-three"
+  },
+  {
+    "title": "Avengers: Doomsday Trailer Officially Confirms The Return of Captain America Star Chris Evans",
+    "date": "2025-12-19",
+    "desc": "It's now official: Captain America star Chris Evans will be back in Avengers: Doomsday....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/avengers-doomsday-trailer-officially-confirms-the-return-of-captain-america-star-chris-evans"
+  },
+  {
+    "title": "Baldur's Gate 3 Developer Will Hold Fan Q&A About Dev Processes Following AI Backlash, And Says It Will 'Make Changes' to Processes That 'Fail to Align With Who We Are'",
+    "date": "2025-12-19",
+    "desc": "Following multiple days of criticism over the studio's use of generative AI, Baldur's Gate 3 and Divinity maker Larian Studios CEO Swen Vincke has ann...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/baldurs-gate-3-developer-will-hold-fan-qa-about-dev-processes-following-ai-backlash-and-says-it-will-make-changes-to-processes-that-fail-to-align-with-who-we-are"
+  },
+  {
+    "title": "Tom Cruise Shares First Trailer for Digger, a Bizarre Comedy Movie About a Man With a Shovel",
+    "date": "2025-12-19",
+    "desc": "Mission Impossible star Tom Cruise has shared a first peek at his upcoming offbeat comedy movie Digger, which looks set to be a startling departure fr...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/tom-cruise-shares-first-trailer-for-digger-a-bizarre-comedy-movie-about-a-man-with-a-shovel"
+  },
+  {
+    "title": "There's a New Poster For Christopher Nolan's The Odyssey, as 6-Minute Prologue Begins Airing in IMAX",
+    "date": "2025-12-19",
+    "desc": "Are you as pumped for Christopher Nolan’s The Odyssey as we are? Then you’re going to love this new poster for the movie, which is set to premiere in ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/theres-a-new-poster-for-christopher-nolans-the-odyssey-as-6-minute-prologue-begins-airing-in-imax"
+  },
+  {
+    "title": "Star Wars' Mark Hamill Can't Believe Luke Skywalker Died 'From an Overdose of the Force' and Says Obi-Wan and Yoda Should Have Warned Him",
+    "date": "2025-12-19",
+    "desc": "Mark Hamill has commented once again on Luke Skywalker's death in Star Wars: The Last Jedi, and said that if \"an overdose of the Force\" had been a rea...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/star-wars-mark-hamill-cant-believe-luke-skywalker-died-from-an-overdose-of-the-force-and-says-obi-wan-and-yoda-should-have-warned-him"
+  },
+  {
+    "title": "Monarch: Legacy of Monsters Gets a Spinoff Prequel Series Following Wyatt and Kurt Russell's Young Lee Shaw",
+    "date": "2025-12-19",
+    "desc": "Apple TV has announced an expansion of Legendary’s Monsterverse with a brand new, untitled young Lee Shaw prequel with Marvel's Thunderbolts star Wyat...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/monarch-legacy-of-monsters-gets-a-spinoff-prequel-series-following-wyatt-and-kurt-russells-young-lee-shaw"
+  },
+  {
+    "title": "Nintendo Has Finally Won a Wii Remote Patent Lawsuit It's Been Fighting for 15 Years, or Three Console Generations",
+    "date": "2025-12-19",
+    "desc": "Nintendo has finally won damages in a Wii Remote lawsuit it's been fighting since 2010, over an unofficial controller that infringed on the company's ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/nintendo-has-finally-won-a-wii-remote-patent-lawsuit-its-been-fighting-for-15-years-or-three-console-generations"
+  },
+  {
+    "title": "Yes, It's True — Fallout Is Coming to Call of Duty: Black Ops 7",
+    "date": "2025-12-19",
+    "desc": "Microsoft is bringing two of its hottest gaming franchises together for a Fallout Season 2 and Call of Duty: Black Ops 7 crossover event....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/yes-its-true-fallout-is-coming-to-call-of-duty-black-ops-7"
+  },
+  {
+    "title": "Sony and Tencent Quietly Agree 'Confidential Settlement' as Horizon Zero Dawn 'Clone' Game Light of Motiram Disappears From Steam and Epic Games Store",
+    "date": "2025-12-19",
+    "desc": "Tencent's upcoming post-apocalyptic open-world adventure Light of Motiram, widely-criticized for being a \"clone\" of Horizon Zero Dawn, has disappeared...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/sony-and-tencent-quietly-agree-confidential-settlement-as-horizon-zero-dawn-clone-game-light-of-motiram-disappears-from-steam-and-epic-games-store"
+  },
+  {
+    "title": "Avengers: Doomsday Directors Post Official Tease Featuring Countdown Clock, Exactly 1 Year From Marvel Blockbuster's Launch",
+    "date": "2025-12-19",
+    "desc": "Avengers: Doomsday directors Joe and Anthony Russo have posted a fresh tease for their upcoming Marvel blockbuster, exactly a year before it arrives i...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/avengers-doomsday-directors-post-official-tease-featuring-countdown-clock-exactly-1-year-from-marvel-blockbusters-launch"
+  },
+  {
+    "title": "Johnny Depp's Ebenezer: Christmas Carol Adds Harry Potter's Rupert Grint, Star Wars' Daisy Ridley and Hunger Games' Sam Claflin",
+    "date": "2025-12-19",
+    "desc": "Paramount has announced a star-studded cast set to join Johnny Depp in Ebenezer: A Christmas Carol, a fresh take on the festive classic....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/johnny-depps-ebenezer-christmas-carol-adds-harry-potters-rupert-grint-star-wars-daisy-ridley-and-hunger-games-sam-claflin"
+  },
+  {
+    "title": "New FIFA Video Game Confirmed by Netflix, Developed By a Studio That's Yet to Ship Anything",
+    "date": "2025-12-19",
+    "desc": "FIFA has announced its next soccer game will be published in partnership with Netflix and developed by new studio Delphi Interactive....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/new-fifa-video-game-confirmed-by-netflix-developed-by-a-studio-thats-yet-to-ship-anything"
+  },
+  {
+    "title": "'I Want My Money Back': Some Marvel Fans Leave Midnight Avatar: Fire And Ash Screenings Disappointed There's No Avengers: Doomsday Trailer, Though Others Say They've Seen It",
+    "date": "2025-12-19",
+    "desc": "Marvel fans eagerly awaiting the new Avengers: Doomsday trailer say they've left Avatar: Fire and Ash midnight screenings disappointed when it didn't ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/i-want-my-money-back-some-marvel-fans-leave-midnight-avatar-fire-and-ash-screenings-disappointed-theres-no-avengers-doomsday-trailer-though-others-say-theyve-seen-it"
+  },
+  {
     "title": "Samsung's Micro RGB TVs Will Soon Be Reasonably-Sized, Down to 55 Inches",
     "date": "2025-12-18",
     "desc": "...",
@@ -646,157 +798,5 @@
     "tag": "News",
     "source": "IGN",
     "link": "https://www.ign.com/articles/clair-obscur-expedition-33-storms-the-game-awards-2025-wins-coveted-game-of-the-year"
-  },
-  {
-    "title": "Clair Obscur: Expedition 33's DLC Is Out Now | The Game Awards",
-    "date": "2025-12-13",
-    "desc": "Clair Obscur: Expedition 33 just swept The Game Awards, winning a whopping 11 out of 12 of its nominations, including Game of the Year. In celebration...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/clair-obscur-expedition-33s-dlc-is-out-now-the-game-awards"
-  },
-  {
-    "title": "Mega Man: Dual Override Revealed by Capcom With First Gameplay Trailer and 2027 Launch Plans | The Game Awards 2025",
-    "date": "2025-12-13",
-    "desc": "As revealed at The Game Awards 2025, Capcom is bringing the Blue Bomber back with a new video game called Mega Man: Dual Override....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/mega-man-dual-override-revealed-by-capcom-with-first-gameplay-trailer-and-2027-launch-plans-the-game-awards-2025"
-  },
-  {
-    "title": "Phantom Blade Zero Has a Release Date at Last | The Game Awards",
-    "date": "2025-12-13",
-    "desc": "Two and a half years after its reveal at a PlayStation showcase, Phantom Blade Zero now has a release date. It's September 9, 2026....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/phantom-blade-zero-has-a-release-date-at-last-the-game-awards"
-  },
-  {
-    "title": "The Next Game From the Developer of The Ascent Is Called No Law — and It Looks a Bit Like Cyberpunk 2077 | The Game Awards 2025",
-    "date": "2025-12-12",
-    "desc": "The developer of well-received top-down action game The Ascent has revealed its next game and a shift in perspective to first-person....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/the-next-game-from-the-developer-of-the-ascent-is-called-no-law-and-it-looks-a-bit-like-cyberpunk-2077-the-game-awards-2025"
-  },
-  {
-    "title": "The Developers of No Law Know Everyone Will Compare It to Cyberpunk 2077, but There Are Important Differences",
-    "date": "2025-12-12",
-    "desc": "IGN interviews Neon Giant on No Law, fresh from The Game Awards....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/the-developers-of-no-law-know-everyone-will-compare-it-to-cyberpunk-2077-but-there-are-important-differences"
-  },
-  {
-    "title": "Returnal Successor Saros Gets a New Trailer and Release Date | The Game Awards",
-    "date": "2025-12-12",
-    "desc": "As promised, Housemarque brought a new trailer for its Returnal follow-up, Saros, to The Game Awards today, and it included a release date of April 30...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/returnal-successor-saros-gets-a-new-trailer-and-release-date-the-game-awards"
-  },
-  {
-    "title": "Marvel Rivals Season 6 Trailer Confirms Deadpool as Next Playable Character | The Game Awards 2025",
-    "date": "2025-12-12",
-    "desc": "Marvel Rivals is halfway through Season 5, but that isn’t stopping NetEase Games from revealing Deadpool as the first playable hero for Season 6 at Th...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/marvel-rivals-season-6-trailer-confirms-deadpool-as-next-playable-character-the-game-awards-2025"
-  },
-  {
-    "title": "'Every Limb Can Be Removed': Lords of the Fallen II Publisher Discusses Dismemberment, Lore and Learnings for the Sequel | The Game Awards 2025 - IGN",
-    "date": "2025-12-12",
-    "desc": "Lords of the Fallen II publisher CI Games has shown gameplay footage of its Soulslike sequel during The Game Awards 2025, featuring new character Omeu...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/every-limb-can-be-removed-lords-of-the-fallen-ii-publisher-discusses-dismemberment-lore-and-learnings-for-the-sequel-the-game-awards-2025-ign"
-  },
-  {
-    "title": "Diablo 4 Expansion Lord of Hatred Revealed, Adds Not 1 but 2 New Classes, Including the Paladin | The Game Awards 2025",
-    "date": "2025-12-12",
-    "desc": "Blizzard has fully unveiled Diablo 4 expansion Lord of Hatred, confirming that it includes not one but two new classes — and the Paladin is playable n...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/diablo-4-expansion-lord-of-hatred-revealed-adds-not-1-but-2-new-classes-including-the-paladin-the-game-awards-2025"
-  },
-  {
-    "title": "Forest 3 Confirmed by Endnight as Sons of the Forest Follow-Up With First Trailer | The Game Awards 2025",
-    "date": "2025-12-12",
-    "desc": "Endnight Games showed up for The Game Awards 2025 with what may be one of the most unexpected announcements of the night: Forest 3 is coming....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/forest-3-confirmed-by-endnight-as-sons-of-the-forest-follow-up-with-first-trailer-trailer-the-game-awards-2025"
-  },
-  {
-    "title": "'She's Going to Be a Pivotal Part of the Story' — Invincible VS Has a Completely Original Fighter Just for the Game",
-    "date": "2025-12-12",
-    "desc": "Invincible VS has a character never before seen in Robert Kirkman’s superhero universe: Ella Mental. We interviewed Kirkman himself and the developers...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/shes-going-to-be-a-pivotal-part-of-the-story-invincible-vs-has-a-completely-original-fighter-just-for-the-game"
-  },
-  {
-    "title": "Tomb Raider: Catalyst Announced for 2027 and Tomb Raider 1 'Reimagining' Announced for 2026 | The Game Awards 2025",
-    "date": "2025-12-12",
-    "desc": "The next-gen, Unreal Engine 5-built Tomb Raider that developer Crystal Dynamics announced three years ago now has an official name and release window....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/tomb-raider-catalyst-announced-for-2027-and-tomb-raider-1-reimagining-announced-for-2026-the-game-awards-2025"
-  },
-  {
-    "title": "LEGO Batman: Legacy of the Dark Knight Release Date Announced | The Game Awards 2025",
-    "date": "2025-12-12",
-    "desc": "LEGO Batman: Legacy of the Dark Knight emerged from the shadows this evening at The Game Awards with a new trailer, revealing the anticipated adventur...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/lego-batman-legacy-of-the-dark-knight-release-date-announced-the-game-awards-2025"
-  },
-  {
-    "title": "Gang of Dragon is Toshihiro Nagoshi's New Game, and It Sure Looks Like Yakuza | The Game Awards 2025",
-    "date": "2025-12-12",
-    "desc": "We just got our first look at the debut game from Nagoshi Studio, the studio formed by Toshihiro Nagoshi under NetEase after he departed Ryu Ga Gotoku...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/gang-of-dragon-is-toshihiro-nagoshis-new-game-and-it-sure-looks-like-yakuza-the-game-awards-2025"
-  },
-  {
-    "title": "The Last of Us and Uncharted 4 Director Unveils Next Project Coven of the Chicken Foot | The Game Awards 2025 - IGN",
-    "date": "2025-12-12",
-    "desc": "Bruce Straley, game director of The Last of Us and Uncharted 4, has announced a new project, Coven of the Chicken Foot....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/the-last-of-us-and-uncharted-4-director-unveils-next-project-coven-of-the-chicken-foot-the-game-awards-2025-ign"
-  },
-  {
-    "title": "Debut Trailer for the Street Fighter Movie Shows Off Famous Special Moves and Even the Car Bonus Stage | The Game Awards 2025",
-    "date": "2025-12-12",
-    "desc": "The Game Awards 2025 had a big Hollywood surprise: the debut trailer for the Street Fighter movie....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/debut-trailer-for-the-street-fighter-movie-shows-off-famous-special-moves-and-even-the-car-bonus-stage-the-game-awards-2025"
-  },
-  {
-    "title": "Control: Resonant Announced by Remedy for 2026 Release | The Game Awards 2025",
-    "date": "2025-12-12",
-    "desc": "Remedy Entertainment has announced Control: Resonant, the follow-up to IGN’s 2019 Game of the Year, Control at the 2025 Game Awards. It’s due out in 2...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/control-resonant-announced-by-remedy-for-2026-release-the-game-awards-2025"
-  },
-  {
-    "title": "Capcom Finally Confirms Leon S. Kennedy Is In Resident Evil Requiem | The Game Awards 2025 - IGN",
-    "date": "2025-12-12",
-    "desc": "After months of speculation and a revealing leak earlier this week, Capcom has finally, officially confirmed what we all knew: Leon S. Kennedy is in R...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/capcom-finally-confirms-leon-s-kennedy-is-in-resident-evil-requiem-the-game-awards-2025-ign"
-  },
-  {
-    "title": "Warlock: Dungeons and Dragons Is a New Single-Player Action-Adventure That Leans Into 'Expressive Magic' | The Game Awards 2025",
-    "date": "2025-12-12",
-    "desc": "The Dungeons & Dragons franchise has been steadily making more attempts to expand into video games, and we're seeing that next effort with Warlock: Du...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/warlock-dungeons-and-dragons-is-a-new-single-player-rpg-that-leans-into-expressive-magic-the-game-awards-2025"
   }
 ]
