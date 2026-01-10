@@ -1,5 +1,13 @@
 [
   {
+    "title": "GameStop Closes Hundreds of Stores as CEO Eyes $35 Billion Payout",
+    "date": "2026-01-10",
+    "desc": "GameStop is closing hundreds of stores just days into the new year as CEO Ryan Cohen aims to take home $35 billion in performance-based stock options....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/gamestop-closes-hundreds-of-stores-as-ceo-eyes-35-billion-payout"
+  },
+  {
     "title": "Games Workshop Announces Plans to Build a New Warhammer World in the U.S.",
     "date": "2026-01-10",
     "desc": "Games Workshop has announced plans to build a new Warhammer World in the United States with a late 2027 target for opening its doors....",
@@ -790,13 +798,5 @@
     "tag": "News",
     "source": "IGN",
     "link": "https://www.ign.com/articles/do-people-still-have-the-appetite-titanic-star-leonardo-dicaprio-wonders-whether-cinemagoing-will-become-niche"
-  },
-  {
-    "title": "J. Michael Straczynski Is Being Upfront With Fans Over Potential Babylon 5 Revival Following Netflix's Warner Bros. Acquisition",
-    "date": "2026-01-03",
-    "desc": "Babylon 5 fans are hoping Netflix’s big-money acquisition of Warner Bros. means the chances of a continuation of the much-loved sci-fi series will imp...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/j-michael-straczynski-is-being-upfront-with-fans-over-potential-babylon-5-revival-following-netflixs-warner-bros-acquisition"
   }
 ]
