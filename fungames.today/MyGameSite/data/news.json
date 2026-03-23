@@ -1,5 +1,37 @@
 [
   {
+    "title": "Your Samsung Galaxy S26 Is About to Get AirDrop",
+    "date": "2026-03-23",
+    "desc": "...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/your-samsung-galaxy-s26-is-about-to-get-airdrop"
+  },
+  {
+    "title": "Bluey and 'Bluey's Best Day Ever!' Have Arrived at Disneyland - Here's What You Need to Know",
+    "date": "2026-03-23",
+    "desc": "Bluey has officially arrived at Disneyland, complete with 'Bluey's Best Day Ever!' party at Fantasyland Theatre, themed food and merch, and so much mo...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/bluey-and-blueys-best-day-ever-have-arrived-at-disneyland-heres-what-you-need-to-know"
+  },
+  {
+    "title": "Project Hail Mary Has Out of This World Start at the Box Office With $140 Million Opening Weekend",
+    "date": "2026-03-23",
+    "desc": "Project Hail Mary has launched big at the global box office, bringing in an impressive $140 million during its opening weekend....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/project-hail-mary-has-out-of-this-world-start-at-the-box-office-with-140-million-opening-weekend"
+  },
+  {
+    "title": "'We Should Have Clearly Disclosed Our Use of AI' — Crimson Desert Dev Launches 'Comprehensive Audit' of All In-Game Assets After AI-Generated Art Was 'Unintentionally' Included in Final Release",
+    "date": "2026-03-23",
+    "desc": "Crimson Desert developer Pearl Abyss has launched a “comprehensive” audit of all in-game assets after admitting the use of AI-generated images in the ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/we-should-have-clearly-disclosed-our-use-of-ai-crimson-desert-dev-launches-comprehensive-audit-of-all-in-game-assets-after-ai-generated-art-was-unintentionally-included-in-final-release"
+  },
+  {
     "title": "Minecraft Dungeons 2 Revealed With Fall 2026 Launch",
     "date": "2026-03-22",
     "desc": "Mojang Studios has officially announced that Minecraft Dungeons 2 is in development with plans to launch this fall....",
@@ -766,37 +798,5 @@
     "tag": "News",
     "source": "IGN",
     "link": "https://www.ign.com/articles/sony-confirms-playstation-5-pro-pssr-upgrades-for-cyberpunk-2077-final-fantasy-7-rebirth-and-even-former-xbox-console-exclusive-hellblade-2"
-  },
-  {
-    "title": "Fortnite Adding Ability to Create Your Own Star Wars Games This Week",
-    "date": "2026-03-17",
-    "desc": "Fortnite will finally allow creators to make their own officially-licensed Star Wars minigames, beginning this week....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/fortnite-adding-ability-to-create-your-own-star-wars-games-this-week"
-  },
-  {
-    "title": "Niantic Spatial Says Pokémon Go Data Now Being Used to Train Delivery Robots, as 'Getting Pikachu to Realistically Run Around' Is 'Actually the Same Problem'",
-    "date": "2026-03-17",
-    "desc": "Pokémon Go creator Niantic is using players' augmented reality data to help train delivery robots....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/niantic-says-pokmon-go-data-now-being-used-to-train-delivery-robots-as-getting-pikachu-to-realistically-run-around-is-actually-the-same-problem"
-  },
-  {
-    "title": "Former Overwatch Boss Jeff Kaplan Has Some Advice for Gamers Who Complain About Games They'll Never Play: 'Shut the F*** Up. No One Cares'",
-    "date": "2026-03-17",
-    "desc": "Jeff Kaplan, the former boss of the Overwatch team, has some short and candid advice for people who complain about games they have not and will never ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/former-overwatch-boss-jeff-kaplan-has-some-advice-for-gamers-who-complain-about-games-theyll-never-play-shut-the-f-up-no-one-cares"
-  },
-  {
-    "title": "Former Bethesda Game Tester Once Broke Fallout 4 So Completely the 'Entire Zenimax Media Company' Was Sent Email Blasts Saying 'Somebody Found 4 Crashes in a Single Morning'",
-    "date": "2026-03-17",
-    "desc": "Former Bethesda game tester Colin McInerney once discovered so many crashes in Fallout 4 that the entire organization received emails saying, \"somebod...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/former-bethesda-game-tester-once-broke-fallout-4-so-completely-the-entire-zenimax-media-company-was-sent-email-blasts-saying-somebody-found-4-crashes-in-a-single-morning"
   }
 ]
