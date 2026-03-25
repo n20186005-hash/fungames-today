@@ -1,5 +1,165 @@
 [
   {
+    "title": "PlayStation Reportedly Shuts Down Another First-Party Partner Studio",
+    "date": "2026-03-25",
+    "desc": "PlayStation has reportedly shut down Dark Outlaw Games, a studio hired by the console maker to make an unknown first-party title, as well as laid off ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/playstation-reportedly-shuts-down-another-first-party-partner-studio"
+  },
+  {
+    "title": "Marvel Rivals Devs Won't Introduce Original Characters Anytime Soon, Because There Are Simply Too Many Marvel Characters Already",
+    "date": "2026-03-25",
+    "desc": "NetEase Games isn't worried about balance in Marvel Rivals as its roster expands with more playable heroes, but don't expect to see any original chara...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/marvel-rivals-devs-wont-introduce-original-characters-anytime-soon-because-there-are-simply-too-many-marvel-characters-already"
+  },
+  {
+    "title": "Samsung Reaches Into Budget Territory With its Latest Mini LED TVs",
+    "date": "2026-03-25",
+    "desc": "...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/samsung-reaches-into-budget-territory-with-its-latest-mini-led-tvs"
+  },
+  {
+    "title": "Xbox's New CEO Reportedly Wants to Make Game Pass More Affordable",
+    "date": "2026-03-25",
+    "desc": "Xbox's new CEO Asha Sharma just got back from the Game Developers Conference in San Francisco earlier this month, where she seemingly made the rounds ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/xboxs-new-ceo-reportedly-wants-to-make-game-pass-more-affordable"
+  },
+  {
+    "title": "Marvel Rivals Devs 'Know What We Can Know' About What Happens in Avengers: Doomsday",
+    "date": "2026-03-25",
+    "desc": "Avengers: Doomsday is expected to be a dramatic conclusion to Phase Six of the MCU. Naturally, then, everyone is wildly speculating about what's going...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/marvel-rivals-devs-know-what-we-can-know-about-what-happens-in-avengers-doomsday"
+  },
+  {
+    "title": "OpenAI Shuts Down Sora Generative Video App, Disney Pulls Out of Investment and Licensing Deal",
+    "date": "2026-03-25",
+    "desc": "Sam Altman’s OpenAI has shut down its controversial video generation app Sora, the company announced Tuesday. As a result, Disney has exited the $1 bi...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/openai-shuts-down-sora-generative-video-app-disney-pulls-out-of-investment-and-licensing-deal"
+  },
+  {
+    "title": "'Such a Big Commitment' — HBO Says Harry Potter TV Series Was a 'Financial Investment We Normally Wouldn't Make'",
+    "date": "2026-03-25",
+    "desc": "HBO has described its commitment to the upcoming Harry Potter TV series as a \"financial investment we wouldn't normally make\" in order to bring the se...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/such-a-big-commitment-hbo-says-harry-potter-tv-series-was-a-financial-investment-we-normally-wouldnt-make"
+  },
+  {
+    "title": "Chapter 232 of Chainsaw Man Just Released on Shonen Jump, and It Seems This Is Truly the End",
+    "date": "2026-03-25",
+    "desc": "Chainsaw Man Chapter 232 has officially released, and it seems to actually be the final chapter....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/chapter-232-of-chainsaw-man-just-released-on-shonen-jump-and-it-seems-this-is-truly-the-end"
+  },
+  {
+    "title": "'We Will Do It' — Marvel Rivals Dev Confirms Nintendo Switch 2 Version in the Works",
+    "date": "2026-03-25",
+    "desc": "Marvel Rivals is officially coming to the Nintendo Switch 2, according to its developers in an interview with IGN. We just don't know when....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/we-will-do-it-marvel-rivals-dev-confirms-nintendo-switch-2-version-in-the-works"
+  },
+  {
+    "title": "Pokémon Champions Launches Next Month With Paid Upgrade Pack to 'Support Early Progression'",
+    "date": "2026-03-25",
+    "desc": "The Pokémon Company has announced a Nintendo Switch and Switch 2 release date for its upcoming free-to-play battler Pokémon Champions, alongside a pai...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/pokemon-champions-launches-next-month-with-paid-upgrade-pack-to-support-early-progression"
+  },
+  {
+    "title": "Arbiter 131, a Real-Time Tactical Sim its Developers Describe as 'XCOM Meets Papers, Please and Door Kickers', Announced for PC",
+    "date": "2026-03-25",
+    "desc": "Introducing Arbiter 131, a real-time tactical sci-fi strategy sim for PC by developer Ikon with a narrative focus in which you play as the titular Arb...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/arbiter-131-a-real-time-tactical-sim-its-developers-describe-as-xcom-meets-papers-please-and-door-kickers-announced-for-pc"
+  },
+  {
+    "title": "Payday: Aces High Is a New 4-Player Co-op VR Game Coming to Steam and Meta Where You Can 'Pull Off Daring Jobs in VR Using Black-Market Tech'",
+    "date": "2026-03-25",
+    "desc": "Payday Announces VR Game...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/payday-aces-high-is-a-new-4-player-co-op-vr-game-coming-to-steam-and-meta-where-you-can-pull-off-daring-jobs-in-vr-using-black-market-tech"
+  },
+  {
+    "title": "Marvel Confirms The Punisher: One Last Kill Special Presentation Release Date",
+    "date": "2026-03-25",
+    "desc": "Marvel has announced a release date for The Punisher: One Last Kill, its upcoming one-off special starring Jon Bernthal's gun-toting antihero, ahead o...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/marvel-confirms-the-punisher-one-last-kill-special-presentation-release-date"
+  },
+  {
+    "title": "The Furious: Exclusive Trailer for New Martial Arts Thriller Starring Xie Miao and Joe Taslim",
+    "date": "2026-03-25",
+    "desc": "IGN can exclusively reveal the new red band trailer for The Furious, an action film currently sitting at 100% fresh on Rotten Tomatoes after premierin...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-furious-exclusive-trailer-for-new-martial-arts-thriller-starring-xie-miao-and-joe-taslim"
+  },
+  {
+    "title": "Fortnite Developer Epic Games Lays Off 1,000 Employees, Blaming 'Downturn in Engagement'",
+    "date": "2026-03-25",
+    "desc": "Fortnite developer Epic Games has announced it is laying off 1,000 staff, due to a \"downturn in engagement\" in its evergreen battle royale....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/fortnite-developer-epic-games-lays-off-1000-employees-blaming-downturn-in-engagement"
+  },
+  {
+    "title": "Xbox Portfolio GM Says Devs Looking to Release on Next-Gen Xbox 'Should Be Developing for Xbox Console and PC Today'",
+    "date": "2026-03-25",
+    "desc": "Chris Charla, the general manager of portfolio and programs at Xbox, has been with Xbox for 16 years, and worked on ID@Xbox for 13. At this year's GDC...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/xbox-portfolio-gm-says-devs-looking-to-release-on-next-gen-xbox-should-be-developing-for-xbox-console-and-pc-today"
+  },
+  {
+    "title": "13 Years of Warframe: The Shadowgrapher Update, Nintendo Switch 2 Version, and Plenty More to Come",
+    "date": "2026-03-25",
+    "desc": "Warframe creative director Rebecca Ford explains the enduring appeal of the free-to-play action-RPG as it turns 13....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/13-years-of-warframe-the-shadowgrapher-update-nintendo-switch-2-version-and-plenty-more-to-come"
+  },
+  {
+    "title": "'We've Sportified Steam Charts' — Warframe Creative Director Rebecca Ford Reveals How Digital Extremes Is Keeping the Live Service Dream Alive",
+    "date": "2026-03-25",
+    "desc": "Warframe interview with creative director Rebecca Ford on Steam charts obsession, upcoming updates, and the Nintendo Switch 2 version....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/weve-sportified-steam-charts-warframe-creative-director-rebecca-ford-reveals-how-digital-extremes-is-keeping-the-live-service-dream-alive"
+  },
+  {
+    "title": "Moana Live-Action Trailer Reactions Ridicule The Rock's 'Terrible Wig,' Say Movie Looks Like 'T-Mobile Commercial' Slop",
+    "date": "2026-03-25",
+    "desc": "Fans have ridiculed the appearance of Dwayne 'The Rock' Johnson in Disney's upcoming live-action Moana remake, which has been compared to a \"T-Mobile ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/moana-live-action-trailer-reactions-ridicule-the-rocks-terrible-wig-say-movie-looks-like-t-mobile-commercial-slop"
+  },
+  {
+    "title": "The Boys Season 5 Doesn't Have Full Battle Scenes 'Because We Still Don't Have Game of Thrones' Budget,' Creator Says",
+    "date": "2026-03-25",
+    "desc": "The Boys creator and showrunner Eric Kripke has warned fans not to expect big battle scenes in Season 5, simply because the Amazon Prime Video show do...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-boys-season-5-doesnt-have-full-battle-scenes-because-we-still-dont-have-game-of-thrones-budget-creator-says"
+  },
+  {
     "title": "PAX Aus 2026 Early Bird Tickets on Sale Today",
     "date": "2026-03-24",
     "desc": "PAX Aus 2026 will take place at the Melbourne Convention and Exhibition Centre from October 9-11....",
@@ -638,165 +798,5 @@
     "tag": "News",
     "source": "IGN",
     "link": "https://www.ign.com/articles/xbox-will-finally-let-you-disable-quick-resume-for-specific-games-such-as-online-titles-that-it-just-doesnt-play-nice-with"
-  },
-  {
-    "title": "'We Can't Roll Camera Again. We Don't Have the Budget' — AI-Generated Val Kilmer Will Appear in Upcoming Indie Movie With Family's Blessing",
-    "date": "2026-03-19",
-    "desc": "The late Val Kilmer will be resurrected via AI for an upcoming indie movie — with the blessing of the actor’s family....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/we-cant-roll-camera-again-we-dont-have-the-budget-ai-generated-val-kilmer-will-appear-in-upcoming-indie-movie-with-familys-blessing"
-  },
-  {
-    "title": "Daredevil Star Charlie Cox Working on New Video Game Following Clair Obscur: Expedition 33 Success",
-    "date": "2026-03-19",
-    "desc": "Daredevil actor Charlie Cox is working on a new video game project, following his award-nominated turn as Gustave in Clair Obscur: Expedition 33....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/daredevil-star-charlie-cox-working-on-new-video-game-following-clair-obscur-expedition-33-success"
-  },
-  {
-    "title": "Horror Icon John Carpenter Lists His Favorite Video Games of All Time — and 3 He's Really Looking Forward To",
-    "date": "2026-03-19",
-    "desc": "Horror icon John Carpenter lists his favorite video games of all time, and three he's really looking forward to....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/horror-icon-john-carpenter-lists-his-favorite-video-games-of-all-time-and-3-hes-really-looking-forward-to"
-  },
-  {
-    "title": "Super Mario Galaxy Movie Teaser Includes Pikmin, Though Technically They've Been Part of Mario Canon for 20 Years",
-    "date": "2026-03-19",
-    "desc": "A new teaser for The Super Mario Galaxy Movie features Nintendo's adorable Pikmin, marking their latest canon appearance in the Mushroom Kingdom....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/super-mario-galaxy-movie-teaser-includes-pikmin-though-technically-theyve-been-part-of-mario-canon-for-20-years"
-  },
-  {
-    "title": "Sony Is Still Updating the PS3, Nearly 20 Years Later",
-    "date": "2026-03-19",
-    "desc": "Surprise! A new update for the near 20-year-old PlayStation 3 is rolling out today, March 18. Here's what it does....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/sony-is-still-updating-the-ps3-nearly-20-years-later"
-  },
-  {
-    "title": "Pre-Release Version of Death Stranding 2 on PC Leaks Online, Seemingly via Steam",
-    "date": "2026-03-19",
-    "desc": "The PC version of Death Stranding 2: On the Beach has reportedly leaked online. It appears that an unencrypted version of the game was briefly availab...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/pre-release-version-of-death-stranding-2-on-pc-leaks-online-seemingly-via-steam"
-  },
-  {
-    "title": "Robert Pattinson Says The Batman 2 Is 'Very, Very Different,' Calls Script 'Extraordinary'",
-    "date": "2026-03-19",
-    "desc": "Robert Pattinson has provided an update on The Batman 2, teasing its \"extraordinary\" script and calling it “very, very different.”...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/robert-pattinson-says-the-batman-2-is-very-very-different-calls-script-extraordinary"
-  },
-  {
-    "title": "Games Workshop Just Brought Back an Iconic Warhammer 40,000 Character With a Flashy New Trailer",
-    "date": "2026-03-19",
-    "desc": "Games Workshop has brought back another much-loved Warhammer 40,000 character with a flashy new trailer to help set the scene....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/games-workshop-just-brought-back-an-iconic-warhammer-40000-character-with-a-flashy-new-trailer"
-  },
-  {
-    "title": "Boss of GTA 6 Owner Take-Two Says the Idea That AI Tools Will Mean Everyone Can Create Video Game Hits 'Doesn’t Stand to Reason'",
-    "date": "2026-03-19",
-    "desc": "The CEO of Take-Two Interactive — the parent company that owns GTA developer Rockstar — has called the idea of AI making games like GTA 6 \"laughable.\"...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/boss-of-gta-6-owner-take-two-says-the-idea-that-ai-tools-will-mean-everyone-can-create-video-game-hits-doesnt-stand-to-reason"
-  },
-  {
-    "title": "\"First of All, They're Wrong\" – Nvidia CEO Jensen Huang Responds to DLSS 5 Backlash",
-    "date": "2026-03-18",
-    "desc": "...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/first-of-all-theyre-wrong-nvidia-ceo-jensen-huang-responds-to-dlss-5-backlash"
-  },
-  {
-    "title": "Pokémon Pokopia Players Are Clearing All the Ash on Rocky Ridges so You Don't Have to",
-    "date": "2026-03-18",
-    "desc": "If you've been playing Pokopia regularly since launch, by now you've probably at least seen Rocky Ridges, and you've almost certainly been faced with ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/pokemon-pokopia-players-are-clearing-all-the-ash-on-rocky-ridges-so-you-dont-have-to"
-  },
-  {
-    "title": "Subnautica 2 Will Finally Enter Early Access in May Following Year of Delays and Legal Drama",
-    "date": "2026-03-18",
-    "desc": "Subnautica 2 is entering early access at last. IGN can exclusively reveal that both developer Unknown Worlds and publisher Krafton have agreed the gam...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/subnautica-2-will-finally-enter-early-access-in-may-following-year-of-delays-and-legal-drama"
-  },
-  {
-    "title": "MindsEye Becomes Self-published as IOI Partners Ends Collaboration",
-    "date": "2026-03-18",
-    "desc": "IOI Partners has announced today it will no longer publish MindsEye, leaving all publishing rights and responsibilities in the hands of developer Buil...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/mindseye-becomes-self-published-as-ioi-partners-ends-collaboration"
-  },
-  {
-    "title": "'It's For Kids That Actually Play': After 2 Weeks in the Wild, LEGO Smart Play Has Positive Reviews From Families, Despite Price Concerns",
-    "date": "2026-03-18",
-    "desc": "LEGO's revolutionary Smart Play range has now been out in the wild for two weeks, allowing its intended audience to finally go hands-on with the Smart...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/its-for-kids-that-actually-play-after-2-weeks-in-the-wild-lego-smart-play-has-positive-reviews-from-families-though-older-fans-say-its-not-for-adults-that-build"
-  },
-  {
-    "title": "28 Years Later: The Bone Temple Is Coming to Netflix This Month",
-    "date": "2026-03-18",
-    "desc": "This is a particularly short transition from theaters to streaming....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/28-years-later-the-bone-temple-is-coming-to-netflix-this-month"
-  },
-  {
-    "title": "Resident Evil 7 Headlines Xbox Game Pass March Wave 2 Lineup",
-    "date": "2026-03-18",
-    "desc": "Needing some more Resi in your life? Resident Evil 7: Biohazard joins the Xbox Game Pass lineup this month, as part of Microsoft's second wave of Marc...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/resident-evil-7-headlines-xbox-game-pass-march-wave-2-lineup"
-  },
-  {
-    "title": "Dune: Part 3 Trailer Showcases the Epic Conclusion of Denis Villeneuve's Trilogy and a First-Look at Robert Pattinson's Villain",
-    "date": "2026-03-18",
-    "desc": "The first trailer for Dune: Part 3 has arrived, and it gives us our best look yet at the epic conclusion of Denis Villeneuve's trilogy, which stars Ti...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/dune-part-3-trailer-showcases-the-epic-conclusion-of-denis-villeneuves-trilogy-and-a-first-look-at-robert-pattinsons-villain"
-  },
-  {
-    "title": "Hulu Renews Hit Drama Paradise For Its Third Season Ahead of Season 2 Finale",
-    "date": "2026-03-18",
-    "desc": "Hulu’s hit new show Paradise has officially been renewed for its third season, just under two weeks ahead of the show’s season 2 finale....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/hulu-renews-hit-drama-paradise-for-its-third-season-ahead-of-season-2-finale"
-  },
-  {
-    "title": "'I Was Sloppy and Careless With My Words': Damon Lindelof Apologizes to Green Lantern Writer After Previously Saying That 'Green Was Stupid'",
-    "date": "2026-03-18",
-    "desc": "Lanterns co-creator Damon Lindelof has apologized for previously saying that the word \"Green\" in \"Green Lantern\" was \"stupid\", as debate swirls over t...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/i-was-sloppy-and-careless-with-my-words-damon-lindelof-apologizes-to-green-lantern-writer-after-previously-saying-that-green-was-stupid"
-  },
-  {
-    "title": "Here's Our First Look at Dwayne Johnson and Bugs Bunny in Fortnite's Next Season",
-    "date": "2026-03-18",
-    "desc": "Epic Games has released key artwork for the next season of Fortnite, confirming the return of Dwayne \"The Rock\" Johnson and the inclusion of Bugs Bunn...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/heres-our-first-look-at-dwayne-johnson-and-bugs-bunny-in-fortnites-next-season"
   }
 ]
