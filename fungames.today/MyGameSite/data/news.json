@@ -1,5 +1,165 @@
 [
   {
+    "title": "Ellen DeGeneres Returns as Dory in New Finding Nemo Pixar Short",
+    "date": "2026-04-25",
+    "desc": "Disney is bringing back former talk show host Ellen DeGeneres to reprise her role as Dory in a new Finding Nemo short from Pixar Animation....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/ellen-degeneres-returns-as-dory-in-new-finding-nemo-pixar-short"
+  },
+  {
+    "title": "The Mummy 4 Moved Up to 2027 as Miami Vice '85 Is Pushed to 2028",
+    "date": "2026-04-25",
+    "desc": "Universal Pictures announced Friday that it has changed the release dates for two of its biggest upcoming movies, the next installment in The Mummy fr...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-mummy-4-moved-up-to-2027-as-miami-vice-85-is-pushed-to-2028"
+  },
+  {
+    "title": "Prime Minister of South Korea Hails Crimson Desert, Say It Has 'Opened a New Chapter for K-Content'",
+    "date": "2026-04-25",
+    "desc": "Crimson Desert is a smash hit for developer Pearl Abyss, which has now won praise from the Prime Minister of South Korea....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/prime-minister-of-south-korea-hails-crimson-desert-say-it-has-opened-a-new-chapter-for-k-content"
+  },
+  {
+    "title": "Final Fantasy XIV Is Coming to Nintendo Switch 2 in August With a Separate Subscription",
+    "date": "2026-04-25",
+    "desc": "Square Enix has announced plans to bring Final Fantasy XIV to Nintendo Switch 2 this August – but there is a catch....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/final-fantasy-xiv-is-coming-to-nintendo-switch-2-in-august-with-a-separate-subscription"
+  },
+  {
+    "title": "Invincible Creator Robert Kirkman Says Tech Jacket was Gender-Swapped to Address a Comic Book 'Shortcoming'",
+    "date": "2026-04-25",
+    "desc": "Invincible creator Robert Kirkman has explained why the Prime Video show chose to go a new direction in Season 4 by introducing a gender-swapped versi...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/invincible-creator-robert-kirkman-says-tech-jacket-was-gender-swapped-to-address-a-comic-book-shortcoming"
+  },
+  {
+    "title": "The Boys’ Spin-off Series Gen V Canceled",
+    "date": "2026-04-25",
+    "desc": "Gen V, a spin-off from Amazon's The Boys, isn't getting a Season 3....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-boys-spinoff-gen-v-canceled"
+  },
+  {
+    "title": "Neon Genesis Evangelion Is Coming to Final Fantasy XIV With a Crossover Raid Series Called Ghosts of Desire",
+    "date": "2026-04-25",
+    "desc": "Endgame content for the upcoming FFXIV Evercold expansion includes Evangelion-themed raid dungeons in Patch 8.1 and on....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/neon-genesis-evangelion-is-coming-to-final-fantasy-xiv-with-a-crossover-raid-series-called-ghosts-of-desire"
+  },
+  {
+    "title": "Noah Hawley Confirms Alien: Earth Season 2 Starts Filming This Summer, Promises 'Bigger Show'",
+    "date": "2026-04-25",
+    "desc": "Noah Hawley, the man behind Fargo, the upcoming Far Cry TV adaptation, and Alien: Earth has revealed that Season 2 of the science fiction show is clos...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/noah-hawley-confirms-alien-earth-season-2-starts-filming-this-summer-promises-bigger-show"
+  },
+  {
+    "title": "Noah Hawley Explains Why His Far Cry TV Show Won't Adapt Existing Games",
+    "date": "2026-04-25",
+    "desc": "Noah Hawley, the man behind prestige TV hits like Fargo and Alien: Earth, has shared a little about his plans for the Far Cry TV show...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/noah-hawley-explains-why-his-far-cry-tv-show-wont-adapt-existing-games"
+  },
+  {
+    "title": "Slay the Spire 2 Patch Notes Address Base Game Difficulty and the Doormaker",
+    "date": "2026-04-25",
+    "desc": "Mega Crit has published Slay the Spire 2 patch notes for beta version 0.104.0 as it attempts to fine-tune balance to make the experience \"more accessi...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/slay-the-spire-2-patch-notes-address-base-game-difficulty-and-the-doormaker"
+  },
+  {
+    "title": "Square Enix Cafes Set to Open in Los Angeles and Shinjuku",
+    "date": "2026-04-25",
+    "desc": "Los Angeles, California and Shinjuku, Japan will be the first recipients of Square Enix's officially licensed cafes. The veteran game publisher announ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/square-enix-cafe-set-to-open-los-angeles-shinjuku"
+  },
+  {
+    "title": "Battlefield Movie in the Works: Michael B. Jordan and Christopher McQuarrie Team Up",
+    "date": "2026-04-25",
+    "desc": "Michael B. Jordan and Christopher McQuarrie are reportedly attached to a feature film adaptation of Electronic Arts’ bestselling military video game B...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/battlefield-movie-in-the-works-michael-b-jordan-and-christopher-mcquarrie-team-up"
+  },
+  {
+    "title": "Next Final Fantasy XIV Expansion Revealed, FFXIV Evercold Coming January 2027",
+    "date": "2026-04-25",
+    "desc": "FFXIV Evercold marks the arrival of Patch 8.0 and the start of The Godless Realms Saga....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/next-final-fantasy-xiv-expansion-revealed-ffxiv-evercold-coming-january-2027"
+  },
+  {
+    "title": "Astarion Is Getting a Prequel Novel Set During His Time in Servitude to the Vampire Lord Cazador Szarr in the Years Leading Up to the Events of Baldur's Gate 3",
+    "date": "2026-04-25",
+    "desc": "A number of official Bladur’s Gate 3 books have been announced, including an Astarion prequel, a ‘faithful’ reproduction of the Necromancy of Thay, a ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/astarion-is-getting-a-prequel-novel-set-during-his-time-in-servitude-to-the-vampire-lord-cazador-szarr-in-the-years-leading-up-to-the-events-of-baldurs-gate-3"
+  },
+  {
+    "title": "Battlefield 6 Dev Continues Communication With Post Addressing Roadmap Feedback",
+    "date": "2026-04-25",
+    "desc": "Publisher EA and developer Battlefield Studios have offered further clarification for their Battlefield 6 2026 roadmap after recently bombarding playe...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/battlefield-6-dev-continues-communication-with-post-addressing-roadmap-feedback"
+  },
+  {
+    "title": "Resident Evil Requiem Hits 7 Million Sales Milestone",
+    "date": "2026-04-25",
+    "desc": "Capcom has celebrated Resident Evil Requiem passing another sales milestone, and provided its director with two giant cakes to mark the occasion....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/resident-evil-requiem-hits-7-million-sales-milestone"
+  },
+  {
+    "title": "Man Arrested in Singapore for Allegedly Leaking The Legend of Aang: The Last Airbender, Could Face Up to 7 Years in Jail",
+    "date": "2026-04-25",
+    "desc": "A 26-year-old man was arrested in Singapore for allegedly leaking The Legend Of Aang: The Last Airbender....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/man-arrested-in-singapore-for-allegedly-leaking-the-legend-of-aang-the-last-airbender-could-face-up-to-7-years-in-jail"
+  },
+  {
+    "title": "Pokémon Pokopia Event Announced",
+    "date": "2026-04-25",
+    "desc": "The next Pokémon Pokopia in-game event has now been formally announced, and it'll star gem goblin Sableye....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/pokemon-pokopia-event-announced"
+  },
+  {
+    "title": "Scooby-Doo: First Look at the Cast and Full Title Revealed for the Netflix Live-Action Series",
+    "date": "2026-04-25",
+    "desc": "Production has begun on the live-action streaming series Scooby-Doo: Origins, Netflix announced Friday. The streamer also revealed the first look at t...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/scooby-doo-first-look-at-the-cast-and-full-title-revealed-for-the-netflix-live-action-series"
+  },
+  {
+    "title": "The Art of Assassin’s Creed: Black Flag Resynced Revealed by Titan Books",
+    "date": "2026-04-25",
+    "desc": "Titan Books will release The Art of Assassin's Creed: Black Flag Resynced alongside Ubisoft's ambitious remake, with the book hitting stores on July 1...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/art-of-assassins-creed-black-flag-resynced"
+  },
+  {
     "title": "Exclusivity, Affordability, Third-Party Partnerships in Focus as New Xbox Leadership Vows to 'Fix the Fundamentals'",
     "date": "2026-04-24",
     "desc": "In a new mission statement of sorts emailed to Xbox staff and posted on Xbox Wire, new Xbox CEO and Xbox Chief Content Officer Matt Booty laid out new...",
@@ -638,165 +798,5 @@
     "tag": "News",
     "source": "IGN",
     "link": "https://www.ign.com/articles/xbox-game-pass-april-2026-wave-2-lineup-announced"
-  },
-  {
-    "title": "Elden Ring Movie Release Date and Full Cast Announced",
-    "date": "2026-04-21",
-    "desc": "The Elden Ring movie finally got an official update today, with the full cast announced alongside a release date....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/elden-ring-movie-release-date-and-full-cast-announced"
-  },
-  {
-    "title": "ID@Xbox Presented by IGN April 2026 Showcase Announced: Here's How to Watch and What to Expect",
-    "date": "2026-04-21",
-    "desc": "IGN is proud to partner once again with ID@Xbox for another exciting showcase on April 23, 2026, that will feature such indie games headed to Xbox and...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/id-xbox-april-2026-how-to-watch-and-what-to-expect"
-  },
-  {
-    "title": "Battlefield 6 Fans Believe BF Studios Is Teasing a Las Vegas Map",
-    "date": "2026-04-20",
-    "desc": "Battlefield 6 players think they’ve discovered that one of the three maps coming in Season 5 is set in Las Vegas after Battlefield Studios posted an e...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/battlefield-6-fans-believe-bf-studios-is-teasing-a-las-vegas-map"
-  },
-  {
-    "title": "Dragon Ball Super: Beerus Trailer Teases the Resurrection of Frieza",
-    "date": "2026-04-20",
-    "desc": "A new trailer for Dragon Ball Super: Beerus has arrived, teasing a look at not only an updated look at the battle between Goku and the God of Destruct...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/dragon-ball-super-beerus-trailer-teases-the-resurrection-of-frieza"
-  },
-  {
-    "title": "Dragon Ball Xenoverse 3 Announced for PC and Consoles in First Trailer",
-    "date": "2026-04-20",
-    "desc": "Bandai Namco has announced Dragon Ball Xenoverse 3 for PC via Steam, PlayStation 5, and Xbox Series X | S with plans to launch in 2027....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/dragon-ball-xenoverse-3-announced-for-pc-and-consoles-in-first-trailer"
-  },
-  {
-    "title": "Avengers: Endgame Re-Release Footage is 'Critical' to the Plot of Doomsday",
-    "date": "2026-04-20",
-    "desc": "Director Joe Russo has confirmed the upcoming Avengers: Endgame re-release will include new footage that is \"critical\" to the story of Avengers: Dooms...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/avengers-endgame-re-release-footage-is-critical-to-the-plot-of-doomsday"
-  },
-  {
-    "title": "Windrose Celebrates 1 Million Copies Sold as Player Counts Climb",
-    "date": "2026-04-20",
-    "desc": "Cooperative pirate survival game Windrose has reached 1 million copies sold less than a week after its Early Access launch for PC....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/windrose-celebrates-1-million-copies-sold-as-player-counts-climb"
-  },
-  {
-    "title": "The Wire Actor Andre Royo Joins Superman Sequel Man of Tomorrow Cast",
-    "date": "2026-04-20",
-    "desc": "The Wire actor Andre Royo has officially joined the cast of Superman sequel Man of Tomorrow in a mystery role, but fans think they’ve already figured ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/the-wire-actor-andre-royo-joins-superman-sequel-man-of-tomorrow-cast"
-  },
-  {
-    "title": "Invincible Season 4 Animation Error Sparks Debate Amongst Fans",
-    "date": "2026-04-19",
-    "desc": "Fans of Prime Video’s Invincible have started debating the significance of animation errors after spotting a mistake in Season 4 that made Mark Grayso...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/invincible-season-4-animation-error-sparks-debate-amongst-fans"
-  },
-  {
-    "title": "Kevin Feige on Casting Robert Downey Jr. as Doctor Doom: 'It's Our Universe'",
-    "date": "2026-04-19",
-    "desc": "Marvel Studios mastermind Kevin Feige has opened up about bringing Robert Downey Jr. back to the MCU as Victor Von Doom, saying the multiverse allowed...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/kevin-feige-on-casting-robert-downey-jr-as-doctor-doom-its-our-universe"
-  },
-  {
-    "title": "Project Hail Mary Author Andy Weir Reveals the One Scene From the Book He Wishes Had Made It Into the Movie",
-    "date": "2026-04-19",
-    "desc": "Project Hail Mary author Andy Weir has revealed his “only regret” about the movie, confirming the one scene from his book he wishes had made it into t...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/project-hail-mary-author-andy-weir-reveals-the-one-scene-from-the-book-he-wishes-had-made-it-into-the-movie"
-  },
-  {
-    "title": "Slay the Spire 2 Roadmap Has No Release Dates So Dev Can Avoid 'Sloppy Spire 2'",
-    "date": "2026-04-19",
-    "desc": "Slay the Spire 2 developer Mega Crit has published a detailed roadmap for Slay the Spire 2 without promising any release dates because it doesn’t want...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/slay-the-spire-2-roadmap-has-no-release-dates-so-dev-can-avoid-sloppy-spire-2"
-  },
-  {
-    "title": "Resident Evil Requiem Mercenaries Rumors Heat Up After Alleged Leak",
-    "date": "2026-04-19",
-    "desc": "Resident Evil Requiem fans believe next month’s mysterious content update will add a new version of the franchise’s The Mercenaries mode after an alle...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/resident-evil-requiem-mercenaries-rumors-heat-up-after-alleged-leak"
-  },
-  {
-    "title": "Wrestlemania 42: All of the Match Winners, Returns, and Surprises — Updating Live!",
-    "date": "2026-04-19",
-    "desc": "We’re updating our Wrestlemania 42 live feed with every big win, moment, and surprise from Las Vegas. From Roman Reigns vs. CM Punk to Oba Femi vs. Br...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/wrestlemania-42-live"
-  },
-  {
-    "title": "Charles Dance in Talks to Join The Batman Part 2 as Harvey Dent's Father",
-    "date": "2026-04-19",
-    "desc": "Game of Thrones alum Charles Dance has reportedly entered talks to join The Batman Part 2....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/charles-dance-in-talks-to-join-the-batman-part-2-as-harvey-dents-father"
-  },
-  {
-    "title": "Trump Teases Impending Release of 'Very Interesting' UFO Documents",
-    "date": "2026-04-19",
-    "desc": "Donald Trump has said a UFO review has turned up “many very interesting documents,” which his administration would release \"very soon.”...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/trump-teases-impending-release-of-very-interesting-ufo-documents"
-  },
-  {
-    "title": "Crimson Desert's Next Major Patch Adds Difficulty Settings and Inventory Tabs Next Week",
-    "date": "2026-04-19",
-    "desc": "Crimson Desert developer Pearl Abyss has said it’s taking the time to make sure it properly tests and polishes the game’s next major patch, which is d...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/crimson-deserts-next-major-patch-adds-difficulty-settings-and-inventory-tabs-next-week"
-  },
-  {
-    "title": "Lee Cronin's The Mummy Poster Complaints",
-    "date": "2026-04-19",
-    "desc": "A poster for Lee Cronin's The Mummy has drawn complaints for its depiction of a female child’s face....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/lee-cronins-the-mummy-poster-complaints"
-  },
-  {
-    "title": "Samson Coming To Consoles This Fall",
-    "date": "2026-04-18",
-    "desc": "Samson, the 1990s-set, gritty open-world action-adventure/brawler directed by Just Cause creator Christofer Sundberg that suffered a buggy release on ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/samson-coming-to-consoles-this-fall"
-  },
-  {
-    "title": "John Rambo: David Harbour Cast as Commanding Officer Major Trautman",
-    "date": "2026-04-18",
-    "desc": "Stranger Things alum David Harbour has reportedly joined the cast of Lionsgate and Millennium Media’s franchise prequel, John Rambo....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/john-rambo-david-harbour-cast-as-commanding-officer-major-trautman"
   }
 ]
