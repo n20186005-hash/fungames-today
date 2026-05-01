@@ -1,5 +1,165 @@
 [
   {
+    "title": "Battlefield Movie Creates Bidding War Between Netflix, Sony, and Other Major Studios",
+    "date": "2026-05-01",
+    "desc": "A handful of major Hollywood studios are going to war over the rights for the upcoming Battlefield movie....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/battlefield-movie-bidding-war-netflix-sony-amazon-mgm-universal"
+  },
+  {
+    "title": "Man Arrested After Hiding Inside Closed Best Buy Ahead of Pokémon Card Restock",
+    "date": "2026-05-01",
+    "desc": "A man in Pasadena, California, has been arrested after he hid inside a closed Best Buy ahead of a new Pokémon card release....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/man-arrested-after-hiding-inside-closed-best-buy-ahead-of-pokmon-card-restock"
+  },
+  {
+    "title": "The Blair Witch Project Reboot Adds Original Actors and Director",
+    "date": "2026-05-01",
+    "desc": "The Blair Witch Project reboot is moving forward with support from some of the cast and crew behind the original film....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-blair-witch-project-reboot-adds-original-stars-and-director"
+  },
+  {
+    "title": "Dexter: Resurrection Season 2 Casts WWE Legend Chris Jericho",
+    "date": "2026-05-01",
+    "desc": "Dexter: Resurrection 2 continues to expand its cast with WWE superstar Chris Jericho....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/dexter-resurrection-season-2-casts-wwe-legend-chris-jericho"
+  },
+  {
+    "title": "Subnautica 2 Finally Gets Early Access Release Date",
+    "date": "2026-05-01",
+    "desc": "Subnautica 2 finally has a concrete release date for its early access, and it’s very soon....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/subnautica-2-finally-gets-early-access-release-date"
+  },
+  {
+    "title": "ABC Renews the Scrubs Revival for Another Season",
+    "date": "2026-05-01",
+    "desc": "With the Scrubs revival proving to be a big hit for ABC, the network has renewed the medical sitcom for an eleventh season....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/abc-renews-scrubs-revival-season-2"
+  },
+  {
+    "title": "Everything You Need to Know About the New Star Wars Content in Fortnite",
+    "date": "2026-05-01",
+    "desc": "Star Wars Day is nearly here, and to mark the May 4th celebration, Fortnite, Disney and Lucasfilm are teaming up to bring brand new Star Wars games an...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/everything-you-need-to-know-about-the-new-star-wars-content-in-fortnite"
+  },
+  {
+    "title": "FFXIV Director Explains Plans to Sunset PS4 Version, Estimated to Last Through Patch 8.3",
+    "date": "2026-05-01",
+    "desc": "While the next expansion Evercold and post-launch content will come to PS4, it's pushing past the limits the 13 year-old console can handle....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/ffxiv-final-fantasy-xiv-director-explains-plans-to-sunset-ps4-version-through-patch-8-3"
+  },
+  {
+    "title": "Assassin's Creed Black Flag Resynced Will See Return of Whaling, Legendary Ships",
+    "date": "2026-05-01",
+    "desc": "Assassin's Creed Black Flag Resynced developers have confirmed a raft of returning features for Ubisoft's popular pirate game remake, such as whaling,...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/assassins-creed-black-flag-resynced-will-see-return-of-whaling-legendary-ships"
+  },
+  {
+    "title": "Roblox Announces New AI-Powered Graphics Overhaul, and Fans Aren't Happy",
+    "date": "2026-05-01",
+    "desc": "Roblox is embracing AI in order to radically overhaul the look of the game, though some fans aren’t happy with it....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/roblox-announces-new-ai-powered-graphics-overhaul-and-fans-arent-happy"
+  },
+  {
+    "title": "The Xbox Ally X's Fancy Upscaling Tech Is Available to Xbox Insiders Today",
+    "date": "2026-05-01",
+    "desc": "...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-xbox-ally-xs-fancy-upscaling-tech-is-available-to-xbox-insiders-today"
+  },
+  {
+    "title": "'Where's the RPD? Where's Umbrella?' — the Internet Reacts to the Resident Evil Movie Trailer",
+    "date": "2026-05-01",
+    "desc": "The first fan reactions for Zach Cregger's Resident Evil movie trailer are in — and while some say the film looks like fun horror fare, many have comp...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/wheres-the-rpd-wheres-umbrella-the-internet-reacts-to-the-resident-evil-movie-trailer"
+  },
+  {
+    "title": "Final Fantasy 14 Director Confirms Nintendo Switch 2 Performance and Mouse-Keyboard Controls",
+    "date": "2026-05-01",
+    "desc": "Naoki Yoshida confirmed Switch 2 technical details during an interview at FFXIV Fan Fest alongside the Evercold reveal....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/ffxiv-final-fantasy-xiv-director-confirms-switch-2-performance-and-mouse-keyboard-controls"
+  },
+  {
+    "title": "Steam Pirate Game Windrose Sails Past 1.5 Million Copies Sold, Dev Confirms First Big Content Drop Details",
+    "date": "2026-05-01",
+    "desc": "Windrose is a smash hit — it’s sold over 1.5 million copies in just over two weeks....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/steam-pirate-game-windrose-sails-past-15-million-copies-sold-dev-confirms-first-big-content-drop-details"
+  },
+  {
+    "title": "Fortnite Now Hides D4vd Emotes by Default, Though Fans Say Epic Should Scrub All Content From the Game",
+    "date": "2026-05-01",
+    "desc": "Fortnite developer Epic Games has effectively hidden two in-game emotes featuring music by U.S. singer D4vd — but fans say the company should go furth...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/fortnite-now-hides-d4vd-emotes-by-default-though-fans-say-epic-should-scrub-all-content-from-the-game"
+  },
+  {
+    "title": "Final Fantasy 7 Rebirth on Nintendo Switch 2 Goes Minimalist by Removing Most of the Interior Decor and Background Props",
+    "date": "2026-05-01",
+    "desc": "The Final Fantasy 7 Rebirth demo on Nintendo Switch 2 has attracted a mix of criticism, praise, and humor for removing most of the interior decor and ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/final-fantasy-7-rebirth-on-nintendo-switch-2-goes-minimalist-by-removing-most-of-the-interior-decor-and-background-props"
+  },
+  {
+    "title": "Resident Evil Trailer Reveals First Look at Director Zach Cregger's Video Game Movie Reboot",
+    "date": "2026-05-01",
+    "desc": "Sony released the first trailer online today for the next Resident Evil movie, which is directed by Zach Cregger (Weapons, Barbarian). While the new t...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/resident-evil-zach-cregger-trailer-reboot-details"
+  },
+  {
+    "title": "This $599 First-Of-Its-Kind Animatronic of Ultimate Grogu From Hasbro Is Unlike Any Star Wars Toy Ever Seen From That Galaxy Far, Far Away",
+    "date": "2026-05-01",
+    "desc": "Hasbro invited IGN to an early preview of the just-announced $599 first-of-its-kind animatronic called Ultimate Grogu, and we walked away amazed by ho...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/this-599-first-of-its-kind-animatronic-of-ultimate-grogu-from-hasbro-is-unlike-any-star-wars-toy-ever-seen-from-that-galaxy-far-far-away"
+  },
+  {
+    "title": "After Teasing Potential Star Wars Return, Fired The Mandalorian Actress Gina Carano Admits She Hasn't Spoken to Pedro Pascal in Over 2 Years",
+    "date": "2026-05-01",
+    "desc": "Just a week after teasing a potential return to the Star Wars universe, fired The Mandalorian actress Gina Carano has admitted that she and her former...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/after-teasing-potential-star-wars-return-fired-the-mandalorian-actress-gina-carano-admits-she-hasnt-spoken-to-pedro-pascal-in-over-2-years"
+  },
+  {
+    "title": "The Boys Creator Insists He Did Not Cancel Spinoff Gen V as Angry Fans Flood His Social Media With Insults",
+    "date": "2026-05-01",
+    "desc": "The Boys creator Eric Kripke has insisted he wasn’t behind the cancelation of spinoff Gen V amid a backlash that has spilled over onto his social medi...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-boys-creator-insists-he-did-not-cancel-spinoff-gen-v-as-angry-fans-flood-his-social-media-with-insults"
+  },
+  {
     "title": "Tony Hawk Once Modded His Friend’s PS1 to Get Early THPS Feedback",
     "date": "2026-04-30",
     "desc": "Back in 1998, Tony Hawk had his friend's modded PS1 to play early builds of the original THPS, and word began circulating in the skating community....",
@@ -638,165 +798,5 @@
     "tag": "News",
     "source": "IGN",
     "link": "https://www.ign.com/articles/invincible-creator-robert-kirkman-says-tech-jacket-was-gender-swapped-to-address-a-comic-book-shortcoming"
-  },
-  {
-    "title": "The Boys’ Spin-off Series Gen V Canceled",
-    "date": "2026-04-25",
-    "desc": "Gen V, a spin-off from Amazon's The Boys, isn't getting a Season 3....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/the-boys-spinoff-gen-v-canceled"
-  },
-  {
-    "title": "Neon Genesis Evangelion Is Coming to Final Fantasy XIV With a Crossover Raid Series Called Ghosts of Desire",
-    "date": "2026-04-25",
-    "desc": "Endgame content for the upcoming FFXIV Evercold expansion includes Evangelion-themed raid dungeons in Patch 8.1 and on....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/neon-genesis-evangelion-is-coming-to-final-fantasy-xiv-with-a-crossover-raid-series-called-ghosts-of-desire"
-  },
-  {
-    "title": "Noah Hawley Confirms Alien: Earth Season 2 Starts Filming This Summer, Promises 'Bigger Show'",
-    "date": "2026-04-25",
-    "desc": "Noah Hawley, the man behind Fargo, the upcoming Far Cry TV adaptation, and Alien: Earth has revealed that Season 2 of the science fiction show is clos...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/noah-hawley-confirms-alien-earth-season-2-starts-filming-this-summer-promises-bigger-show"
-  },
-  {
-    "title": "Noah Hawley Explains Why His Far Cry TV Show Won't Adapt Existing Games",
-    "date": "2026-04-25",
-    "desc": "Noah Hawley, the man behind prestige TV hits like Fargo and Alien: Earth, has shared a little about his plans for the Far Cry TV show...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/noah-hawley-explains-why-his-far-cry-tv-show-wont-adapt-existing-games"
-  },
-  {
-    "title": "Slay the Spire 2 Patch Notes Address Base Game Difficulty and the Doormaker",
-    "date": "2026-04-25",
-    "desc": "Mega Crit has published Slay the Spire 2 patch notes for beta version 0.104.0 as it attempts to fine-tune balance to make the experience \"more accessi...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/slay-the-spire-2-patch-notes-address-base-game-difficulty-and-the-doormaker"
-  },
-  {
-    "title": "Square Enix Cafes Set to Open in Los Angeles and Shinjuku",
-    "date": "2026-04-25",
-    "desc": "Los Angeles, California and Shinjuku, Japan will be the first recipients of Square Enix's officially licensed cafes. The veteran game publisher announ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/square-enix-cafe-set-to-open-los-angeles-shinjuku"
-  },
-  {
-    "title": "Battlefield Movie in the Works: Michael B. Jordan and Christopher McQuarrie Team Up",
-    "date": "2026-04-25",
-    "desc": "Michael B. Jordan and Christopher McQuarrie are reportedly attached to a feature film adaptation of Electronic Arts’ bestselling military video game B...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/battlefield-movie-in-the-works-michael-b-jordan-and-christopher-mcquarrie-team-up"
-  },
-  {
-    "title": "Next Final Fantasy XIV Expansion Revealed, FFXIV Evercold Coming January 2027",
-    "date": "2026-04-25",
-    "desc": "FFXIV Evercold marks the arrival of Patch 8.0 and the start of The Godless Realms Saga....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/next-final-fantasy-xiv-expansion-revealed-ffxiv-evercold-coming-january-2027"
-  },
-  {
-    "title": "Astarion Is Getting a Prequel Novel Set During His Time in Servitude to the Vampire Lord Cazador Szarr in the Years Leading Up to the Events of Baldur's Gate 3",
-    "date": "2026-04-25",
-    "desc": "A number of official Bladur’s Gate 3 books have been announced, including an Astarion prequel, a ‘faithful’ reproduction of the Necromancy of Thay, a ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/astarion-is-getting-a-prequel-novel-set-during-his-time-in-servitude-to-the-vampire-lord-cazador-szarr-in-the-years-leading-up-to-the-events-of-baldurs-gate-3"
-  },
-  {
-    "title": "Battlefield 6 Dev Continues Communication With Post Addressing Roadmap Feedback",
-    "date": "2026-04-25",
-    "desc": "Publisher EA and developer Battlefield Studios have offered further clarification for their Battlefield 6 2026 roadmap after recently bombarding playe...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/battlefield-6-dev-continues-communication-with-post-addressing-roadmap-feedback"
-  },
-  {
-    "title": "Resident Evil Requiem Hits 7 Million Sales Milestone",
-    "date": "2026-04-25",
-    "desc": "Capcom has celebrated Resident Evil Requiem passing another sales milestone, and provided its director with two giant cakes to mark the occasion....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/resident-evil-requiem-hits-7-million-sales-milestone"
-  },
-  {
-    "title": "Man Arrested in Singapore for Allegedly Leaking The Legend of Aang: The Last Airbender, Could Face Up to 7 Years in Jail",
-    "date": "2026-04-25",
-    "desc": "A 26-year-old man was arrested in Singapore for allegedly leaking The Legend Of Aang: The Last Airbender....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/man-arrested-in-singapore-for-allegedly-leaking-the-legend-of-aang-the-last-airbender-could-face-up-to-7-years-in-jail"
-  },
-  {
-    "title": "Pokémon Pokopia Event Announced",
-    "date": "2026-04-25",
-    "desc": "The next Pokémon Pokopia in-game event has now been formally announced, and it'll star gem goblin Sableye....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/pokemon-pokopia-event-announced"
-  },
-  {
-    "title": "Scooby-Doo: First Look at the Cast and Full Title Revealed for the Netflix Live-Action Series",
-    "date": "2026-04-25",
-    "desc": "Production has begun on the live-action streaming series Scooby-Doo: Origins, Netflix announced Friday. The streamer also revealed the first look at t...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/scooby-doo-first-look-at-the-cast-and-full-title-revealed-for-the-netflix-live-action-series"
-  },
-  {
-    "title": "The Art of Assassin’s Creed: Black Flag Resynced Revealed by Titan Books",
-    "date": "2026-04-25",
-    "desc": "Titan Books will release The Art of Assassin's Creed: Black Flag Resynced alongside Ubisoft's ambitious remake, with the book hitting stores on July 1...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/art-of-assassins-creed-black-flag-resynced"
-  },
-  {
-    "title": "Exclusivity, Affordability, Third-Party Partnerships in Focus as New Xbox Leadership Vows to 'Fix the Fundamentals'",
-    "date": "2026-04-24",
-    "desc": "In a new mission statement of sorts emailed to Xbox staff and posted on Xbox Wire, new Xbox CEO and Xbox Chief Content Officer Matt Booty laid out new...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/exclusivity-affordability-third-party-partnerships-in-focus-as-new-xbox-leadership-vows-to-fix-the-fundamentals"
-  },
-  {
-    "title": "Two Iconic Sci-Fi Universes Collide in Predator vs. Planet of the Apes",
-    "date": "2026-04-24",
-    "desc": "The Predator is moving on from hunting Xenomorphs to targeting apes. Find out what to expect from the new crossover series Predator vs. Planet of the ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/two-iconic-sci-fi-universes-collide-in-predator-vs-planet-of-the-apes"
-  },
-  {
-    "title": "Chainsaw Man - The Movie: Reze Arc Finally Has a Streaming Release Date",
-    "date": "2026-04-24",
-    "desc": "The Chainsaw Man movie is finally coming to Crunchyroll....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/chainsaw-man-the-movie-reze-arc-crunchyroll-streaming-release-date"
-  },
-  {
-    "title": "Peacock Has Canceled the Clueless Sequel Series",
-    "date": "2026-04-24",
-    "desc": "Back in April 2025, Peacock revealed it had a Clueless TV series with Alicia Silverstone returning as Cher in development, but today Variety reports t...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/peacock-has-canceled-the-clueless-sequel-series"
-  },
-  {
-    "title": "ID@Xbox: Everything Announced at the 2026 Showcase",
-    "date": "2026-04-24",
-    "desc": "Check out all the exclusive reveals from the ID@Xbox April showcase, presented by IGN....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/idxbox-everything-announced-at-the-2026-showcase"
   }
 ]
