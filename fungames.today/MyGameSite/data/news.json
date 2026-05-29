@@ -1,5 +1,165 @@
 [
   {
+    "title": "Call of Duty: Modern Warfare 4 Leak May Reveal Early Access for Campaign",
+    "date": "2026-05-29",
+    "desc": "Call of Duty: Modern Warfare 4 may let players play the campaign ahead of the full game's release....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/call-of-duty-modern-warfare-4-leak-may-reveal-early-access-for-campaign"
+  },
+  {
+    "title": "Rambo Prequel Gets Summer 2027 Release Date",
+    "date": "2026-05-29",
+    "desc": "John Rambo, a new prequel film about the titular character, has a release date....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/rambo-prequel-gets-summer-2027-release-date"
+  },
+  {
+    "title": "Call of Duty: Modern Warfare 4 Will Fix Two Major Franchise Issues",
+    "date": "2026-05-29",
+    "desc": "Call of Duty: Modern Warfare 4 will address two of the franchise's most annoying issues....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/call-of-duty-modern-warfare-4-will-fix-two-major-franchise-issues"
+  },
+  {
+    "title": "Call of Duty: Modern Warfare 4 Team Is Evaluating Skill-Based Matchmaking Following Black Ops 7",
+    "date": "2026-05-29",
+    "desc": "Infinity Ward appears to be taking a careful approach to Call of Duty: Modern Warfare 4's skill-based matchmaking after Black Ops 7....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/call-of-duty-modern-warfare-4-team-is-evaluating-skill-based-matchmaking-following-black-ops-7"
+  },
+  {
+    "title": "The Book of Life Director Sparks Significant Backlash Over New AI Amazon Animated Series, Vows to Report Death Threats",
+    "date": "2026-05-29",
+    "desc": "El Tigre and The Book of Life creator Jorge R. Gutierrez has sparked a significant backlash for signing up to make an AI animated series for Amazon....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-book-of-life-director-sparks-significant-backlash-over-new-ai-amazon-animated-series-vows-to-report-death-threats"
+  },
+  {
+    "title": "CD Projekt Teases Size and Story of New The Witcher 3 Expansion Songs of the Past",
+    "date": "2026-05-29",
+    "desc": "The Witcher 3 developer CD Projekt has dropped its first story hints for the game's upcoming third expansion, Songs of the Past....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/cd-projekt-teases-size-and-story-of-new-the-witcher-3-expansion-songs-of-the-past"
+  },
+  {
+    "title": "Call of Duty: Warzone to Shut Down on PS4 and Xbox One as Modern Warfare 4 Leaves Last-Gen Consoles Behind",
+    "date": "2026-05-29",
+    "desc": "Activision has confirmed that Call of Duty: Warzone will soon shut down on PlayStation 4 and Xbox One, as part of the upcoming Modern Warfare 4 leavin...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/call-of-duty-warzone-to-shut-down-on-ps4-and-xbox-one-as-modern-warfare-4-leaves-last-gen-consoles-behind"
+  },
+  {
+    "title": "Call of Duty: Modern Warfare 4 Revealed With DMZ, Release Date, and Nintendo Switch 2 Version Confirmed",
+    "date": "2026-05-29",
+    "desc": "Activision has finally revealed Call of Duty: Modern Warfare 4, the next mainline entry in the first-person shooter franchise due out later in 2026. H...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/call-of-duty-modern-warfare-4-revealed-with-dmz-release-date-and-nintendo-switch-2-version-confirmed"
+  },
+  {
+    "title": "Intel's New Handheld Gaming PC Chips Are Here At Computex 2026",
+    "date": "2026-05-29",
+    "desc": "Ever since Intel Panther Lake launched back at CES 2026, we've known that Team Blue's latest mobile chips were coming to handhelds. And, ahead of Comp...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/intels-new-handheld-gaming-pc-chips-are-here-at-computex-2026"
+  },
+  {
+    "title": "Planet Zoo 2 Coming This Year, Featuring Flying and Aquatic Animals",
+    "date": "2026-05-29",
+    "desc": "Frontier Developments has announced Planet Zoo 2, which will include the ability to add flying and aquatic animals in aviaries and aquariums for the f...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/planet-zoo-2-coming-this-year-featuring-flying-and-aquatic-animals"
+  },
+  {
+    "title": "The Steam Deck Is Sold Out Again, Even After the Huge Price Rise",
+    "date": "2026-05-29",
+    "desc": "Valve recently raised the price on the Steam Deck, making the handheld gaming PC cost up to $949 for the 1TB OLED model. While that's a massive $300 i...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-steam-deck-is-sold-out-again-even-after-the-huge-price-rise"
+  },
+  {
+    "title": "Take-Two Boss Says 'Former Rockstar Employees' Have Tried to Match GTA's Success and Failed — and We All Know Which Game He's Talking About",
+    "date": "2026-05-29",
+    "desc": "Strauss Zelnick, boss of GTA 6 publisher Take-Two Interactive, has discussed the difficulties of developing a hit video game — and dropped what sounds...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/take-two-boss-says-former-rockstar-employees-have-tried-to-match-gtas-success-and-failed-and-we-all-know-which-game-hes-talking-about"
+  },
+  {
+    "title": "The Witcher 3 Songs of the Past Is an Expansion, Not DLC, CD Projekt Insists While Using IGN Interview With Idris Elba to Make the Point",
+    "date": "2026-05-29",
+    "desc": "In the wake of the announcement of The Witcher 3 Songs of the Past, CD Projekt staff have taken to social media to insist it should be considered an e...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-witcher-3-songs-of-the-past-is-an-expansion-not-dlc-cd-projekt-insists-while-using-ign-interview-with-idris-elba-to-make-the-point"
+  },
+  {
+    "title": "Developer of Steam Hit Life Sim Paralives Explains How It Can Manage Without Selling Paid DLC",
+    "date": "2026-05-29",
+    "desc": "The development team behind The Sims-like Paralives has answered various community questions in a Reddit Ask Me Anything (AMA), revealing more about i...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/developer-of-steam-hit-life-sim-paralives-explains-how-it-can-manage-without-selling-paid-dlc"
+  },
+  {
+    "title": "The Lord of the Rings: The Rings of Power Season 4 Pre-Production Set to Begin Before Season 3 Airs",
+    "date": "2026-05-29",
+    "desc": "Amazon will begin pre-production on The Lord of the Rings: The Rings of Power Season 4 this fall — before the show's third season airs....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-lord-of-the-rings-the-rings-of-power-season-4-pre-production-set-to-begin-before-season-3-airs"
+  },
+  {
+    "title": "Activision Teases Imminent Call of Duty Modern Warfare Reveal With Video Showing Korean Setting",
+    "date": "2026-05-29",
+    "desc": "Activision has teased an imminent reveal of the next Call of Duty Modern Warfare game with a YouTube video that suggests Korea as a setting....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/activision-teases-imminent-call-of-duty-modern-warfare-reveal-with-video-showing-korean-setting"
+  },
+  {
+    "title": "LEGO Smart Play Headed to Pokémon Sets This Summer, Leaks Reveal",
+    "date": "2026-05-29",
+    "desc": "Several upcoming Pokémon LEGO sets have leaked online, each with Smart Play elements included....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/lego-smart-play-headed-to-pokemon-sets-this-summer-leaks-reveal"
+  },
+  {
+    "title": "Subnautica 2 Has Sold So Well That Krafton Has to Pay That $250 Million Earnout to the Devs",
+    "date": "2026-05-29",
+    "desc": "Subnautica 2 has sold so well that publisher Krafton has reportedly agreed to pay a $250 million earnout to the developers — a bonus that was at the h...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/subnautica-2-has-sold-so-well-that-krafton-has-to-pay-that-250-million-earnout-to-the-devs"
+  },
+  {
+    "title": "Donkey Kong 64 Confirmed for Nintendo Switch Online",
+    "date": "2026-05-29",
+    "desc": "Donkey Kong 64 is coming to Nintendo Switch Online next week, Nintendo has confirmed....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/donkey-kong-64-confirmed-for-nintendo-switch-online"
+  },
+  {
+    "title": "007 First Light Teases First Content Update",
+    "date": "2026-05-29",
+    "desc": "007 First Light developer IO Interactive has teased what fans can expect from the game's first content update, and it should be a treat....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/007-first-light-teases-first-content-update"
+  },
+  {
     "title": "The First Wheel of Time Board Game Adaptation Has Already Blown Past Its Goals on Kickstarter",
     "date": "2026-05-28",
     "desc": "...",
@@ -638,165 +798,5 @@
     "tag": "News",
     "source": "IGN",
     "link": "https://www.ign.com/articles/bungie-walks-away-from-destiny-2-final-content-update-coming-in-june"
-  },
-  {
-    "title": "The Big Warhammer 40,000: Dawn of War IV Interview: Year 1 Roadmap, New Playable Factions, and More",
-    "date": "2026-05-22",
-    "desc": "IGN interviews the developer of Warhammer 40,000: Dawn of War IV to find out more about its post-launch plans and DLC....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/the-big-warhammer-40000-dawn-of-war-iv-interview-year-1-roadmap-new-playable-factions-and-more"
-  },
-  {
-    "title": "Warhammer 40,000: Chaos Gate – Deathwatch Announced at Warhammer Skulls 2026",
-    "date": "2026-05-22",
-    "desc": "Fresh from Warhammer Skulls comes confirmation that the well received strategy game Warhammer 40,000: Chaos Gate – Daemonhunters is getting a sequel a...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/warhammer-40000-chaos-gate-deathwatch-announced-at-warhammer-skulls-2026"
-  },
-  {
-    "title": "Helldivers 2 Is Getting a Warhammer 40,000 Legendary Warbond",
-    "date": "2026-05-22",
-    "desc": "Helldivers 2 is getting a Warhammer 40,000 Legendary Warbond later this year, which finally makes one of its most-requested crossovers a reality....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/helldivers-2-is-getting-a-warhammer-40000-legendary-warbond"
-  },
-  {
-    "title": "Everything Announced at Warhammer Skulls 2026",
-    "date": "2026-05-22",
-    "desc": "Check out all the game announcements, updates, trailers, and reveals from Warhammer Skulls 2026....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/everything-announced-at-warhammer-skulls-2026"
-  },
-  {
-    "title": "Warhammer 40,000: Space Marine 2 Shadowdrops Purgation Update, Patch 13 Adds New PvE Mission and a Lot More",
-    "date": "2026-05-22",
-    "desc": "Warhammer 40,000: Space Marine 2 Purgation Update out now, check out the patch notes....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/warhammer-40000-space-marine-2-shadowdrops-purgation-update-patch-13-adds-new-pve-mission-and-a-lot-more"
-  },
-  {
-    "title": "New ‘Paradox Drive’ Expansion Coming to Pokémon TCG Pocket",
-    "date": "2026-05-22",
-    "desc": "The next Pokémon TCG Pocket expansion is all about the Scarlet and Violet generation....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/pokemon-tcg-pocket-announces-new-paradox-drive-expansion"
-  },
-  {
-    "title": "New Call of Duty Studio Heads on Redefining Infinity Ward’s DNA in 2026, Mourning Vince Zampella",
-    "date": "2026-05-22",
-    "desc": "Infinity Ward was the studio that created Call of Duty, and its new studio heads aim to keep the franchise fresh for the foreseeable future....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/new-call-of-duty-studio-heads-redefining-infinity-ward-dna-in-2026-mourning-vince-zampella"
-  },
-  {
-    "title": "Sinners Haunted House Coming to Halloween Horror Nights in Hollywood and Orlando",
-    "date": "2026-05-22",
-    "desc": "Universal announced Thursday that it’s adding a haunted house attraction based on Ryan Coogler’s blockbuster vampire movie Sinners to this year’s Hall...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/sinners-haunted-house-halloween-horror-nights"
-  },
-  {
-    "title": "Warhammer Skulls 2026 Live Updates: All the Biggest Game Reveals",
-    "date": "2026-05-22",
-    "desc": "Warhammer Skulls is back! The showcase event for all things Warhammer video games promises to deliver big news on everything from Space Marine 2 to Da...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/warhammer-skulls-2026-live-updates-reveals"
-  },
-  {
-    "title": "Blizzard Admits It Messed Up Overwatch’s 10th Anniversary Event, but Insists It’s ‘Happy With Where the Game Is Today’",
-    "date": "2026-05-22",
-    "desc": "Blizzard responds to Overwatch 10th Anniversary event backlash....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/blizzard-admits-it-messed-up-overwatchs-10th-anniversary-event-but-insists-its-happy-with-where-the-game-is-today"
-  },
-  {
-    "title": "Fallout 4 on Consoles Will Soon Let You Add More Mods",
-    "date": "2026-05-22",
-    "desc": "Fallout 4 maker Bethesda has confirmed that an increase in storage for mods on the console versions is on the way, giving players more space to downlo...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/fallout-4-on-consoles-will-soon-let-you-add-more-mods"
-  },
-  {
-    "title": "Here's What Time You Can Play 007 First Light",
-    "date": "2026-05-21",
-    "desc": "IO Interactive has confirmed the exact second you can start playing 007 First Light next week....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/heres-what-time-you-can-play-007-first-light"
-  },
-  {
-    "title": "The Expanse: Osiris Reborn Is Recasting its Protagonist After Negative Fan Feedback",
-    "date": "2026-05-21",
-    "desc": "The Expanse: Osiris Reborn will be recasting its male protagonist and his twin brother, according to developer Owlcat Games....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/the-expanse-osiris-reborn-is-recasting-its-protagonist-after-negative-fan-feedback"
-  },
-  {
-    "title": "Forza Horizon 6 Players Are Using Exploits to Farm Easy Credits and Unlock Every Car",
-    "date": "2026-05-21",
-    "desc": "Forza Horizon 6 players are exploiting certain parts of the game so that they can quickly and easily unlock every vehicle in the game....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/forza-horizon-6-players-are-using-exploits-to-farm-easy-credits-and-unlock-every-car"
-  },
-  {
-    "title": "Brandon Sanderson Says He'll Start Working on His Mistborn Era 3 Book Again in July",
-    "date": "2026-05-21",
-    "desc": "Ghostbloods is due to release in December 2028....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/brandon-sanderson-says-hell-start-working-on-his-mistborn-era-3-book-again-in-july"
-  },
-  {
-    "title": "Supergirl Confirmed for Man of Tomorrow as a \"Major Part\" of the DCU Going Forward",
-    "date": "2026-05-21",
-    "desc": "Supergirl will appear in Man of Tomorrow, as she will be a key piece of the DC universe going forward. In a new interview, DC Studios co-CEO Peter Saf...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/supergirl-confirmed-man-of-tomorrow-dcu"
-  },
-  {
-    "title": "The Boys Is Officially Over, and the Internet Has Plenty of Thoughts",
-    "date": "2026-05-21",
-    "desc": "Late last night, Amazon released the long-awaited series finale for The Boys, and it has led to a wide variety of reactions from fans....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/the-boys-is-officially-over-and-the-internet-has-plenty-of-thoughts"
-  },
-  {
-    "title": "The Adventures of Cliff Booth Lands IMAX Release Date Ahead of Netflix Debut",
-    "date": "2026-05-21",
-    "desc": "David Fincher's sequel to Once Upon a Time in Hollywood is coming to IMAX theaters this fall. Netflix has announced that The Adventures of Cliff Booth...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/adventures-of-cliff-booth-imax-netflix-release"
-  },
-  {
-    "title": "Ubisoft Promises New Assassin's Creed, Far Cry, and Ghost Recon Games All by March 2029",
-    "date": "2026-05-21",
-    "desc": "Ubisoft has promised to release new Assassin’s Creed, Far Cry and Ghost Recon games all by the end of March 2029....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/ubisoft-promises-new-assassins-creed-far-cry-and-ghost-recon-games-all-by-march-2029"
-  },
-  {
-    "title": "'People Enjoy Surprises' — Valve Is Trying to Dismiss New York's Counter-Strike Loot Box Lawsuit",
-    "date": "2026-05-21",
-    "desc": "Valve has moved to dismiss the New York Attorney General’s lawsuit against the company, which claims loot boxes in its games such as Counter-Strike 2 ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/people-enjoy-surprises-valve-is-trying-to-dismiss-new-yorks-counter-strike-loot-box-lawsuit"
   }
 ]
