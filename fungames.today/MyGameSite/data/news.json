@@ -1,5 +1,157 @@
 [
   {
+    "title": "Persona Live-Action TV Show in the Works at Netflix",
+    "date": "2026-06-30",
+    "desc": "A live-action Persona TV show is reportedly in development at Netflix....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/persona-live-action-tv-show-in-the-works-at-netflix"
+  },
+  {
+    "title": "Cyberpunk: Edgerunners 2 Teaser Features Cyberpunk 2077 Locations Set to Show Up in New Season",
+    "date": "2026-06-30",
+    "desc": "The first Cyberpunk: Edgerunners 2 teaser is here, and fans have already found some of the locations the new season pulled from Cyberpunk 2077....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/cyberpunk-edgerunners-2-teaser-features-cyberpunk-2077-locations-set-to-show-up-in-new-season"
+  },
+  {
+    "title": "'We're Done Paying for Executives' Failures' — Unionized Xbox Developers Hold Press Conference to Make Their Point as Microsoft Reportedly Readies Massive Layoffs",
+    "date": "2026-06-30",
+    "desc": "Unionized Xbox employees are pushing back against the company's looming layoffs and have outlined various demands....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/were-done-paying-for-executives-failures-unionized-xbox-developers-hold-press-conference-to-make-their-point-as-microsoft-reportedly-readies-massive-layoffs"
+  },
+  {
+    "title": "Box Office Disaster Supergirl Could Reportedly Lose Warner Bros. $100 Million During Its Theatrical Run",
+    "date": "2026-06-30",
+    "desc": "Supergirl is reportedly projected to close its theatrical run with a global box office total that could lose Warner Bros. more than $100 million....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/box-office-disaster-supergirl-could-reportedly-lose-warner-bros-100-million-during-its-theatrical-run"
+  },
+  {
+    "title": "Steam Machine Companion Cube Canceled Because Dbrand Didn't Ask Valve for Permission",
+    "date": "2026-06-30",
+    "desc": "Tech accessory company dbrand has canceled its Steam Machine Companion Cube enclosure effective immediately because it didn't ask Valve for permission...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/steam-machine-companion-cube-canceled-because-dbrand-didnt-ask-valve-for-permission"
+  },
+  {
+    "title": "'60fps Feels Like a Bridge Too far' — Tech Experts Cast Doubt on Those GTA 6 Quality and Performance Mode 'Leaks'",
+    "date": "2026-06-30",
+    "desc": "You might have seen reports doing the rounds that GTA 6 will come with a mode that lets you play it at 60 frames per second, based on retailer listing...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/60fps-feels-like-a-bridge-too-far-tech-experts-cast-doubt-on-those-gta-6-quality-and-performance-mode-leaks"
+  },
+  {
+    "title": "Unionized Xbox Workers Demand Layoff Protections Ahead of Expected Cuts to Microsoft's Gaming Business",
+    "date": "2026-06-30",
+    "desc": "Unionized Xbox workers have demanded layoff protections ahead of what is reportedly a significant round of cuts to Microsoft’s gaming business....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/unionized-xbox-workers-demand-layoff-protections-ahead-of-expected-cuts-to-microsofts-gaming-business"
+  },
+  {
+    "title": "Roblox Reveals 6 New Exclusive 18+ Games, Including an Extraction Shooter From the Co-Founder of Bungie",
+    "date": "2026-06-30",
+    "desc": "Roblox has pulled back the curtain on a selection of six new 18+ games, including Drifters, an extraction shooter developed by Bungie co-founder Alexa...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/roblox-reveals-6-new-exclusive-18-games-including-an-extraction-shooter-from-the-co-founder-of-bungie"
+  },
+  {
+    "title": "Extended Cut of Backrooms Hits Theaters Soon With Additional 15 Minutes of 'Theatrically Exclusive' Footage After the Credits",
+    "date": "2026-06-30",
+    "desc": "Backrooms is getting an extended cut very soon, and it's coming to theaters....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/extended-cut-of-backrooms-hits-theaters-soon-with-additional-15-minutes-of-theatrically-exclusive-footage-after-the-credits"
+  },
+  {
+    "title": "Will PS6 Be Like a Nintendo Switch? Sony Says Its Next-Gen Console Will Enable 'A Seamless Experience That Can Be Enjoyed Naturally Beyond the Living Room'",
+    "date": "2026-06-30",
+    "desc": "Sony has suggested its next-gen console — widely assumed to be the PlayStation 6 — could work like the Nintendo Switch by enabling “a seamless experie...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/will-ps6-be-like-a-nintendo-switch-sony-says-its-next-gen-console-will-enable-a-seamless-experience-that-can-be-enjoyed-naturally-beyond-the-living-room"
+  },
+  {
+    "title": "Steam Hit Meccha Chameleon Was Made by Just 2 People in 2 Months — and Now It's Sold Over 10 Million Copies With Zero Marketing",
+    "date": "2026-06-30",
+    "desc": "Launching on June 10, Meccha Chameleon is a Japanese indie game that has exploded in popularity on Steam. In just 16 days, the game surpassed over 10 ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/steam-hit-meccha-chameleon-was-made-by-just-2-people-in-2-months-and-now-its-sold-over-10-million-copies-with-zero-marketing"
+  },
+  {
+    "title": "'It Is Not Realistic for Us to Absorb All Component Cost Increases' — Sony Says It Won't Sell Hardware at a 'Significant' Loss as Concern Grows Over PS6 Price",
+    "date": "2026-06-30",
+    "desc": "Sony has insisted it has no plans to sell hardware at a “significant” loss, with concern growing over the potential price of the PlayStation 6 amid th...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/it-is-not-realistic-for-us-to-absorb-all-component-cost-increases-sony-says-it-wont-sell-hardware-at-a-significant-loss-as-concern-grows-over-ps6-price"
+  },
+  {
+    "title": "Japanese Theme Park Gets Escape Room Experience in Which Participants Wear a 'Bomb Collar' That Gives a Real Electric Shock",
+    "date": "2026-06-30",
+    "desc": "A theme park in Japan is getting an escape room experience in which participants will wear a “bomb collar” that gives a real electric shock....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/japanese-theme-park-gets-escape-room-experience-in-which-participants-wear-a-bomb-collar-that-gives-a-real-electric-shock"
+  },
+  {
+    "title": "Fallout: New Vegas Director Says Amazon's Fallout Show Is 'One of the Best Adaptations of a Video Game Franchise' — and No, He Isn't Bothered by Dinky Facing the Wrong Way",
+    "date": "2026-06-30",
+    "desc": "Fallout: New Vegas director Josh Sawyer has given Amazon’s Fallout show the thumbs up, saying it’s one of the best video game adaptations ever seen on...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/fallout-new-vegas-director-says-amazons-fallout-show-is-one-of-the-best-adaptations-of-a-video-game-franchise-and-no-he-isnt-bothered-by-dinky-facing-the-wrong-way"
+  },
+  {
+    "title": "With the Threat of Layoffs Looming, Quantic Dream Staff Say They're Going on Strike to Save Star Wars Eclipse From Cancelation",
+    "date": "2026-06-30",
+    "desc": "A new report has shed light on the goings on at French studio Quantic Dream and revealed concern about the future of Star Wars Eclipse....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/with-the-threat-of-layoffs-looming-quantic-dream-staff-say-theyre-going-on-strike-to-save-star-wars-eclipse-from-cancelation"
+  },
+  {
+    "title": "The Social Network Star Jesse Eisenberg Says Turning Down Aaron Sorkin's Offer to Reprise Role as Mark Zuckerberg 'Feels Almost Like You're Letting Down America'",
+    "date": "2026-06-30",
+    "desc": "Jesse Eisenberg has explained his decision not to reprise his role as Mark Zuckerberg for The Social Reckoning, saying turning down writer and directo...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/the-social-network-star-jesse-eisenberg-says-turning-down-aaron-sorkins-offer-to-reprise-role-as-mark-zuckerberg-feels-almost-like-youre-letting-down-america"
+  },
+  {
+    "title": "Hideo Kojima and More Pay Tribute to Akihiro Miwa, the Iconic Japanese Singer and Actor Behind Wolf Goddess Moro in Princess Mononoke, Who Has Died Aged 91",
+    "date": "2026-06-30",
+    "desc": "Japanese news sources including Mainichi announced over the weekend that iconic Japanese singer and actor Akihiro Miwa passed away aged 91 on June 20....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/hideo-kojima-and-more-pay-tribute-to-akihiro-miwa-the-iconic-japanese-singer-and-actor-behind-wolf-goddess-moro-in-princess-mononoke-who-has-died-aged-91"
+  },
+  {
+    "title": "Marvel Tōkon: Fighting Souls Reveals Last 3 Playable Characters — and a Blink-and-You’ll-Miss-It Look at a PlayStation Icon",
+    "date": "2026-06-30",
+    "desc": "Marvel Tōkon: Fighting Souls has revealed the final three playable characters rounding out its roster, and there are a number of fan-favorites in ther...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/marvel-tokon-fighting-souls-reveals-last-3-playable-characters-and-a-blink-and-youll-miss-it-look-at-a-playstation-icon"
+  },
+  {
+    "title": "Dead or Alive 6 Last Round Pummeled by Negative Reviews as Koei Tecmo Asks Players to Rebuy DLC",
+    "date": "2026-06-30",
+    "desc": "Dead or Alive 6 Last Round has fallen to \"Mostly Negative\" reviews on Steam as players warn of persistent bugs, lacking features, and a requirement to...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/dead-or-alive-6-last-round-pummeled-by-negative-reviews-as-koei-tecmo-asks-players-to-rebuy-dlc"
+  },
+  {
     "title": "Spider-Man: Brand New Day Star Tom Holland Says He's Working to Bring Miles Morales Into the MCU",
     "date": "2026-06-29",
     "desc": "Tom Holland will soon return to the MCU for Spider-Man: Brand New Day, but he's already \"working towards\" a future where Miles Morales and his Peter P...",
@@ -646,157 +798,5 @@
     "tag": "News",
     "source": "IGN",
     "link": "https://www.ign.com/articles/shaolin-soccer-spinoff-kung-fu-soccer-from-stephen-chow-heads-for-north-american-theaters"
-  },
-  {
-    "title": "Mars Attacks! 30th Anniversary 4K Blu-ray and Digital Release Announced",
-    "date": "2026-06-24",
-    "desc": "Ack! Ack! IGN can exclusively reveal that director Tim Burton’s cult classic alien invasion comedy Mars Attacks! will get a 4K Blu-ray and digital rel...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/mars-attacks-30th-anniversary-4k-bluray-release"
-  },
-  {
-    "title": "Why Valve Refuses to Subsidize Its $1,049 Steam Machine",
-    "date": "2026-06-24",
-    "desc": "Valve has explained why it refuses to subsidize the Steam Machine, which launched yesterday priced at least $1,049....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/why-valve-refuses-to-subsidize-its-1049-steam-machine"
-  },
-  {
-    "title": "Spider-Man: Brand New Day's Villain 'Still Very Much a Secret,' Tom Holland Teases",
-    "date": "2026-06-24",
-    "desc": "Spider-Man: Brand New Day's villain is \"still very much a secret,\" Tom Holland has said, despite half a dozen foes already being glimpsed in trailers....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/spider-man-brand-new-days-villain-still-very-much-a-secret-tom-holland-teases"
-  },
-  {
-    "title": "James Gunn Teases Supergirl's 'Big' Role in Superman Sequel Man of Tomorrow",
-    "date": "2026-06-24",
-    "desc": "Milly Alcock’s Supergirl will continue to butt heads with her cousin, Superman, in next year’s DC Universe sequel, Man of Tomorrow, James Gunn has tea...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/james-gunn-teases-supergirls-big-role-in-superman-sequel-man-of-tomorrow"
-  },
-  {
-    "title": "Pokémon Go Dataminers Discount Early Launch for Pokémon Winds and Waves Creatures, Despite Earlier Hopes",
-    "date": "2026-06-24",
-    "desc": "Pokémon Go fans keen to get their paws on Gen 10 Pokémon may have to wait a little longer....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/pokmon-go-dataminers-discount-early-launch-for-pokmon-winds-and-waves-creatures-despite-earlier-hopes"
-  },
-  {
-    "title": "Fallout Season 3: Todd Howard Teases 'New Things' Never Seen Before in the Games",
-    "date": "2026-06-24",
-    "desc": "Bethesda development chief Todd Howard has confirmed a few surprises for Fallout fans in the upcoming Season 3 of the TV show — including some things ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/fallout-season-3-todd-howard-teases-new-things-never-seen-before-in-the-games"
-  },
-  {
-    "title": "Keanu Reeves Reportedly in Talks to Star in New LEGO Movie Project from Toy Story 4 Director",
-    "date": "2026-06-24",
-    "desc": "Keanu Reeves is in negotiations to star in a new LEGO movie from Toy Story 4 director Josh Cooley, which would reportedly be a hybrid of animation and...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/keanu-reeves-reportedly-in-talks-to-star-in-new-lego-movie-project-from-toy-story-4-director"
-  },
-  {
-    "title": "Powerpuff Girls Movie in the Works at Warner Bros. Animation",
-    "date": "2026-06-23",
-    "desc": "Warner Bros. has dipped into its stash of Chemical X in hopes of reuniting Blossom, Bubbles, and Buttercup for a new animated Powerpuff Girls movie....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/powerpuff-girls-movie-in-the-works-at-warner-bros-animation"
-  },
-  {
-    "title": "Meccha Chameleon Players Are Recreating the Mona Lisa as the Hide-and-Seek Paint Game Passes 7 Million Sales",
-    "date": "2026-06-23",
-    "desc": "As hide-and-seek paint game Meccha Chameleon rockets past 7 million copies sold, some players have gotten so invested in finding the perfect hiding sp...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/meccha-chameleon-players-are-recreating-the-mona-lisa-as-the-hide-and-seek-paint-game-passes-7-million-sales"
-  },
-  {
-    "title": "GTA 6 Fans Spot Tommy Vercetti Easter Egg Over a Year After Trailer 2's Release",
-    "date": "2026-06-23",
-    "desc": "Grand Theft Auto 6 fans have spotted a cheeky nod to Vice City protagonist Tommy Vercetti in the game's second trailer....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/gta-6-fans-spot-tommy-vercetti-easter-egg-over-a-year-after-trailer-2s-release"
-  },
-  {
-    "title": "Tom Holland and Zendaya Are Huge Fans of PlayStation's Spider-Man Games, Insomniac Invites Them for Studio Tour",
-    "date": "2026-06-23",
-    "desc": "Spider-Man: Brand New Day stars Tom Holland and Zendaya really enjoy Insomniac Games' Spider-Man games....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/tom-holland-and-zendaya-are-huge-fans-of-playstations-spider-man-games-insomniac-invites-them-for-studio-tour"
-  },
-  {
-    "title": "The Last of Us Part 2 Multiplayer Lives On as PvP Mod Due Out Later This Year",
-    "date": "2026-06-23",
-    "desc": "Naughty Dog may have canceled its The Last of Us Part 2 multiplayer project, but Factions fans can now at least have a new PvP mode to look forward to...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/the-last-of-us-part-2-multiplayer-lives-on-as-pvp-mod-due-out-later-this-year"
-  },
-  {
-    "title": "Warframe Dev Says 'No One Is Celebrating' as Destiny 2 Support Comes to a 'Heartbreaking' End",
-    "date": "2026-06-23",
-    "desc": "Warframe community director Megan Everett has said that \"no one is celebrating\" the \"heartbreaking\" news that Sony pulled the plug on Destiny 2 suppor...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/warframe-dev-says-no-one-is-celebrating-as-destiny-2-support-comes-to-a-heartbreaking-end"
-  },
-  {
-    "title": "Marvel's Wolverine Actor Confirms Role in GTA 6",
-    "date": "2026-06-23",
-    "desc": "A handful of actors have started confirming they have roles in Grand Theft Auto VI, including one of the stars of Marvel's Wolverine....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/marvels-wolverine-actor-confirms-role-in-gta-6"
-  },
-  {
-    "title": "It’s Finally Happened — You Can Play As Nicolas Cage in Call of Duty",
-    "date": "2026-06-23",
-    "desc": "It’s finally happened — you can play as Nicolas Cage in Call of Duty....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/its-finally-happened-you-can-play-as-nicolas-cage-in-call-of-duty"
-  },
-  {
-    "title": "Love and Deepspace Drops New Wolfy Love Interest And I'm Not Well",
-    "date": "2026-06-23",
-    "desc": "Love and Deepspace: new werewolf character Valko revealed....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/love-and-deepspace-drops-new-wolfy-love-interest"
-  },
-  {
-    "title": "Bethesda Boss Todd Howard Saw Marvel's Blade in May, Says Arkane 'Doing a Really, Really Great Job'",
-    "date": "2026-06-23",
-    "desc": "Bethesda Game Studios head Todd Howard has offered an update on the long-in-development Marvel's Blade, which is based on Marvel's vampire-slaying sup...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/bethesda-boss-todd-howard-saw-marvels-blade-in-may-says-arkane-doing-a-really-really-great-job"
-  },
-  {
-    "title": "Fortnite's Popular Pokémon-Like Sprites Are Fueling a Player Surge — and 5 More Species Get Added This Week",
-    "date": "2026-06-23",
-    "desc": "Fortnite's popular battle royale mode is enjoying an influx of players keen to hunt the game's Pokémon-like Sprites — and five more species arrive thi...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/fortnites-popular-pokemon-like-sprites-are-fueling-a-player-surge-and-5-more-species-get-added-this-week"
-  },
-  {
-    "title": "Netflix's Gears of War Movie Is an 'Origin Story' for Delta Squad",
-    "date": "2026-06-23",
-    "desc": "We finally have the first details on the upcoming Gears of War film, which may not directly adapt the games....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/netflixs-gears-of-war-movie-is-an-origin-story-for-delta-squad"
   }
 ]
