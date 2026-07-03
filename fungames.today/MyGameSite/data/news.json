@@ -1,5 +1,93 @@
 [
   {
+    "title": "Moana 3 Is in the Works, According to The Rock",
+    "date": "2026-07-03",
+    "desc": "Moana 3 is in development at Disney, according to Dwayne 'The Rock' Johnson....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/moana-3-is-in-the-works-according-to-the-rock"
+  },
+  {
+    "title": "'It's Not a Comedy' — Danny McBride Details New G.I. Joe Movie, Aiming to Film in 2027",
+    "date": "2026-07-03",
+    "desc": "Danny McBride has offered up the first details on his new G.I. Joe movie, which he confirms is not a comedy....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/its-not-a-comedy-danny-mcbride-details-new-gi-joe-movie-aiming-to-film-in-2027"
+  },
+  {
+    "title": "Steven Spielberg to Produce Film Adaptation of YouTube Horror Series The Mandela Catalogue",
+    "date": "2026-07-03",
+    "desc": "Steven Spielberg is set to produce a feature film adaptation of the viral YouTube horror series The Mandela Catalogue with original creator Alex Kiste...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/steven-spielberg-to-produce-film-adaptation-of-youtube-horror-series-the-mandela-catalogue"
+  },
+  {
+    "title": "Millie Bobby Brown Reveals She Auditioned for X-23 in Logan",
+    "date": "2026-07-03",
+    "desc": "Stranger Things actress Millie Bobby Brown has revealed that she auditioned for the role of X-23 in Logan....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/millie-bobby-brown-reveals-she-auditioned-for-x-23-in-logan"
+  },
+  {
+    "title": "Final Fantasy 7 Revelation Getting Story Expansion Pass, Store Leak Suggests",
+    "date": "2026-07-03",
+    "desc": "Final Fantasy 7 fans are getting excited for a new Story Expansion pass that has been glimpsed as part of a new store leak....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/final-fantasy-7-revelation-getting-story-expansion-pass-store-leak-suggests"
+  },
+  {
+    "title": "Avowed, The Outer Worlds, and Fallout: New Vegas Developer Obsidian Entertainment Reportedly NOT at Risk of Closure Amid Xbox 'Reset'",
+    "date": "2026-07-03",
+    "desc": "Bloomberg's Jason Schreier has said The Game Business report about Obsidian is incorrect, and that the studio is not in negotiations to avoid shutting...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/avowed-the-outer-worlds-and-fallout-new-vegas-developer-obsidian-entertainment-reportedly-also-at-risk-of-closure-amid-xbox-reset"
+  },
+  {
+    "title": "Even KFC Is Dunking on Sony as the Dust Settles on PlayStation's Shock Decision to Kill Physical Game Discs",
+    "date": "2026-07-03",
+    "desc": "Yesterday's bombshell news from Sony that it will stop releasing new PlayStation games on disc from 2028 onwards has generated a predictively negative...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/even-kfc-is-dunking-on-sony-as-the-dust-settles-on-playstations-shock-decision-to-kill-physical-game-discs"
+  },
+  {
+    "title": "'He Was on the Valium or Something': Matt Smith Can't Believe Keanu Reeves Was Spotted Watching the Infamously Terrible Movie Morbius on a Flight",
+    "date": "2026-07-03",
+    "desc": "Doctor Who and House of the Dragon star Matt Smith can't believe that Matrix legend Keanu Reeves was recently spotted watching his infamously terrible...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/he-was-on-the-valium-or-something-matt-smith-cant-believe-keanu-reeves-was-spotted-watching-the-infamously-terrible-movie-morbius-on-a-flight"
+  },
+  {
+    "title": "Apple TV Teases Neuromancer Adaptation With an Iconic Line From William Gibson's Influential Cyberpunk Novel",
+    "date": "2026-07-03",
+    "desc": "\"The sky above the port was the color of television, tuned to a dead channel.\" That’s the iconic opening sentence of William Gibson’s influential nove...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/apple-tv-teases-neuromancer-adaptation-with-an-iconic-line-from-william-gibsons-influential-cyberpunk-novel"
+  },
+  {
+    "title": "'I'll Do a Time Capsule for Them': How Long Will Hugh Jackman Play Wolverine? Marvel Star Suggests There's No Need to Think About Handing Over The Role Just Yet",
+    "date": "2026-07-03",
+    "desc": "X-Men star Hugh Jackman has suggested he won't be done playing Wolverine anytime soon....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/ill-do-a-time-capsule-for-them-how-long-will-hugh-jackman-play-wolverine-marvel-star-suggests-theres-no-need-to-think-about-handing-over-the-role-just-yet"
+  },
+  {
+    "title": "ESRB Leaks Warhammer 40,000: Space Marine - Master Crafted Edition for PS5 and Nintendo Switch 2",
+    "date": "2026-07-03",
+    "desc": "Warhammer 40,000: Space Marine - Master Crafted Edition looks set for PlayStation 5 and Nintendo Switch 2, having launched on PC, Xbox Series X and S,...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/esrb-leaks-warhammer-40000-space-marine-master-crafted-edition-for-ps5-and-nintendo-switch-2"
+  },
+  {
     "title": "Onimusha: Way of the Sword Release Date Moved Forward",
     "date": "2026-07-02",
     "desc": "Capcom has announced that Onimusha: Way of the Sword, the upcoming action-adventure sequel for PC, PS5, Xbox Series X|S, and Nintendo Switch 2, will n...",
@@ -710,93 +798,5 @@
     "tag": "News",
     "source": "IGN",
     "link": "https://www.ign.com/articles/talladega-nights-director-reveals-the-plot-of-the-films-cancelled-sequel"
-  },
-  {
-    "title": "Robert Eggers’ Werwulf: First Look and Story Details Revealed for Historical Horror Movie",
-    "date": "2026-06-26",
-    "desc": "In his first interview about Werwullf, director Robert Eggers revealed how his film will be unlike any other werewolf movie: \"You don’t need to have s...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/robert-eggers-werwulf-first-look-story-details"
-  },
-  {
-    "title": "Valve Now Claims Steam Machine Is Capable of 'Up To' 4K",
-    "date": "2026-06-26",
-    "desc": "...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/valve-now-claims-steam-machine-is-capable-of-up-to-4k"
-  },
-  {
-    "title": "Hopes for GTA 6 Trailer 3 Evaporate as Preorders Go Live Without a New Video From Rockstar",
-    "date": "2026-06-26",
-    "desc": "Fan hopes for GTA 6 Trailer 3 have been dashed after preorders went live without a new official video from Rockstar....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/hopes-for-gta-6-trailer-3-evaporate-as-preorders-go-live-without-a-new-video-from-rockstar"
-  },
-  {
-    "title": "Microsoft Announces Significant Price Rises for Xbox Series X and S, 2TB Model Discontinued",
-    "date": "2026-06-26",
-    "desc": "Microsoft has announced significant price rises for Xbox consoles, blaming the ongoing “components crisis.”...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/microsoft-announces-significant-price-rises-for-xbox-series-x-and-s-2tb-model-discontinued"
-  },
-  {
-    "title": "Deltarune Chapter 6 Will Release in 2027, Chapter 5 Shatters Concurrent Player Records on Steam",
-    "date": "2026-06-26",
-    "desc": "Deltarune's story will continue next year, as creator Toby Fox has set a 2027 release window for Chapter 6....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/deltarune-chapter-6-will-release-in-2027-chapter-5-shatters-concurrent-player-records-on-steam"
-  },
-  {
-    "title": "Drop Dead Singer Olivia Rodrigo Joins Fortnite Today",
-    "date": "2026-06-26",
-    "desc": "Popstar Olivia Rodrigo is joining Fortnite today, as the latest celebrity addition to Epic Games' battle royale....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/drop-dead-singer-olivia-rodrigo-joins-fortnite-today"
-  },
-  {
-    "title": "Invader Zim Publishing Rights Have Been Acquired by BOOM! Studios, Who Promises Classic Stories and New Original Content - Exclusive",
-    "date": "2026-06-26",
-    "desc": "IGN can exclusively reveal that BOOM! Studios has acquired the publishing rights for Invader Zim, and it has plans to \"bring classic stories, long-sou...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/invader-zim-publishing-rights-have-been-acquired-by-boom-studios-who-promises-classic-stories-and-new-original-content-exclusive"
-  },
-  {
-    "title": "Apple is the Latest Company to Raise Prices Because of AI",
-    "date": "2026-06-26",
-    "desc": "Just a week after Tim Cook said price rises were inevitable, Apple has raised prices on most of its products due to increased memory demand....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/apple-is-the-latest-company-to-raise-prices-because-of-ai"
-  },
-  {
-    "title": "Sony Confirms 'Significant' Bungie Layoffs Include 'Most of the Destiny Team and Some Marathon Team Members', as Bungie Admits 'Destiny 2 Fell Short of Expectations'",
-    "date": "2026-06-26",
-    "desc": "Bungie has confirmed its employees will suffer layoffs as the company is reorganized. The news follows the recent ending of new content for Destiny 2,...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/bungie-announces-layoffs-as-it-admits-destiny-2-fell-short-of-expectations"
-  },
-  {
-    "title": "GTA 6 Live Updates: Screenshots, Gameplay Details, Reaction and More",
-    "date": "2026-06-26",
-    "desc": "Rockstar has finally pulled back the curtain on GTA 6, confirming fresh details, releasing new screenshots, and launching preorders. There's a huge am...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/gta-6-live-updates-screenshots-gameplay-details-reaction-and-more"
-  },
-  {
-    "title": "Peppa Pig Owner Hasbro Faces Backlash After Reportedly Trying to Force Child Actors to Sign Away AI Voice Rights",
-    "date": "2026-06-26",
-    "desc": "Peppa Pig's cast of child actors have reportedly been told they must sign new contracts that allow brand owner Hasbro to reproduce their voices using ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/peppa-pig-owner-hasbro-faces-backlash-after-reportedly-trying-to-force-child-actors-to-sign-away-ai-voice-rights"
   }
 ]
