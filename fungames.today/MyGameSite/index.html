@@ -126,6 +126,16 @@
             margin-bottom: 60px;
         }
 
+        #new-updates-section { margin-bottom: 40px; }
+        #dynamic-game-list { margin-bottom: 20px; }
+        .games-status { color: #aaa; margin: 0 0 20px; }
+        .games-button {
+            padding: 12px 24px; border: 1px solid var(--accent-color);
+            border-radius: 8px; background: var(--card-bg); color: white;
+            font: inherit; cursor: pointer;
+        }
+        .games-button:hover, .games-button:focus-visible { background: #333; }
+
         .game-card {
             background-color: var(--card-bg);
             border-radius: 12px;
@@ -256,10 +266,12 @@
             <a href="#new-updates" style="color: #00d2ff; text-decoration: none; font-size: 14px; font-weight: bold;">Check Now →</a>
         </div>
 
-        <div id="new-updates-section" style="display: none;">
+        <div id="new-updates-section">
             <h2 id="new-updates">🆕 今日更新 (New Arrival)</h2>
-            <div id="dynamic-game-list" class="game-grid">
-                </div>
+            <p id="games-status" class="games-status" role="status" aria-live="polite">正在加载新游戏...</p>
+            <div id="dynamic-game-list" class="game-grid" aria-busy="true"></div>
+            <button id="load-more-games" class="games-button" type="button" aria-controls="dynamic-game-list" hidden>加载更多游戏</button>
+            <button id="retry-games" class="games-button" type="button" hidden>重新加载</button>
         </div>
 
         <h2 id="game-list" data-i18n="section_hot">🔥 本周热门</h2>
@@ -269,7 +281,8 @@
                 <div class="game-info">
                     <div class="game-title" data-i18n="game_Fantasy-Land-and-Sea-Adventure">Fantasy Land and Sea Adventure</div>
                     <div class="game-tag" data-i18n="tag_puzzle">休闲益智</div>
-                </div>   
+                </div>
+            </a>
             <a href="/Tiny-Town-Defense/" class="game-card">
                 <img src="Tiny-Town-Defense/logo.jpg" class="game-thumb" alt="Tiny-Town-Defense">
                 <div class="game-info">
@@ -372,67 +385,142 @@
     </div>
 
     <script>
-        // --- 1. 自动加载功能 (新增) ---
+        // Render a small page at a time; never rebuild already displayed cards.
+        const GAMES_PAGE_SIZE = 24;
+        const FALLBACK_THUMBNAIL = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200"><rect width="100%" height="100%" fill="#444"/><text x="50%" y="50%" fill="#ddd" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">No image</text></svg>');
+        let allGames = [];
+        let renderedGameCount = 0;
+        let gamesState = 'idle';
+
         document.addEventListener('DOMContentLoaded', () => {
             loadMetaData();
             loadAutoGames();
+            document.getElementById('load-more-games').addEventListener('click', renderNextGames);
+            document.getElementById('retry-games').addEventListener('click', loadAutoGames);
         });
 
-        // 加载顶部通知
-        function loadMetaData() {
-            fetch('data/meta.json')
-                .then(response => response.json())
-                .then(data => {
-                    const today = new Date().toISOString().split('T')[0];
-                    // 如果日期是今天，或者刚刚更新
-                    if (data.new_count > 0) {
-                        const notifBar = document.getElementById('top-notification-bar');
-                        const notifText = document.getElementById('notification-text');
-                        
-                        notifBar.style.display = 'flex'; // 显示通知栏
-                        notifText.innerText = `📅 ${data.last_update}: ${data.notification}`;
-                    }
-                })
-                .catch(err => console.log('暂无通知数据或加载失败'));
+        async function fetchJson(url) {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 15000);
+            try {
+                const response = await fetch(url, { signal: controller.signal });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } finally {
+                clearTimeout(timeout);
+            }
         }
 
-// 加载自动抓取的新游戏
-        function loadAutoGames() {
-            fetch('data/games.json')
-                .then(response => response.json())
-                .then(games => {
-                    if (!games || games.length === 0) return;
+        function gamesText(key) {
+            const lang = document.getElementById('langSelector').value;
+            return (translations[lang] || translations.zh)[key];
+        }
 
-                    const container = document.getElementById('dynamic-game-list');
-                    const section = document.getElementById('new-updates-section');
-                    
-                    section.style.display = 'block';
+        async function loadMetaData() {
+            const text = document.getElementById('notification-text');
+            try {
+                const data = await fetchJson('data/meta.json');
+                text.textContent = data && data.notification
+                    ? `${data.last_update ? `📅 ${data.last_update}: ` : ''}${data.notification}`
+                    : gamesText('updates_none');
+            } catch (error) {
+                text.textContent = gamesText('updates_error');
+            }
+        }
 
-                    games.forEach(game => {
-                        // --- 修改重点：增加了 &id=${game.id} ---
-                        // 这样 play.html 才知道去向 GameMonetize 请求哪个视频
-                        const playLink = `play.html?url=${encodeURIComponent(game.url)}&title=${encodeURIComponent(game.title)}&desc=${encodeURIComponent(game.description)}&id=${game.id}`;
-                        
-                        const gameCard = `
-                            <a href="${playLink}" class="game-card">
-                                <span class="new-badge">NEW</span>
-                                <img src="${game.thumbnail || game.thumb}" class="game-thumb" alt="${game.title}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
-                                <div class="game-info">
-                                    <div class="game-title">${game.title}</div>
-                                    <div class="game-tag">${game.category || 'Casual'}</div>
-                                </div>
-                            </a>
-                        `;
-                        container.innerHTML += gameCard;
-                    });
-                })
-                .catch(err => console.log('暂无新游戏数据'));
+        function updateGamesStatus() {
+            const status = document.getElementById('games-status');
+            const key = gamesState === 'error' ? 'games_error'
+                : gamesState !== 'ready' ? 'games_loading'
+                : allGames.length === 0 ? 'games_empty' : 'games_count';
+            status.textContent = gamesText(key)
+                .replace('{shown}', renderedGameCount).replace('{total}', allGames.length);
+            const more = document.getElementById('load-more-games');
+            more.textContent = gamesText('games_more');
+            more.hidden = gamesState !== 'ready' || renderedGameCount >= allGames.length;
+            const retry = document.getElementById('retry-games');
+            retry.textContent = gamesText('games_retry');
+            retry.hidden = gamesState !== 'error';
+            document.getElementById('dynamic-game-list').setAttribute('aria-busy', String(gamesState === 'loading'));
+        }
+
+        function createGameCard(game) {
+            const params = new URLSearchParams({
+                url: game.url, title: game.title || '', desc: game.description || ''
+            });
+            if (game.id != null) params.set('id', game.id);
+            const card = document.createElement('a');
+            card.className = 'game-card';
+            card.href = `play.html?${params}`;
+
+            const badge = document.createElement('span');
+            badge.className = 'new-badge';
+            badge.textContent = 'NEW';
+            const image = document.createElement('img');
+            image.className = 'game-thumb';
+            image.alt = game.title || '';
+            image.loading = 'lazy';
+            image.decoding = 'async';
+            image.width = 300;
+            image.height = 200;
+            const thumbnail = game.thumbnail || game.thumb || '';
+            image.src = /^https?:\/\//i.test(thumbnail) ? thumbnail : FALLBACK_THUMBNAIL;
+            image.addEventListener('error', () => { image.src = FALLBACK_THUMBNAIL; }, { once: true });
+
+            const info = document.createElement('div');
+            info.className = 'game-info';
+            const title = document.createElement('div');
+            title.className = 'game-title';
+            title.textContent = game.title || '';
+            const category = document.createElement('div');
+            category.className = 'game-tag';
+            category.textContent = game.category || 'Casual';
+            info.append(title, category);
+            card.append(badge, image, info);
+            return card;
+        }
+
+        function renderNextGames() {
+            if (gamesState !== 'ready') return;
+            const fragment = document.createDocumentFragment();
+            const end = Math.min(renderedGameCount + GAMES_PAGE_SIZE, allGames.length);
+            for (; renderedGameCount < end; renderedGameCount++) {
+                fragment.appendChild(createGameCard(allGames[renderedGameCount]));
+            }
+            document.getElementById('dynamic-game-list').appendChild(fragment);
+            updateGamesStatus();
+        }
+
+        async function loadAutoGames() {
+            if (gamesState === 'loading') return;
+            gamesState = 'loading';
+            updateGamesStatus();
+            try {
+                const games = await fetchJson('data/games.json');
+                if (!Array.isArray(games)) throw new Error('Invalid games data');
+                allGames = games.filter(game => game && typeof game.url === 'string' && /^https?:\/\//i.test(game.url));
+                renderedGameCount = 0;
+                document.getElementById('dynamic-game-list').replaceChildren();
+                gamesState = 'ready';
+                renderNextGames();
+            } catch (error) {
+                gamesState = 'error';
+                updateGamesStatus();
+            }
         }
 
 
         // --- 2. 多语言配置 ---
         const translations = {
             zh: {
+                games_loading: "正在加载新游戏...",
+                games_error: "新游戏加载失败，请重试。您也可以先玩下方的热门游戏。",
+                games_empty: "暂无新游戏，先看看下方的热门游戏吧。",
+                games_count: "已显示 {shown} / {total} 个游戏",
+                games_more: "加载更多游戏",
+                games_retry: "重新加载",
+                updates_none: "今日暂无新更新，欢迎浏览游戏。",
+                updates_error: "更新通知暂时无法加载，您仍可浏览游戏。",
                 group_explore: "探索",
                 group_links: "友情链接", // 新增
                 nav_home: "🏠 主页",
@@ -472,6 +560,14 @@
                 rating_thanks: "感谢您的 {n} 星好评！"
             },
             en: {
+                games_loading: "Loading new games...",
+                games_error: "Could not load new games. Please retry or try the popular games below.",
+                games_empty: "No new games yet. Explore the popular games below.",
+                games_count: "Showing {shown} of {total} games",
+                games_more: "Load more games",
+                games_retry: "Retry",
+                updates_none: "No new updates today. Enjoy browsing the games.",
+                updates_error: "Update notifications are unavailable. You can still browse games.",
                 group_explore: "Explore",
                 group_links: "Friend Links", // New
                 nav_home: "🏠 Home",
@@ -511,6 +607,14 @@
                 rating_thanks: "Thanks for your {n} stars!"
             },
             jp: {
+                games_loading: "新しいゲームを読み込み中...",
+                games_error: "ゲームを読み込めませんでした。再試行するか、下の人気ゲームをお楽しみください。",
+                games_empty: "新しいゲームはまだありません。下の人気ゲームをご覧ください。",
+                games_count: "{total} 件中 {shown} 件を表示",
+                games_more: "もっとゲームを表示",
+                games_retry: "再試行",
+                updates_none: "本日の更新はありません。ゲームをお楽しみください。",
+                updates_error: "更新通知を読み込めません。ゲームは引き続きご利用いただけます。",
                 group_explore: "探索",
                 group_links: "リンク", // 新規
                 nav_home: "🏠 ホーム",
@@ -550,6 +654,14 @@
                 rating_thanks: "{n} つ星ありがとうございます！"
             },
             kr: {
+                games_loading: "새 게임을 불러오는 중...",
+                games_error: "게임을 불러오지 못했습니다. 다시 시도하거나 아래 인기 게임을 즐겨 보세요.",
+                games_empty: "아직 새 게임이 없습니다. 아래 인기 게임을 확인해 보세요.",
+                games_count: "전체 {total}개 중 {shown}개 표시",
+                games_more: "게임 더 보기",
+                games_retry: "다시 시도",
+                updates_none: "오늘은 새로운 업데이트가 없습니다. 게임을 즐겨 보세요.",
+                updates_error: "업데이트 알림을 불러올 수 없습니다. 게임은 계속 이용할 수 있습니다.",
                 group_explore: "탐구하다",
                 group_links: "친구 링크", // 새로운
                 nav_home: "🏠 홈",
@@ -593,7 +705,8 @@
         // 切换语言的函数
         function switchLanguage(lang) {
             // 1. 保存选择到本地存储
-            localStorage.setItem('preferred_lang', lang);
+            if (!translations[lang]) lang = 'zh';
+            try { localStorage.setItem('preferred_lang', lang); } catch (error) { /* Storage may be blocked. */ }
             
             // 2. 找到所有带有 data-i18n 属性的元素
             const elements = document.querySelectorAll('[data-i18n]');
@@ -608,12 +721,14 @@
 
             // 4. 更新下拉框的值（防止刷新后不同步）
             document.getElementById('langSelector').value = lang;
+            updateGamesStatus();
         }
 
         // 页面加载时自动执行
         window.addEventListener('DOMContentLoaded', () => {
             // 检查之前有没有存过语言，没有就默认中文 'zh'
-            const savedLang = localStorage.getItem('preferred_lang') || 'zh';
+            let savedLang = 'zh';
+            try { savedLang = localStorage.getItem('preferred_lang') || 'zh'; } catch (error) { /* Use the default language. */ }
             switchLanguage(savedLang);
         });
 
