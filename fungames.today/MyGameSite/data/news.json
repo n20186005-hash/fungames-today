@@ -1,5 +1,165 @@
 [
   {
+    "title": "Avengers: Doomsday Promoted With Baseball-Themed Crossover Featuring MLB Players During World Series",
+    "date": "2026-10-24",
+    "desc": "Marvel Studios debuted a unique promo for Avengers: Doomsday during Game 1 of the 2026 World Series on Fox tonight between the Milwaukee Brewers and T...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/avengers-doomsday-promoted-with-baseball-themed-crossover-featuring-mlb-players-during-world-series"
+  },
+  {
+    "title": "Aaron Paul Makes Surprise Cameo in DC’s Clayface",
+    "date": "2026-10-24",
+    "desc": "Three-time Emmy winner Aaron Paul has a blink and you’ll miss it cameo in the new DC movie Clayface. Now, the film’s director, James Watkins, has reve...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/aaron-paul-clayface-cameo-dc"
+  },
+  {
+    "title": "Dead by Daylight to Remove Chucky Content Just Months After Losing Michael Myers",
+    "date": "2026-10-24",
+    "desc": "Dead by Daylight fans are beside themselves after Behaviour Interactive announced that all Chucky content would no longer be available to purchase sta...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/dead-by-daylight-to-remove-chucky-content-just-months-after-losing-michael-myers"
+  },
+  {
+    "title": "Avengers: Doomsday Casts Sandra Hüller in Cameo Role",
+    "date": "2026-10-24",
+    "desc": "Marvel has reportedly cast Sandra Hüller in Avengers: Doomsday for a secret cameo role....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/avengers-doomsday-casts-sandra-huller-in-cameo-role"
+  },
+  {
+    "title": "Xbox's First-Ever Chief Operating Officer Leaves Role Just Three Months After It Was Created",
+    "date": "2026-10-24",
+    "desc": "Helen Chiang, Xbox’s first-ever chief operating officer, is no longer in the role just three months after it was created, as told by CEO Asha Sharma i...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/xboxs-first-ever-chief-operating-officer-leaves-role-just-three-months-after-it-was-created"
+  },
+  {
+    "title": "Indie Game Dev Takes Down Vibe-Coded Zombie Shooter After San Francisco Officials Condemn 'Dehumanizing' Game",
+    "date": "2026-10-24",
+    "desc": "The developer of a zombie game set in San Francisco has removed the game from online marketplaces and issued a public apology after city officials con...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/indie-game-dev-takes-down-vibe-coded-zombie-shooter-after-san-francisco-officials-condemn-dehumanizing-game"
+  },
+  {
+    "title": "Zendaya Sets Best Actress Oscar Campaign for Dune: Part 3",
+    "date": "2026-10-24",
+    "desc": "Zendaya will reportedly campaign in the Best Actress category for her role as \"Chani\" in Dune: Part III in the upcoming Oscars race....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/zendaya-dune-part-3-best-actress-oscars"
+  },
+  {
+    "title": "Alien: Covenant Follow-Up Adds Prisoners Writer Aaron Guzikowski",
+    "date": "2026-10-24",
+    "desc": "A sequel to Ridley Scott's Alien: Covenant is reportedly in the works with Prisoners writer Aaron Guzikowski....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/alien-covenant-follow-up-adds-prisoners-writer-aaron-guzikowski"
+  },
+  {
+    "title": "Mass Effect Fans Call for EA Boycott as Petition to Save BioWare's Canceled Game Garners More than 75,000 Signatures",
+    "date": "2026-10-24",
+    "desc": "Mass Effect fans are calling for a boycott of all EA products and services in protest of the company closing down BioWare and canceling the next Mass ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/mass-effect-fans-call-for-ea-boycott-as-petition-to-save-biowares-canceled-game-garners-more-than-75000-signatures"
+  },
+  {
+    "title": "Steam Next Fest: Most-Played Demos So Far Include Fart Together, Emberville, ArcheAge Chronicles",
+    "date": "2026-10-24",
+    "desc": "Valve has released a list of the 20 most-played Steam Next Fest demos so far, with the event running through this weekend and concluding through Monda...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/steam-next-fest-most-played-demos-so-far-include-fart-together-emberville-archeage-chronicles"
+  },
+  {
+    "title": "Ahead of GTA 6, PlayStation 5 Sales Were Up 22%, Likely Due To Wolverine",
+    "date": "2026-10-24",
+    "desc": "The latter part of 2026 has been packed with excellent games, all leading up to GTA 6 on November 19, so it's not surprising that PS5 sales have jumpe...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/ahead-of-gta-6-playstation-5-sales-were-up-22-likely-due-to-wolverine"
+  },
+  {
+    "title": "FemShep Voice Actor Jennifer Hale Speaks Out After Mass Effect 5 Trailer Leaks Online",
+    "date": "2026-10-24",
+    "desc": "Award-winning voice actor Jennifer Hale, best known for voicing the female version of Commander Shepard in the first three Mass Effect games, is speak...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/femshep-voice-actor-jennifer-hale-speaks-out-after-mass-effect-5-trailer-leaks-online"
+  },
+  {
+    "title": "Xbox Reportedly Asked Netflix for $800 Million for 7-Year Movie and TV Exclusivity Deal",
+    "date": "2026-10-24",
+    "desc": "Xbox reportedly asked Netflix for $800 million for a seven-year deal that would have given the streamer exclusive adaptations based on its games....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/xbox-reportedly-asked-netflix-for-800-million-for-7-year-movie-and-tv-exclusivity-deal"
+  },
+  {
+    "title": "Mass Effect 5 Details Revealed Following Cancellation, Including 'Hitman-Style Freedom' in Missions",
+    "date": "2026-10-24",
+    "desc": "Following the cancellation of Mass Effect 5, purportedly called Mass Effect Universe, last week – alongside the closure of the entire BioWare developm...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/mass-effect-5-details-revealed-following-cancellation-including-hitman-style-freedom-in-missions"
+  },
+  {
+    "title": "KPop Demon Hunters Is Getting Yet Another Immersive Gaming Experience in Early 2027",
+    "date": "2026-10-24",
+    "desc": "Immersive Gamebox is teaming up with Netflix to bring fans into the world of KPop Demon Hunters. A new interactive gaming experience based on the anim...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/kpop-demon-hunters-is-getting-yet-another-immersive-gaming-experience-in-early-2027"
+  },
+  {
+    "title": "Inde Navarrette Reveals Sneak Peek at Her Rogue Accent Ahead of X-Men Debut",
+    "date": "2026-10-24",
+    "desc": "Inde Navarrette revealed a sneak peek at her Rogue accent in a new video featuring her take on the X-Men hero's iconic \"sugar\" catchphrase, but she's ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/inde-navarrette-reveals-sneak-peek-at-her-rogue-accent-ahead-of-x-men-debut"
+  },
+  {
+    "title": "Nintendo Legend Shigeru Miyamoto Becomes First Game Designer to Be Awarded Japan's Order of Culture",
+    "date": "2026-10-24",
+    "desc": "Innovative and prolific Nintendo game developer Shigeru Miyamoto will receive Japan’s highest honor for cultural merit next month. The 73-year old is ...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/nintendo-legend-shigeru-miyamoto-becomes-first-game-designer-to-be-awarded-japans-order-of-culture"
+  },
+  {
+    "title": "EA Appears to Have Quietly Pulled Mass Effect Content From Battlefield 6 Following BioWare Shutdown",
+    "date": "2026-10-24",
+    "desc": "EA seems to have quietly pulled a collection of Mass Effect content for Battlefield 6 just days after it shuttered series developer BioWare....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/ea-appears-to-have-quietly-pulled-mass-effect-content-from-battlefield-6-following-bioware-shutdown"
+  },
+  {
+    "title": "Fallout Shelter: The Experiment Is the Official Title for the Prime Video Reality Competition Show, Release Date Announced on Fallout Day",
+    "date": "2026-10-24",
+    "desc": "Amazon has announced an official title for its Fallout Shelter reality competition show, and a Prime Video release date....",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/fallout-shelter-the-experiment-is-the-official-title-for-the-prime-video-reality-competition-show-release-date-announced-on-fallout-day"
+  },
+  {
+    "title": "Save Mass Effect Petition Hits 50,000 Signatures, Just Days After BioWare Closure",
+    "date": "2026-10-24",
+    "desc": "EA shut down BioWare on Wednesday, cancelling its upcoming Mass Effect game. And, after the trailer for what's now known as Mass Effect Universe leake...",
+    "tag": "News",
+    "source": "IGN",
+    "link": "https://www.ign.com/articles/save-mass-effect-petition-hits-50000-signatures-just-days-after-bioware-closure"
+  },
+  {
     "title": "The Battlestar Galactica Board Game Is Making a Surprise Comeback Next Year",
     "date": "2026-10-23",
     "desc": "...",
@@ -638,165 +798,5 @@
     "tag": "News",
     "source": "IGN",
     "link": "https://www.ign.com/articles/french-game-store-employee-goes-viral-for-defending-riots"
-  },
-  {
-    "title": "It Took 4 Google AI Agents Over 27 Hours to Defeat the Ender Dragon in Minecraft Without Help From Humans",
-    "date": "2026-10-20",
-    "desc": "Google researchers have released a paper claiming that four Google Gemini 4 Argon AI agents just beat Minecraft without any help from humans. It took ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/google-ai-agents-killed-ender-dragon-minecraft"
-  },
-  {
-    "title": "Don Bradman Cricket Jr Announced for PC and Consoles",
-    "date": "2026-10-19",
-    "desc": "Don Bradman Cricket Jr Announced for PC and Consoles...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/don-bradman-cricket-jr-announced-for-pc-and-consoles"
-  },
-  {
-    "title": "Jesse Eisenberg Says He 'Couldn't Get Movie Studio Parts' After Winning His Batman v. Superman Razzie",
-    "date": "2026-10-19",
-    "desc": "Jesse Eisenberg says he \"couldn't get into studio movie parts\" because he won a Worst Supporting Actor Razzie for playing Lex Luthor in Batman v. Supe...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/jesse-eisenberg-says-he-couldnt-get-movie-studio-parts-after-winning-his-batman-v-superman-razzie"
-  },
-  {
-    "title": "Taika Waititi Says His Star Wars Movie Is 'on Ice'",
-    "date": "2026-10-19",
-    "desc": "Director Taika Waititi has confirmed his long-in-development Star Wars movie is officially \"on ice.\"...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/taika-waititi-says-his-star-wars-movie-is-on-ice"
-  },
-  {
-    "title": "Silent Hill Remake Studio Wants to Make Physical Games 'for as Long as Possible'",
-    "date": "2026-10-19",
-    "desc": "Silent Hill developer Bloober Team wants to make physical versions of its games \"for as long as possible.\"...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/silent-hill-remake-studio-wants-to-make-physical-games-for-as-long-as-possible"
-  },
-  {
-    "title": "Street Fighter Tops the Box Office With $51 Million Opening Weekend Amid Lackluster Reviews",
-    "date": "2026-10-19",
-    "desc": "Capcom's Street Fighter movie spun up $51.1 million in its opening weekend, securing its place atop the global box office despite some not-so-great re...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/street-fighter-tops-the-box-office-with-51-million-opening-weekend-amid-lackluster-reviews"
-  },
-  {
-    "title": "Quentin Tarantino Says He's 'Written a Script' for 10th and Final Film, But He Wants to 'Live' Before Making It",
-    "date": "2026-10-19",
-    "desc": "Quentin Tarantino has confirmed he's \"written a script\" for his 10th and final film, but he's going to \"live\" a little before making it....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/quentin-tarantino-says-hes-written-a-script-for-10th-and-final-film-but-he-wants-to-live-before-making-it"
-  },
-  {
-    "title": "Dev Behind Russian Roulette Drinking Game Cancels Steam Demo Plans Following AI Copycat Concerns",
-    "date": "2026-10-18",
-    "desc": "The developer behind Russian roulette anime game Drunken Goddess Reflux has canceled its plans for a public Steam demo, citing concerns over potential...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/dev-behind-russian-roulette-drinking-game-cancels-steam-demo-plans-following-ai-copycat-concerns"
-  },
-  {
-    "title": "Battlefield 6 Devs Respond After Players Take Aim at 'Secuty' Typo and Cosmetic With 5 Pistols",
-    "date": "2026-10-18",
-    "desc": "The Battlefield 6 team has responded after players took aim at a few controversial cosmetics added in Season 5....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/battlefield-6-devs-respond-after-players-take-aim-at-secuty-typo-and-cosmetic-with-5-pistols"
-  },
-  {
-    "title": "James Cameron Congratulates Marvel After Avengers: Endgame Beats Avatar at the Box Office Yet Again",
-    "date": "2026-10-18",
-    "desc": "James Cameron celebrated Avengers: Endgame beating Avatar at the box office with another social media post after the two movies traded places yet agai...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/james-cameron-congratulates-marvel-after-avengers-endgame-beats-avatar-at-the-box-office-yet-again"
-  },
-  {
-    "title": "Ben Affleck's Batman Movie Would Have Featured Arkham Asylum-Inspired Deathstroke Fight and DCEU Batgirl, Joe Manganiello Reveals",
-    "date": "2026-10-18",
-    "desc": "Joe Manganiello has revealed new plot details about Ben Affleck's canceled Batman movie, including information about an Arkham Asylum-inspired fight w...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/ben-afflecks-batman-movie-would-have-featured-arkham-asylum-inspired-deathstroke-fight-and-dceu-batgirl-joe-manganiello-reveals"
-  },
-  {
-    "title": "Captain Price Actor Sends Message to Fans as Call of Duty: Modern Warfare 4 Campaign Praise Rolls in",
-    "date": "2026-10-18",
-    "desc": "Barry Sloane, the actor behind Call of Duty's Captain Price, has shared a message with fans as praise for Modern Warfare 4's campaign rolls in....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/captain-price-actor-sends-message-to-fans-as-call-of-duty-modern-warfare-4-campaign-praise-rolls-in"
-  },
-  {
-    "title": "We Sat Down with D&D Game Designer James Wyatt to Talk Dungeons & Dragons: World of Warcraft",
-    "date": "2026-10-18",
-    "desc": "At New York Comic Con, I got a chance to sit down with Wizards of the Coast Principal Game Designer James Wyatt to talk about the first Universes Beyo...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/we-sat-down-with-dd-game-designer-james-wyatt-to-talk-dungeons-and-dragons-world-of-warcraft"
-  },
-  {
-    "title": "[UPDATE] Super Smash Bros. Player Mew2King Responds After Tournament Bans Him Over Bug Bite Concerns",
-    "date": "2026-10-18",
-    "desc": "Professional Super Smash Bros. player Jason 'Mew2King' Zimmerman has responded after his post about a bug infestation in his home resulted in him bein...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/super-smash-bros-player-mew2king-banned-from-tournament-after-bug-bites-spark-health-concerns"
-  },
-  {
-    "title": "Red Rising Greenlit for Movie Adaptation With Author Pierce Brown to Produce",
-    "date": "2026-10-17",
-    "desc": "The Red Rising book series by author Pierce Brown has officially been greenlit for a movie adaptation from Paramount Pictures, with Hunger Games alum ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/red-rising-greenlit-for-movie-adaptation-with-author-pierce-brown-to-produce"
-  },
-  {
-    "title": "James Gunn Shoots Down Milly Alcock Supergirl Rumors, Shares Man of Tomorrow Update",
-    "date": "2026-10-17",
-    "desc": "James Gunn has shot down rumors that Milly Alcock was fired as Supergirl and confirmed that he'll show Peter Safran an early cut of Man of Tomorrow la...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/james-gunn-shoots-down-milly-alcock-supergirl-rumors-shares-man-of-tomorrow-update"
-  },
-  {
-    "title": "Super Smash Bros. Player Mew2King Banned From Tournament After Bug Bites Spark Health Concerns",
-    "date": "2026-10-17",
-    "desc": "Professional Super Smash Bros. player Jason ‘Mew2King’ Zimmerman has been banned from a competitive tournament after posting photos of his concerning ...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/super-smash-bros-player-mew2king-banned-from-tournament-after-bug-bites-spark-health-concerns"
-  },
-  {
-    "title": "‘There Should be a Game Award for Hot Dads’ — Castlevania: Belmont’s Curse Devs Are Fully Aware and Loving the ‘Horny’ Fanart for Their Game",
-    "date": "2026-10-17",
-    "desc": "The developers behind Castlevania: Belmont’s Curse are enthusiastic about the “horny” fanart they’ve seen of the game’s characters, saying they specif...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/there-should-be-a-game-award-for-hot-dads-castlevania-belmonts-curse-devs-are-fully-aware-and-loving-the-horny-fanart-for-their-game"
-  },
-  {
-    "title": "True Detective Season 5 Confirms Antonio Banderas and Nicolas Cage as Its Leads",
-    "date": "2026-10-17",
-    "desc": "True Detective Season 5 will officially star Antonio Banderas and Nicolas Cage as its two leads....",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/true-detective-season-5-confirms-antonio-banderas-and-nicolas-cage-as-its-leads"
-  },
-  {
-    "title": "Pokémon Reveals New 'Holiday Helper’ Plush Collection With a Christmas Tree Pikachu and Clodsire Sled",
-    "date": "2026-10-17",
-    "desc": "...",
-    "tag": "News",
-    "source": "IGN",
-    "link": "https://www.ign.com/articles/pokemon-holiday-helper-plush-reveal"
   }
 ]
